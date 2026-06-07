@@ -1,0 +1,30 @@
+# Dependencies
+node_modules
+
+# Logs
+*.log*
+
+# Temp / cache
+.temp
+.tmp
+.cache
+
+# Build output
+dist
+
+# Nuxt
+.nuxt
+.output
+.data
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Testing
+coverage
+*.lcov
+
+# OS
+.DS_Store
