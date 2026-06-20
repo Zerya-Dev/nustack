@@ -17,6 +17,12 @@ const MODULE_FLAGS = {
   '@nuxt/content': 'nuxtContent',
 } as const satisfies Record<string, keyof NustackContext['modules']>
 
+interface NitroWithUnimport {
+  unimport?: Unimport
+}
+
+type NitroInitHook = (name: 'nitro:init', fn: (nitro: NitroWithUnimport) => void) => void
+
 /**
  * Registers the hooks that observe the resolved Nuxt context and writes
  * `.nuxt/nustack-eslint.mjs` whenever the app is (re)generated, so the ESLint
@@ -30,7 +36,7 @@ export function setupNustackContext(nuxt: Nuxt): void {
   nuxt.hook('imports:context', (ctx) => {
     unimport = ctx
   })
-  nuxt.hook('nitro:init', (nitro) => {
+  ;(nuxt.hook as unknown as NitroInitHook)('nitro:init', (nitro) => {
     nitroUnimport = nitro.unimport
   })
   nuxt.hook('components:extend', (list) => {

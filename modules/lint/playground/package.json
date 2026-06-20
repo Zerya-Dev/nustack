@@ -11,6 +11,7 @@
     "@nustackjs/lint": "workspace:*",
     "@nuxt/eslint": "^1.15.2",
     "@nuxt/ui": "^4.6.1",
+    "@vueuse/core": "catalog:",
     "nuxt": "^4.4.7"
   },
   "devDependencies": {

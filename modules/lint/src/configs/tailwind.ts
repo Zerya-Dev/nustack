@@ -5,6 +5,7 @@ import { defu } from 'defu'
 import betterTailwind from 'eslint-plugin-better-tailwindcss'
 import { getDefaultAttributes, getDefaultCallees } from 'eslint-plugin-better-tailwindcss/api/defaults'
 import { MatcherType } from 'eslint-plugin-better-tailwindcss/api/types'
+import { variantAtLeast } from './types'
 
 const GLOB_CODE = ['**/*.vue', '**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}']
 
@@ -30,7 +31,7 @@ export interface TailwindConcernOptions extends ConcernOptions {
  */
 export function tailwindConfig(
   ctx: NustackContext,
-  _axes: ConcernContext,
+  axes: ConcernContext,
   opts: TailwindConcernOptions = {},
 ): Linter.Config[] {
   const uiAttributes = ctx.modules.nuxtUi
@@ -58,7 +59,9 @@ export function tailwindConfig(
       },
       rules: {
         'better-tailwindcss/enforce-consistent-class-order': 'warn',
-        'better-tailwindcss/enforce-consistent-line-wrapping': 'warn',
+        ...(variantAtLeast(axes.variant, 'pedantic')
+          ? { 'better-tailwindcss/enforce-consistent-line-wrapping': 'warn' }
+          : {}),
         'better-tailwindcss/no-unregistered-classes': 'warn',
         'better-tailwindcss/no-conflicting-classes': 'error',
         'better-tailwindcss/no-duplicate-classes': 'error',
