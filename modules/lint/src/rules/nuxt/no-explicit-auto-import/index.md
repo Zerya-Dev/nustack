@@ -8,9 +8,12 @@ second, redundant way to do the same thing. NuStack standardizes on **the auto-i
 so a symbol is referenced one way across the codebase — no mix of imported-here /
 auto-there that humans and agents have to reconcile.
 
-The rule only flags identifiers the project *actually* auto-imports (it reads the
-resolved unimport + component registries from the detected context), so it never
-false-positives on names you really do need to import.
+For `vue`, local `composables/` + `utils/`, and components, the rule only flags
+identifiers the project *actually* auto-imports (it reads the resolved unimport +
+component registries from the detected context), so it never false-positives on names
+you really do need to import. Imports from Nuxt's virtual auto-import entrypoints
+(`#imports` / `#app`) are always redundant, and route composables like `useRoute` /
+`useRouter` are also rejected from `vue-router`.
 
 ## ❌ Incorrect
 
@@ -18,6 +21,11 @@ false-positives on names you really do need to import.
 import { ref } from 'vue' // ref is auto-imported
 
 const count = ref(0)
+```
+
+```ts
+import { useRoute } from 'vue-router' // route composables are auto-imported
+import { useRuntimeConfig } from '#imports' // #imports is the auto-import registry
 ```
 
 ```vue

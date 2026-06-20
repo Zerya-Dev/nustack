@@ -6,6 +6,7 @@ describe('nuxt/no-explicit-auto-import', () => {
     valid: [
       // identifier not in the auto-import list
       { code: `import { foo } from 'vue'`, options: [{ imports: ['ref'] }] },
+      { code: `import { createRouter } from 'vue-router'`, options: [{ imports: [] }] },
       // type-only imports are never runtime auto-imports
       { code: `import type { Ref } from 'vue'`, options: [{ imports: ['Ref'] }] },
       { code: `import { type Ref, foo } from 'vue'`, options: [{ imports: ['Ref'] }] },
@@ -24,6 +25,30 @@ describe('nuxt/no-explicit-auto-import', () => {
         code: `import { ref, useFoo } from 'vue'\n`,
         options: [{ imports: ['ref'] }],
         output: `import {  useFoo } from 'vue'\n`,
+        errors: [{ messageId: 'noExplicitAutoImport' }],
+      },
+      {
+        code: `import { useRoute } from 'vue-router'\nconst route = useRoute()\n`,
+        options: [{ imports: [] }],
+        output: `\nconst route = useRoute()\n`,
+        errors: [{ messageId: 'noExplicitAutoImport' }],
+      },
+      {
+        code: `import { useRoute, createRouter } from 'vue-router'\n`,
+        options: [{ imports: [] }],
+        output: `import {  createRouter } from 'vue-router'\n`,
+        errors: [{ messageId: 'noExplicitAutoImport' }],
+      },
+      {
+        code: `import { useRoute, useRuntimeConfig } from '#imports'\n`,
+        options: [{ imports: [] }],
+        output: `\n`,
+        errors: [{ messageId: 'noExplicitAutoImport' }],
+      },
+      {
+        code: `import * as imports from '#imports'\n`,
+        options: [{ imports: [] }],
+        output: `\n`,
         errors: [{ messageId: 'noExplicitAutoImport' }],
       },
       {

@@ -6,6 +6,7 @@ import type { NuxtUiConcernOptions } from './configs/nuxt-ui'
 import type { TailwindConcernOptions } from './configs/tailwind'
 import type { ConcernContext, Depth, Variant } from './configs/types'
 import type { VueConcernOptions } from './configs/vue'
+import type { VueUseConcernOptions } from './configs/vueuse'
 import type { NustackContext } from './context'
 import { defu } from 'defu'
 import { composer } from 'eslint-flat-config-utils'
@@ -15,6 +16,7 @@ import { nuxtUiConfig } from './configs/nuxt-ui'
 import { tailwindConfig } from './configs/tailwind'
 import { typeAwareConfig } from './configs/type-aware'
 import { vueConfig } from './configs/vue'
+import { vueUseConfig } from './configs/vueuse'
 import { EMPTY_CONTEXT } from './context'
 
 export type { Depth, Variant } from './configs/types'
@@ -36,6 +38,8 @@ export interface NustackLintOptions {
   nuxt?: ConcernToggle<NuxtConcernOptions>
   /** SFC conventions (vue/block-lang etc.). */
   vue?: ConcernToggle<VueConcernOptions>
+  /** VueUse usage conventions. */
+  vueUse?: ConcernToggle<VueUseConcernOptions>
   /** Nuxt UI component preferences. Auto-gated on `@nuxt/ui` detection. */
   nuxtUi?: ConcernToggle<NuxtUiConcernOptions>
   /** Tailwind class sorting/correctness. Auto-gated on a detected entry point. */
@@ -89,7 +93,7 @@ export function nustackLint(
   const axes: ConcernContext = { variant, depth }
 
   // Style base, prepended so it's foundational (concerns win on conflicts).
-  const antfu = antfuBase(options.base)
+  const antfu = antfuBase(options.base, depth)
   if (antfu)
     base.prepend(antfu)
 
@@ -99,6 +103,8 @@ export function nustackLint(
     configs.push(...nuxtConfig(ctx, axes, subOptions(options.nuxt)))
   if (isEnabled(options.vue, true))
     configs.push(...vueConfig(ctx, axes, subOptions(options.vue)))
+  if (isEnabled(options.vueUse, true))
+    configs.push(...vueUseConfig(axes, subOptions(options.vueUse)))
   if (isEnabled(options.tailwind, ctx.tailwind.detected))
     configs.push(...tailwindConfig(ctx, axes, subOptions(options.tailwind)))
   if (isEnabled(options.nuxtUi, ctx.modules.nuxtUi))

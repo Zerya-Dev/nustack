@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/utils'
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils'
 import type { Rule } from 'eslint'
 import { createRule } from '../../utils'
 
@@ -9,8 +9,15 @@ interface Options {
   components?: string[]
 }
 
-/** Sources whose named exports Nuxt re-exposes as auto-imports. */
-const AUTO_IMPORT_SOURCES = new Set(['vue', 'vue-router', '#imports', '#app'])
+/** Sources that are themselves Nuxt auto-import entrypoints. */
+const NUXT_AUTO_IMPORT_SOURCES = new Set(['#imports', '#app'])
+/** Route composables Nuxt exposes globally in app code. */
+const VUE_ROUTER_AUTO_IMPORTS = new Set([
+  'onBeforeRouteLeave',
+  'onBeforeRouteUpdate',
+  'useRoute',
+  'useRouter',
+])
 const COMPONENT_PATH_RE = /(?:^|\/)components\//
 const COMPOSABLE_PATH_RE = /(?:^|\/)(?:composables|utils)\//
 
@@ -47,7 +54,7 @@ export const rule: Rule.RuleModule = createRule<'noExplicitAutoImport', [Options
     const componentSet = new Set(components)
     const sourceCode = context.sourceCode
 
-    function removeSpecifier(fixer: Rule.RuleFixer, spec: TSESTree.Node): Rule.Fix {
+    function removeSpecifier(fixer: TSESLint.RuleFixer, spec: TSESTree.Node): TSESLint.RuleFix {
       const after = sourceCode.getTokenAfter(spec as any)
       const before = sourceCode.getTokenBefore(spec as any)
       if (after?.value === ',')
@@ -65,27 +72,38 @@ export const rule: Rule.RuleModule = createRule<'noExplicitAutoImport', [Options
           return
 
         const source = String(node.source.value)
-        const isAutoSource = AUTO_IMPORT_SOURCES.has(source)
+        const isNuxtAutoImportSource = NUXT_AUTO_IMPORT_SOURCES.has(source)
+        const isVueSource = source === 'vue'
+        const isVueRouterSource = source === 'vue-router'
         const isComposablePath = COMPOSABLE_PATH_RE.test(source)
         const isComponentPath = COMPONENT_PATH_RE.test(source)
-        if (!isAutoSource && !isComposablePath && !isComponentPath)
+        if (!isNuxtAutoImportSource && !isVueSource && !isVueRouterSource && !isComposablePath && !isComponentPath)
           return
 
         const flagged: { node: TSESTree.Node, name: string }[] = []
 
         for (const spec of node.specifiers) {
+          if (spec.type === 'ImportDefaultSpecifier' || spec.type === 'ImportNamespaceSpecifier') {
+            if (isNuxtAutoImportSource)
+              flagged.push({ node: spec, name: spec.local.name })
+            else if (spec.type === 'ImportDefaultSpecifier' && isComponentPath && componentSet.has(spec.local.name))
+              flagged.push({ node: spec, name: spec.local.name })
+            continue
+          }
+
           if (spec.type === 'ImportSpecifier') {
             if (spec.importKind === 'type')
               continue
             const name = spec.imported.type === 'Identifier'
               ? spec.imported.name
               : String(spec.imported.value)
-            if ((isAutoSource || isComposablePath) && importSet.has(name))
+            if (
+              isNuxtAutoImportSource
+              || ((isVueSource || isComposablePath) && importSet.has(name))
+              || (isVueRouterSource && (importSet.has(name) || VUE_ROUTER_AUTO_IMPORTS.has(name)))
+            ) {
               flagged.push({ node: spec, name })
-          } else if (spec.type === 'ImportDefaultSpecifier') {
-            // `import MyComp from '~/components/MyComp.vue'`
-            if (isComponentPath && componentSet.has(spec.local.name))
-              flagged.push({ node: spec, name: spec.local.name })
+            }
           }
         }
 
