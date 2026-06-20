@@ -42,4 +42,6 @@ later target oxlint or ESLint transparently.
 - A props-style rule standardizing on JS-native reactive-props-destructure defaults
   (illustrates the "pick one explicit way" thesis: of the several ways to declare prop
   defaults, standardize on the native one).
+- Prefer VueUse directives for supported DOM interaction patterns, instead of open-coded
+  component lifecycle listeners or ad hoc DOM event wiring.
 - More `pedantic` Nuxt/Vue conventions as the community settles on them.

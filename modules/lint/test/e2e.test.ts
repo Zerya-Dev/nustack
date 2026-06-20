@@ -52,6 +52,15 @@ describe('e2e: composed config lints real code', () => {
     expect(ruleIds(messages)).toContain('nustack/nuxt/no-explicit-auto-import')
   })
 
+  it('flags VueUse rules loaded through @nustackjs/lint-plugin-vueuse', async () => {
+    const messages = await lint(
+      `import * as VueUse from '@vueuse/core'\nimport { useStorage } from '@vueuse/core'\nconst viewport = VueUse.useWindowSize()\nconst value = useStorage('x', 0)\nconsole.log(viewport, value)`,
+      'app/utils/vueuse-demo.ts',
+    )
+    expect(ruleIds(messages)).toContain('nustack/vueuse/no-namespace-import')
+    expect(ruleIds(messages)).toContain('nustack/vueuse/no-nuxt-auto-import-collision')
+  })
+
   it('orders Tailwind classes in a plain class attribute', async () => {
     const messages = await lint(`<script setup lang="ts"></script><template><div class="p-4 flex" /></template>`, 'app/pages/x.vue')
     expect(ruleIds(messages)).toContain('better-tailwindcss/enforce-consistent-class-order')
@@ -73,6 +82,17 @@ describe('e2e: variant and depth change behaviour', () => {
     const recommended = await lint(`const x = process.env.FOO`, 'app/composables/x.ts', { variant: 'recommended' })
     expect(ruleIds(minimal)).not.toContain('nustack/nuxt/no-process-env')
     expect(ruleIds(recommended)).toContain('nustack/nuxt/no-process-env')
+  })
+
+  it('only enables Tailwind line wrapping in pedantic variant', async () => {
+    const recommended = await nustackLint(composer() as any, { context: CONTEXT, variant: 'recommended' }).toConfigs()
+    const pedantic = await nustackLint(composer() as any, { context: CONTEXT, variant: 'pedantic' }).toConfigs()
+
+    const tailwindRules = (configs: any[]) =>
+      configs.find(c => c.name === 'nustack/tailwind')?.rules ?? {}
+
+    expect(tailwindRules(recommended)).not.toHaveProperty('better-tailwindcss/enforce-consistent-line-wrapping')
+    expect(tailwindRules(pedantic)).toHaveProperty('better-tailwindcss/enforce-consistent-line-wrapping', 'warn')
   })
 
   it('full depth turns on the type-aware projectService layer; quick does not', async () => {

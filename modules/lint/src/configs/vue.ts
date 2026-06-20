@@ -1,5 +1,6 @@
 import type { Linter } from 'eslint'
 import type { ConcernContext, ConcernOptions } from './types'
+import { variantAtLeast } from './types'
 
 export interface VueConcernOptions extends ConcernOptions {}
 
@@ -25,6 +26,19 @@ export function vueConfig(
         'vue/block-lang': ['error', {
           script: { lang: 'ts', allowNoLang: false },
         }],
+        ...(variantAtLeast(_axes.variant, 'recommended')
+          ? {
+              'vue/define-emits-declaration': ['warn', 'type-literal'],
+              'vue/define-props-destructuring': ['warn', {
+                destructure: 'always',
+              }],
+              'vue/html-comment-content-newline': 'warn',
+              'vue/html-comment-indent': 'warn',
+              'vue/no-duplicate-class-names': 'warn',
+              'vue/no-empty-component-block': 'warn',
+              'vue/no-import-compiler-macros': 'error',
+            }
+          : {}),
         ...opts.overrides,
       },
     },

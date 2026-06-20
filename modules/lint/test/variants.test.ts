@@ -59,6 +59,36 @@ describe('variant ladder', () => {
     expect(ids).toContain('nustack/nuxt/no-secret-in-public-runtimeconfig')
     expect(ids).toContain('nustack/nuxt/no-process-env')
     expect(ids).toContain('nustack/nuxt/no-explicit-auto-import')
+    expect(ids).toContain('vue/define-emits-declaration')
+    expect(ids).toContain('vue/define-props-destructuring')
+    expect(ids).toContain('vue/html-comment-content-newline')
+    expect(ids).toContain('vue/html-comment-indent')
+    expect(ids).toContain('vue/no-duplicate-class-names')
+    expect(ids).toContain('vue/no-empty-component-block')
+    expect(ids).toContain('vue/no-import-compiler-macros')
+  })
+
+  it('recommended adds only Vue rules not already provided by Antfu', async () => {
+    const configs = await resolve({ variant: 'recommended' })
+    const vue = configs.find(c => c.name === 'nustack/vue')
+
+    expect(vue?.rules?.['vue/define-props-destructuring']).toEqual(['warn', {
+      destructure: 'always',
+    }])
+    expect(vue?.rules?.['vue/define-emits-declaration']).toEqual(['warn', 'type-literal'])
+    expect(vue?.rules).toMatchObject({
+      'vue/html-comment-content-newline': 'warn',
+      'vue/html-comment-indent': 'warn',
+      'vue/no-duplicate-class-names': 'warn',
+      'vue/no-empty-component-block': 'warn',
+      'vue/no-import-compiler-macros': 'error',
+    })
+
+    expect(vue?.rules).not.toHaveProperty('vue/component-name-in-template-casing')
+    expect(vue?.rules).not.toHaveProperty('vue/component-options-name-casing')
+    expect(vue?.rules).not.toHaveProperty('vue/custom-event-name-casing')
+    expect(vue?.rules).not.toHaveProperty('vue/define-macros-order')
+    expect(vue?.rules).not.toHaveProperty('vue/html-comment-content-spacing')
   })
 
   it('defaults to recommended when variant is omitted', async () => {
@@ -100,5 +130,28 @@ describe('depth (per-run)', () => {
     process.env.NUSTACK_LINT_DEPTH = 'full'
     const names = await nustackConfigNames({})
     expect(names).toContain('nustack/type-aware')
+  })
+
+  it('enables Antfu type-aware TypeScript rules only at full depth', async () => {
+    process.env.NUSTACK_LINT_DEPTH = 'quick'
+    const quick = await resolve({})
+    process.env.NUSTACK_LINT_DEPTH = 'full'
+    const full = await resolve({})
+
+    expect(quick.map(c => c.name)).toContain('antfu/typescript/parser')
+    expect(quick.map(c => c.name)).not.toContain('antfu/typescript/rules-type-aware')
+    expect(full.map(c => c.name)).toContain('antfu/typescript/type-aware-parser')
+    expect(full.map(c => c.name)).toContain('antfu/typescript/rules-type-aware')
+  })
+
+  it('keeps Antfu syntax-only TypeScript enabled below full depth', async () => {
+    process.env.NUSTACK_LINT_DEPTH = 'quick'
+
+    const configs = await resolve({
+      base: { typescript: false },
+    })
+
+    expect(configs.map(c => c.name)).toContain('antfu/typescript/parser')
+    expect(configs.map(c => c.name)).not.toContain('antfu/typescript/rules-type-aware')
   })
 })

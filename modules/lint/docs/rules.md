@@ -19,6 +19,20 @@ a top-level one).
 
 Also configures (from `@nuxt/eslint` / antfu): `vue/block-lang` → require `lang="ts"`.
 
+## `vue`
+
+SFC conventions.
+
+| Rule | Variant | Severity | Fix |
+|---|---|---|---|
+| `vue/define-emits-declaration` (`type-literal`) | `recommended` | warn | — |
+| `vue/define-props-destructuring` (`destructure: 'always'`) | `recommended` | warn | — |
+| `vue/html-comment-content-newline` | `recommended` | warn | ✓ |
+| `vue/html-comment-indent` | `recommended` | warn | ✓ |
+| `vue/no-duplicate-class-names` | `recommended` | warn | ✓ |
+| `vue/no-empty-component-block` | `recommended` | warn | ✓ |
+| `vue/no-import-compiler-macros` | `recommended` | error | ✓ |
+
 ## `nuxt-ui`
 
 Active only when `@nuxt/ui` is detected.
@@ -34,13 +48,13 @@ Active when a Tailwind entry point is detected. These are
 [better-tailwindcss](https://github.com/schoero/eslint-plugin-better-tailwindcss) rules
 configured by the `tailwind` concern (including scanning the Nuxt UI `:ui` object prop):
 
-| Rule | Severity | Fix |
-|---|---|---|
-| `better-tailwindcss/enforce-consistent-class-order` | warn | ✓ |
-| `better-tailwindcss/enforce-consistent-line-wrapping` | warn | ✓ |
-| `better-tailwindcss/no-unregistered-classes` | warn | — |
-| `better-tailwindcss/no-conflicting-classes` | error | — |
-| `better-tailwindcss/no-duplicate-classes` | error | ✓ |
+| Rule | Variant | Severity | Fix |
+|---|---|---|---|
+| `better-tailwindcss/enforce-consistent-class-order` | `recommended` | warn | ✓ |
+| `better-tailwindcss/enforce-consistent-line-wrapping` | `pedantic` | warn | ✓ |
+| `better-tailwindcss/no-unregistered-classes` | `recommended` | warn | — |
+| `better-tailwindcss/no-conflicting-classes` | `recommended` | error | — |
+| `better-tailwindcss/no-duplicate-classes` | `recommended` | error | ✓ |
 
 ## type-aware (`depth: full` only)
 
