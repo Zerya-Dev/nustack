@@ -9,13 +9,13 @@
   },
   "dependencies": {
     "@nustackjs/lint": "workspace:*",
-    "@nuxt/eslint": "^1.15.2",
-    "@nuxt/ui": "^4.6.1",
-    "@vueuse/core": "catalog:",
-    "nuxt": "^4.4.7"
+    "@nuxt/eslint": "catalog:eslint",
+    "@nuxt/ui": "catalog:nuxt",
+    "@vueuse/core": "catalog:vue",
+    "nuxt": "catalog:nuxt"
   },
   "devDependencies": {
-    "eslint": "^10.4.1",
-    "tailwindcss": "^4.0.0"
+    "eslint": "catalog:eslint",
+    "tailwindcss": "catalog:vue"
   }
 }

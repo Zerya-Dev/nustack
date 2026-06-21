@@ -1,4 +1,4 @@
-# `vueuse/prefer-use-storage`
+# `@nustack/vueuse/prefer-use-storage`
 
 Prefer VueUse storage composables over direct `localStorage` or `sessionStorage` calls. VueUse storage refs are reactive and are safer in SSR-aware Vue/Nuxt code.
 

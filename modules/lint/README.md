@@ -20,7 +20,12 @@ Three reasons it exists:
   them together.
 - **Catch more.** Deep, Nuxt-aware checks that go well past formatting — promoting
   ecosystem best practices and catching the slop that otherwise slips through code
-  review, including what AI agents generate. The ruleset keeps growing.
+  review, including what AI agents generate. The ruleset keeps growing. The custom rules
+  ship as standalone, [Oxlint](https://oxc.rs)-ready plugins
+  ([nuxt](../../packages/lint-plugin-nuxt), [vueuse](../../packages/lint-plugin-vueuse),
+  [vite](../../packages/lint-plugin-vite),
+  [nuxt-ecosystem](../../packages/lint-plugin-nuxt-ecosystem)) that you can also use on
+  their own.
 - **Policy as code.** When there are several ways to do the same thing, it picks one and
   enforces it — so the decision lives in the linter instead of in every code review.
   Disagree with a pick? Override it; everything is configurable.
@@ -53,9 +58,9 @@ To pass options, call the factory instead — same file, `withNuxt()` still prew
 
 ```ts
 // eslint.config.ts
-import { nustackLint } from './.nuxt/nustack-eslint.mjs'
+import { nustack } from './.nuxt/nustack-eslint.mjs'
 
-export default nustackLint({ variant: 'pedantic' })
+export default nustack({ variant: 'pedantic' })
 ```
 
 ```bash
@@ -70,9 +75,15 @@ See [Configuration](./docs/configuration.md), [Rules](./docs/rules.md) and
 
 ```ts
 // eslint.config.ts
-import { defineNustackConfig } from '@nustackjs/lint/config'
+import nustack from '@nustackjs/lint/config'
 
-export default defineNustackConfig({ base: { type: 'lib' } })
+export default nustack({ base: { type: 'lib' } })
+```
+
+## Config inspector
+
+```bash
+npx @eslint/config-inspector --config eslint.config.ts
 ```
 
 ## Contributing
@@ -85,6 +96,10 @@ pnpm dev:prepare   # build module + nuxt prepare playground
 pnpm lint          # dogfoods the preset on its own source
 pnpm test
 ```
+
+## License
+
+[MIT](./LICENSE) © Zerya
 
 <!-- Badges -->
 [nuxt-src]: https://img.shields.io/badge/Nuxt-020420?logo=nuxt

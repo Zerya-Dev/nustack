@@ -5,7 +5,7 @@ import { generateCode } from '../src/addon'
 import { EMPTY_CONTEXT } from '../src/context'
 
 describe('generateCode', () => {
-  it('serializes the context and re-exports a bound nustackLint', () => {
+  it('serializes the context and re-exports a bound nustack factory', () => {
     const code = generateCode({
       ...EMPTY_CONTEXT,
       modules: { ...EMPTY_CONTEXT.modules, nuxtUi: true },
@@ -16,8 +16,9 @@ describe('generateCode', () => {
     expect(code).toContain('"entryPoint": "app/assets/css/main.css"')
     expect(code).toContain(`from '@nustackjs/lint/config'`)
     expect(code).toContain(`import withNuxt from './eslint.config.mjs'`)
-    expect(code).toContain('export function nustackLint')
-    expect(code).toContain('export default nustackLint()')
+    expect(code).toContain('export function nustack')
+    expect(code).toContain('export const nustackLint = nustack')
+    expect(code).toContain('export default nustack()')
   })
 })
 

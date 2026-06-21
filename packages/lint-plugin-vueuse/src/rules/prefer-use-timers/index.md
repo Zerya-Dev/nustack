@@ -1,4 +1,4 @@
-# `vueuse/prefer-use-timers`
+# `@nustack/vueuse/prefer-use-timers`
 
 Prefer VueUse timer composables over raw timers in component code. `useTimeoutFn()` and `useIntervalFn()` bind timer disposal to Vue scopes and avoid orphaned timers after unmount.
 

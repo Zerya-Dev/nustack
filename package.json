@@ -5,6 +5,7 @@
   "scripts": {
     "build": "pnpm -r --if-present build",
     "test": "pnpm -r --if-present test",
-    "typecheck": "pnpm -r --if-present typecheck"
+    "typecheck": "pnpm -r --if-present typecheck",
+    "release:lint": "pnpm -r --filter '@nustackjs/lint-plugin-*' --filter '@nustackjs/lint' publish --access public"
   }
 }

@@ -1,9 +1,29 @@
 {
   "name": "@nustackjs/lint-plugin-vueuse",
   "type": "module",
-  "version": "0.0.0",
-  "description": "VueUse lint rules for the Nustack ecosystem.",
+  "version": "0.0.1",
+  "description": "ESLint and Oxlint rules for VueUse. Used by @nustackjs/lint, usable standalone.",
+  "author": "Norbiros <me@norbiros.dev>",
   "license": "MIT",
+  "homepage": "https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vueuse#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Zerya-Dev/nustack.git",
+    "directory": "packages/lint-plugin-vueuse"
+  },
+  "keywords": [
+    "eslint",
+    "oxlint",
+    "eslint-plugin",
+    "vueuse",
+    "vue",
+    "nuxt",
+    "nustack",
+    "lint"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",
@@ -12,6 +32,8 @@
     }
   },
   "files": [
+    "LICENSE",
+    "README.md",
     "dist"
   ],
   "scripts": {
@@ -20,21 +42,16 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@oxlint/plugins": "catalog:"
+    "@oxlint/plugins": "catalog:eslint"
   },
   "peerDependencies": {
     "eslint": ">=9"
   },
-  "peerDependenciesMeta": {
-    "eslint": {
-      "optional": true
-    }
-  },
   "devDependencies": {
-    "eslint": "catalog:",
-    "tsdown": "catalog:",
-    "typescript": "catalog:",
-    "vitest": "catalog:",
-    "vue-eslint-parser": "catalog:"
+    "eslint": "catalog:eslint",
+    "tsdown": "catalog:build",
+    "typescript": "catalog:typescript",
+    "vitest": "catalog:test",
+    "vue-eslint-parser": "catalog:eslint"
   }
 }

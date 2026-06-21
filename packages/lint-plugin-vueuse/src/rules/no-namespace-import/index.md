@@ -1,4 +1,4 @@
-# `vueuse/no-namespace-import`
+# `@nustack/vueuse/no-namespace-import`
 
 Use named imports from `@vueuse/core` instead of namespace imports. Named imports keep tree-shaking clear and make VueUse composable usage explicit.
 

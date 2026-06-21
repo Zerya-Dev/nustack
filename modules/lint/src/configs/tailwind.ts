@@ -5,7 +5,7 @@ import { defu } from 'defu'
 import betterTailwind from 'eslint-plugin-better-tailwindcss'
 import { getDefaultAttributes, getDefaultCallees } from 'eslint-plugin-better-tailwindcss/api/defaults'
 import { MatcherType } from 'eslint-plugin-better-tailwindcss/api/types'
-import { variantAtLeast } from './types'
+import { resolveConcernRules, variantAtLeast } from './types'
 
 const GLOB_CODE = ['**/*.vue', '**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}']
 
@@ -15,7 +15,7 @@ export interface TailwindConcernOptions extends ConcernOptions {
   /**
    * Extra `better-tailwindcss` shared settings, merged over the defaults — e.g.
    * `attributes`, `callees`, `tailwindConfig`. Rule options (printWidth etc.) go
-   * through `overrides`, not here.
+   * through `rules`, not here.
    */
   settings?: Record<string, unknown>
 }
@@ -26,7 +26,7 @@ export interface TailwindConcernOptions extends ConcernOptions {
  * class strings inside `:ui="{ base: 'px-2' }"` are sorted and validated too.
  *
  * The rule severities below are the only NuStack opinion; everything else is plain
- * better-tailwindcss config, tunable directly via `overrides` (rule options) and
+ * better-tailwindcss config, tunable directly via `rules` (rule options) and
  * `settings` (shared plugin settings).
  */
 export function tailwindConfig(
@@ -34,6 +34,7 @@ export function tailwindConfig(
   axes: ConcernContext,
   opts: TailwindConcernOptions = {},
 ): Linter.Config[] {
+  const rules = resolveConcernRules(opts)
   const uiAttributes = ctx.modules.nuxtUi
     ? [
         // Bound `:ui` — better-tailwindcss normalizes it to `v-bind:ui`;
@@ -65,7 +66,7 @@ export function tailwindConfig(
         'better-tailwindcss/no-unregistered-classes': 'warn',
         'better-tailwindcss/no-conflicting-classes': 'error',
         'better-tailwindcss/no-duplicate-classes': 'error',
-        ...opts.overrides,
+        ...rules,
       },
     },
   ]

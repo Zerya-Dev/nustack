@@ -1,7 +1,7 @@
 /**
  * Shape of the project context that the Nuxt module resolves at `nuxt prepare`
  * time and serializes into `.nuxt/nustack-eslint.mjs`. The ESLint config factory
- * (`nustackLint`) reads this back to decide which rule packs to activate, so the
+ * (`nustack`) reads this back to decide which rule packs to activate, so the
  * lint config always matches what the project actually uses — zero config.
  */
 export interface NustackContext {
@@ -21,8 +21,7 @@ export interface NustackContext {
     detected: boolean
     /**
      * Path to the CSS file that imports Tailwind (`@import "tailwindcss"`),
-     * relative to the directory of the generated file so it resolves the same
-     * from `.nuxt/`. `null` when not detected.
+     * relative to the project root. `null` when not detected.
      */
     entryPoint: string | null
   }

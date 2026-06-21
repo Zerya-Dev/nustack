@@ -28,3 +28,9 @@ coverage
 
 # OS
 .DS_Store
+
+# JetBrains
+.idea
+
+# AI
+.claude

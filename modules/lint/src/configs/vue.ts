@@ -1,6 +1,6 @@
 import type { Linter } from 'eslint'
 import type { ConcernContext, ConcernOptions } from './types'
-import { variantAtLeast } from './types'
+import { resolveConcernRules, variantAtLeast } from './types'
 
 export interface VueConcernOptions extends ConcernOptions {}
 
@@ -18,6 +18,7 @@ export function vueConfig(
   _axes: ConcernContext,
   opts: VueConcernOptions = {},
 ): Linter.Config[] {
+  const rules = resolveConcernRules(opts)
   return [
     {
       name: 'nustack/vue',
@@ -39,7 +40,7 @@ export function vueConfig(
               'vue/no-import-compiler-macros': 'error',
             }
           : {}),
-        ...opts.overrides,
+        ...rules,
       },
     },
   ]

@@ -4,7 +4,8 @@ import type { AntfuOptions } from './configs/base'
 import type { NuxtConcernOptions } from './configs/nuxt'
 import type { NuxtUiConcernOptions } from './configs/nuxt-ui'
 import type { TailwindConcernOptions } from './configs/tailwind'
-import type { ConcernContext, Depth, Variant } from './configs/types'
+import type { ConcernContext, Depth, Rules, Variant } from './configs/types'
+import type { ViteConcernOptions } from './configs/vite'
 import type { VueConcernOptions } from './configs/vue'
 import type { VueUseConcernOptions } from './configs/vueuse'
 import type { NustackContext } from './context'
@@ -15,18 +16,24 @@ import { nuxtConfig } from './configs/nuxt'
 import { nuxtUiConfig } from './configs/nuxt-ui'
 import { tailwindConfig } from './configs/tailwind'
 import { typeAwareConfig } from './configs/type-aware'
+import { viteConfig } from './configs/vite'
 import { vueConfig } from './configs/vue'
 import { vueUseConfig } from './configs/vueuse'
 import { EMPTY_CONTEXT } from './context'
 
 export type { Depth, Variant } from './configs/types'
+export type { Rules } from './configs/types'
+
+export type Awaitable<T> = T | Promise<T>
+export type NustackFlatConfig = Linter.Config | Linter.Config[] | FlatConfigComposer
+export type NustackUserConfig = Awaitable<NustackFlatConfig>
 
 /** A per-concern toggle: `true`/`undefined` = default, `false` = off, object = tune. */
 type ConcernToggle<T> = boolean | T
 
 /**
- * Options for the nustack ESLint factory. Mirrors `@antfu/eslint-config`'s shape:
- * per-concern toggles plus overrides, all resolved into a `FlatConfigComposer`.
+ * Options for the public nustack ESLint factory. Mirrors `@antfu/eslint-config`'s
+ * shape: one options object, then optional flat config objects appended last.
  * `depth` is intentionally absent — it is read per-run from `NUSTACK_LINT_DEPTH`.
  */
 export interface NustackLintOptions {
@@ -40,15 +47,21 @@ export interface NustackLintOptions {
   vue?: ConcernToggle<VueConcernOptions>
   /** VueUse usage conventions. */
   vueUse?: ConcernToggle<VueUseConcernOptions>
+  /** Vite build/runtime conventions. */
+  vite?: ConcernToggle<ViteConcernOptions>
   /** Nuxt UI component preferences. Auto-gated on `@nuxt/ui` detection. */
   nuxtUi?: ConcernToggle<NuxtUiConcernOptions>
   /** Tailwind class sorting/correctness. Auto-gated on a detected entry point. */
   tailwind?: ConcernToggle<TailwindConcernOptions>
-  /** Global rule overrides, merged after every concern. */
-  overrides?: Record<string, Linter.RuleEntry>
+  /** Global rule changes, merged after every concern. */
+  rules?: Rules
+  /** @deprecated Use `rules` instead. */
+  overrides?: Rules
   /** Detected project context. Injected by the generated `.nuxt/nustack-eslint.mjs`. */
   context?: NustackContext
 }
+
+export type NustackOptions = NustackLintOptions
 
 /** Reads the per-run analysis depth from the environment. Defaults to `quick`. */
 export function resolveDepth(): Depth {
@@ -74,18 +87,26 @@ function subOptions<T>(toggle: ConcernToggle<T> | undefined): T {
   return (typeof toggle === 'object' && toggle !== null ? toggle : {}) as T
 }
 
+function resolveRules(options: Pick<NustackLintOptions, 'rules' | 'overrides'>): Rules {
+  return {
+    ...options.overrides,
+    ...options.rules,
+  }
+}
+
 /**
  * Wraps a `withNuxt()` composer with the full nustack config. Mirrors antfu: the
  * style base is prepended, then each enabled, context-gated concern is appended,
- * then global overrides. Returns the same composer for chaining `.override()` etc.
+ * then global rules and user flat configs. Returns the same composer for chaining.
  *
  * The generated `.nuxt/nustack-eslint.mjs` calls this with the detected context in
- * `options.context`; callers normally import the pre-bound `nustackLint` from there
- * and may pass their own `options` (variant, per-concern toggles, overrides).
+ * `options.context`; callers normally import the pre-bound `nustack` from there
+ * and may pass their own options plus file-scoped flat configs.
  */
-export function nustackLint(
+export function applyNustackConfig(
   base: FlatConfigComposer,
   options: NustackLintOptions = {},
+  ...userConfigs: NustackUserConfig[]
 ): FlatConfigComposer {
   const variant: Variant = options.variant ?? 'recommended'
   const depth = resolveDepth()
@@ -105,6 +126,8 @@ export function nustackLint(
     configs.push(...vueConfig(ctx, axes, subOptions(options.vue)))
   if (isEnabled(options.vueUse, true))
     configs.push(...vueUseConfig(axes, subOptions(options.vueUse)))
+  if (isEnabled(options.vite, true))
+    configs.push(...viteConfig(axes, subOptions(options.vite)))
   if (isEnabled(options.tailwind, ctx.tailwind.detected))
     configs.push(...tailwindConfig(ctx, axes, subOptions(options.tailwind)))
   if (isEnabled(options.nuxtUi, ctx.modules.nuxtUi))
@@ -114,30 +137,36 @@ export function nustackLint(
   if (depth === 'full')
     configs.push(...typeAwareConfig())
 
-  if (options.overrides) {
+  const rules = resolveRules(options)
+  if (Object.keys(rules).length) {
     configs.push({
-      name: 'nustack/overrides',
-      rules: options.overrides,
+      name: 'nustack/rules',
+      rules,
     })
   }
 
-  return base.append(...configs)
+  return base.append(...configs, ...userConfigs as any)
 }
 
 /**
- * Standalone (non-Nuxt) entry. Builds a composer from scratch — no `withNuxt()` —
+ * Public standalone (non-Nuxt) entry. Builds a composer from scratch — no `withNuxt()` —
  * so a plain TypeScript/Vue repo can consume the nustack preset directly. The
- * Nuxt-specific concerns (`nuxt`, `nuxtUi`) default off here since there's no Nuxt
- * project to detect; enable them explicitly if you want them. Used to dogfood
- * `@nustackjs/lint` on its own (non-Nuxt) source.
+ * Nuxt/project-detected concerns default off here since there's no Nuxt project
+ * to detect; enable them explicitly if you want them. Used to dogfood `@nustackjs/lint`
+ * on its own (non-Nuxt) source.
  */
-export function defineNustackConfig(
+export function nustack(
   options: NustackLintOptions = {},
+  ...userConfigs: NustackUserConfig[]
 ): FlatConfigComposer {
-  return nustackLint(composer(), {
+  return applyNustackConfig(composer(), {
     nuxt: false,
     nuxtUi: false,
+    vite: false,
+    vueUse: false,
     ...options,
     context: options.context ?? EMPTY_CONTEXT,
-  })
+  }, ...userConfigs)
 }
+
+export default nustack

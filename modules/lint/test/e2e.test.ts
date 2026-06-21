@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { Linter } from 'eslint'
 import { composer } from 'eslint-flat-config-utils'
 import { describe, expect, it } from 'vitest'
-import { nustackLint } from '../src/config'
+import { applyNustackConfig } from '../src/config'
 
 // A real Tailwind v4 entry point (`@import "tailwindcss"`) so better-tailwindcss can
 // actually resolve the class registry — without it the plugin self-disables.
@@ -22,7 +22,7 @@ async function lint(
   filename: string,
   options = {},
 ): Promise<LinterNs.LintMessage[]> {
-  const configs = await nustackLint(composer() as any, { context: CONTEXT, ...options }).toConfigs()
+  const configs = await applyNustackConfig(composer() as any, { context: CONTEXT, ...options }).toConfigs()
   const linter = new Linter({ configType: 'flat' })
   return linter.verify(code, configs as LinterNs.Config[], filename)
 }
@@ -34,7 +34,7 @@ function ruleIds(messages: LinterNs.LintMessage[]): string[] {
 describe('e2e: composed config lints real code', () => {
   it('flags process.env in app code (nuxt concern)', async () => {
     const messages = await lint(`const x = process.env.FOO`, 'app/composables/x.ts')
-    expect(ruleIds(messages)).toContain('nustack/nuxt/no-process-env')
+    expect(ruleIds(messages)).toContain('@nustack/nuxt/no-process-env')
   })
 
   it('flags a non-ts <script> block (vue concern)', async () => {
@@ -44,12 +44,12 @@ describe('e2e: composed config lints real code', () => {
 
   it('flags a raw <button> when Nuxt UI is detected (nuxt-ui concern)', async () => {
     const messages = await lint(`<script setup lang="ts"></script><template><button>x</button></template>`, 'app/pages/x.vue')
-    expect(ruleIds(messages)).toContain('nustack/nuxt-ui/prefer-u-button')
+    expect(ruleIds(messages)).toContain('@nustack/nuxt-ui/prefer-u-button')
   })
 
   it('flags a redundant explicit auto-import (nuxt concern, fixable)', async () => {
     const messages = await lint(`import { ref } from 'vue'\nconst x = ref(1)`, 'app/composables/x.ts')
-    expect(ruleIds(messages)).toContain('nustack/nuxt/no-explicit-auto-import')
+    expect(ruleIds(messages)).toContain('@nustack/nuxt/no-explicit-auto-import')
   })
 
   it('flags VueUse rules loaded through @nustackjs/lint-plugin-vueuse', async () => {
@@ -57,8 +57,18 @@ describe('e2e: composed config lints real code', () => {
       `import * as VueUse from '@vueuse/core'\nimport { useStorage } from '@vueuse/core'\nconst viewport = VueUse.useWindowSize()\nconst value = useStorage('x', 0)\nconsole.log(viewport, value)`,
       'app/utils/vueuse-demo.ts',
     )
-    expect(ruleIds(messages)).toContain('nustack/vueuse/no-namespace-import')
-    expect(ruleIds(messages)).toContain('nustack/vueuse/no-nuxt-auto-import-collision')
+    expect(ruleIds(messages)).toContain('@nustack/vueuse/no-namespace-import')
+    expect(ruleIds(messages)).toContain('@nustack/vueuse/no-nuxt-auto-import-collision')
+  })
+
+  it('flags Vite rules loaded through @nustackjs/lint-plugin-vite', async () => {
+    const messages = await lint(
+      `import logo from '../public/logo.svg'\nconst token = import.meta.env.VITE_API_TOKEN\nconsole.log(logo, token)`,
+      'app/utils/vite-demo.ts',
+    )
+
+    expect(ruleIds(messages)).toContain('@nustack/vite/no-public-src-import')
+    expect(ruleIds(messages)).toContain('@nustack/vite/no-client-secret-pattern')
   })
 
   it('orders Tailwind classes in a plain class attribute', async () => {
@@ -80,13 +90,13 @@ describe('e2e: variant and depth change behaviour', () => {
   it('minimal variant does NOT flag process.env, recommended does', async () => {
     const minimal = await lint(`const x = process.env.FOO`, 'app/composables/x.ts', { variant: 'minimal' })
     const recommended = await lint(`const x = process.env.FOO`, 'app/composables/x.ts', { variant: 'recommended' })
-    expect(ruleIds(minimal)).not.toContain('nustack/nuxt/no-process-env')
-    expect(ruleIds(recommended)).toContain('nustack/nuxt/no-process-env')
+    expect(ruleIds(minimal)).not.toContain('@nustack/nuxt/no-process-env')
+    expect(ruleIds(recommended)).toContain('@nustack/nuxt/no-process-env')
   })
 
   it('only enables Tailwind line wrapping in pedantic variant', async () => {
-    const recommended = await nustackLint(composer() as any, { context: CONTEXT, variant: 'recommended' }).toConfigs()
-    const pedantic = await nustackLint(composer() as any, { context: CONTEXT, variant: 'pedantic' }).toConfigs()
+    const recommended = await applyNustackConfig(composer() as any, { context: CONTEXT, variant: 'recommended' }).toConfigs()
+    const pedantic = await applyNustackConfig(composer() as any, { context: CONTEXT, variant: 'pedantic' }).toConfigs()
 
     const tailwindRules = (configs: any[]) =>
       configs.find(c => c.name === 'nustack/tailwind')?.rules ?? {}
@@ -99,9 +109,9 @@ describe('e2e: variant and depth change behaviour', () => {
     const original = process.env.NUSTACK_LINT_DEPTH
     try {
       process.env.NUSTACK_LINT_DEPTH = 'quick'
-      const quick = await nustackLint(composer() as any, { context: CONTEXT }).toConfigs()
+      const quick = await applyNustackConfig(composer() as any, { context: CONTEXT }).toConfigs()
       process.env.NUSTACK_LINT_DEPTH = 'full'
-      const full = await nustackLint(composer() as any, { context: CONTEXT }).toConfigs()
+      const full = await applyNustackConfig(composer() as any, { context: CONTEXT }).toConfigs()
 
       const hasProjectService = (configs: any[]): boolean =>
         configs.some(c => c.languageOptions?.parserOptions?.projectService === true)

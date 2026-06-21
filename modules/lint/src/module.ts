@@ -18,7 +18,6 @@ function hasModule(nuxt: { options: { modules: unknown[] } }, name: string): boo
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: '@nustackjs/lint',
-    configKey: 'nustack',
   },
   defaults: {},
   async setup(_options, nuxt) {
@@ -26,7 +25,8 @@ export default defineNuxtModule<ModuleOptions>({
     // owns the Vue/TS rules. We set that here instead of asking the user to write
     // `eslint: { config: { standalone: false } }` in their nuxt.config. `@nuxt/eslint`
     // is bundled, so we install it ourselves — list only `@nustackjs/lint`.
-    nuxt.options.eslint = defu(nuxt.options.eslint, { config: { standalone: false } })
+    nuxt.options.eslint = defu(nuxt.options.eslint, { config: {} })
+    ;(nuxt.options.eslint as { config: { standalone: boolean } }).config.standalone = false
     if (!hasModule(nuxt, '@nuxt/eslint'))
       await installModule('@nuxt/eslint')
 

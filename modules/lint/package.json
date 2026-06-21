@@ -2,9 +2,26 @@
   "name": "@nustackjs/lint",
   "type": "module",
   "version": "0.0.1",
-  "description": "Zero-config, project-aware ESLint for Nuxt — plug it in and catch Nuxt bugs, not just style.",
+  "description": "Zero-config, project-aware ESLint (oxlint-ready) for Nuxt — plug it in and catch Nuxt bugs, not just style.",
+  "author": "Norbiros <me@norbiros.dev>",
   "license": "MIT",
-  "repository": "nustackjs/nustack",
+  "homepage": "https://github.com/Zerya-Dev/nustack/tree/master/modules/lint#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Zerya-Dev/nustack.git",
+    "directory": "modules/lint"
+  },
+  "keywords": [
+    "eslint",
+    "oxlint",
+    "nuxt",
+    "nustack",
+    "lint",
+    "vue"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/module.d.mts",
@@ -27,6 +44,7 @@
     }
   },
   "files": [
+    "LICENSE",
     "dist"
   ],
   "workspaces": [
@@ -36,10 +54,12 @@
     "prepack": "nuxt-module-build build",
     "dev": "npm run dev:prepare && nuxt dev playground",
     "dev:build": "nuxt build playground",
-    "dev:prepare": "pnpm --filter @nustackjs/lint-plugin-vueuse build && nuxt-module-build build && nuxt-module-build prepare && nuxt prepare playground",
-    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "dev:prepare": "pnpm --filter '@nustackjs/lint-plugin-*' build && nuxt-module-build build && nuxt-module-build prepare && nuxt prepare playground",
+    "dev:inspector": "npx @eslint/config-inspector --config eslint.config.ts",
+    "build:inspector": "npx @eslint/config-inspector build --config eslint.config.ts --out-dir ./.eslint-config-inspector",
+    "release": "pnpm lint && pnpm test && pnpm prepack && changelogen --release && pnpm --dir ../.. release:lint && git push --follow-tags",
     "lint": "eslint .",
-    "test": "pnpm --filter @nustackjs/lint-plugin-vueuse build && vitest run",
+    "test": "pnpm --filter '@nustackjs/lint-plugin-*' build && vitest run",
     "test:watch": "vitest watch",
     "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
   },
@@ -48,34 +68,38 @@
     "nuxt": ">=3.0.0"
   },
   "dependencies": {
-    "@antfu/eslint-config": "^9.0.0",
-    "@nustackjs/lint-plugin-vueuse": "workspace:*",
-    "@nuxt/eslint": "^1.15.2",
-    "@nuxt/kit": "^4.4.7",
-    "@typescript-eslint/utils": "catalog:",
-    "defu": "^6.1.7",
-    "eslint-flat-config-utils": "^3.2.0",
-    "eslint-plugin-better-tailwindcss": "^3.7.10",
-    "eslint-plugin-vue": "^10.5.0",
-    "unimport": "^6.3.0",
-    "vue-eslint-parser": "catalog:"
+    "@antfu/eslint-config": "catalog:eslint",
+    "@nustackjs/lint-plugin-nuxt": "workspace:^0.0.1",
+    "@nustackjs/lint-plugin-nuxt-ecosystem": "workspace:^0.0.1",
+    "@nustackjs/lint-plugin-vite": "workspace:^0.0.1",
+    "@nustackjs/lint-plugin-vueuse": "workspace:^0.0.1",
+    "@nuxt/eslint": "catalog:eslint",
+    "@nuxt/kit": "catalog:nuxt",
+    "@typescript-eslint/utils": "catalog:eslint",
+    "defu": "catalog:nuxt",
+    "eslint-flat-config-utils": "catalog:eslint",
+    "eslint-plugin-better-tailwindcss": "catalog:eslint",
+    "eslint-plugin-vue": "catalog:eslint",
+    "unimport": "catalog:nuxt",
+    "vue-eslint-parser": "catalog:eslint"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^3.2.4",
-    "@nuxt/eslint-config": "^1.15.2",
-    "@nuxt/module-builder": "^1.0.2",
-    "@nuxt/schema": "^4.4.7",
-    "@nuxt/test-utils": "^4.0.3",
-    "@types/node": "catalog:",
-    "@typescript-eslint/parser": "catalog:",
-    "@typescript-eslint/rule-tester": "catalog:",
-    "changelogen": "^0.6.2",
-    "eslint": "catalog:",
-    "nuxt": "^4.4.7",
-    "tailwindcss": "^4.0.0",
-    "typescript": "catalog:",
-    "unbuild": "^3.6.1",
-    "vitest": "catalog:",
-    "vue-tsc": "^3.3.3"
+    "@eslint/config-inspector": "catalog:eslint",
+    "@nuxt/devtools": "catalog:nuxt",
+    "@nuxt/eslint-config": "catalog:eslint",
+    "@nuxt/module-builder": "catalog:build",
+    "@nuxt/schema": "catalog:nuxt",
+    "@nuxt/test-utils": "catalog:nuxt",
+    "@types/node": "catalog:typescript",
+    "@typescript-eslint/parser": "catalog:eslint",
+    "@typescript-eslint/rule-tester": "catalog:eslint",
+    "changelogen": "catalog:release",
+    "eslint": "catalog:eslint",
+    "nuxt": "catalog:nuxt",
+    "tailwindcss": "catalog:vue",
+    "typescript": "catalog:typescript",
+    "unbuild": "catalog:build",
+    "vitest": "catalog:test",
+    "vue-tsc": "catalog:typescript"
   }
 }

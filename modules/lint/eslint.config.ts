@@ -1,10 +1,8 @@
-// @nustackjs/lint dogfoods its own opinionated preset on its (non-Nuxt) source via
-// the standalone `defineNustackConfig` entry — the same preset it applies to
-// consumers, minus the Nuxt-specific concerns. Imported from `src` so linting
-// tracks the source directly (no build step required).
-import { defineNustackConfig } from './src/config'
+// @nustackjs/lint dogfoods the same public factory it exposes to consumers,
+// minus Nuxt-specific concerns. Imported from `src` so linting tracks source.
+import nustack from './src/config'
 
-export default defineNustackConfig({
+export default nustack({
   base: {
     type: 'lib',
     // The playground is its own workspace package and lints itself via the Nuxt path.

@@ -1,0 +1,44 @@
+{
+  "name": "@nustackjs/lint-plugin-vite",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "ESLint and Oxlint rules for Vite asset/env safety. Used by @nustackjs/lint, usable standalone.",
+  "author": "Norbiros <me@norbiros.dev>",
+  "license": "MIT",
+  "homepage": "https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vite#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Zerya-Dev/nustack.git",
+    "directory": "packages/lint-plugin-vite"
+  },
+  "keywords": ["eslint", "oxlint", "eslint-plugin", "vite", "nustack", "lint"],
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "files": ["LICENSE", "README.md", "dist"],
+  "scripts": {
+    "build": "tsdown src/index.ts --dts --clean",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@oxlint/plugins": "catalog:eslint"
+  },
+  "peerDependencies": {
+    "eslint": ">=9"
+  },
+  "devDependencies": {
+    "eslint": "catalog:eslint",
+    "tsdown": "catalog:build",
+    "typescript": "catalog:typescript",
+    "vitest": "catalog:test",
+    "vue-eslint-parser": "catalog:eslint"
+  }
+}

@@ -1,23 +1,53 @@
 # Rules
 
-NuStack's custom rules are organized by **area** and named `nustack/<area>/<rule>`. They
-sit alongside the borrowed rules from antfu, eslint-plugin-vue and better-tailwindcss
-that the preset configures.
+NuStack's custom rules live in standalone domain plugins that work with both ESLint and
+[Oxlint](https://oxc.rs). The umbrella module just composes them; each rule's
+implementation and full docs live in its package:
 
-Each rule has a colocated doc with ✅/❌ examples and rationale (linked below).
+- [`@nustackjs/lint-plugin-nuxt`](../../../packages/lint-plugin-nuxt) — `@nustack/nuxt/*`
+- [`@nustackjs/lint-plugin-vueuse`](../../../packages/lint-plugin-vueuse) — `@nustack/vueuse/*`
+- [`@nustackjs/lint-plugin-vite`](../../../packages/lint-plugin-vite) — `@nustack/vite/*`
+- [`@nustackjs/lint-plugin-nuxt-ecosystem`](../../../packages/lint-plugin-nuxt-ecosystem) — `@nustack/nuxt-ui/*`
+
+They sit alongside borrowed rules from antfu, eslint-plugin-vue and better-tailwindcss
+that the preset configures (those keep their upstream rule ids).
 
 ## `nuxt`
 
 Core Nuxt conventions. Auto-import enforcement lives here too (it's a Nuxt concern, not
 a top-level one).
 
-| Rule | Variant | Severity | Fix | Docs |
-|---|---|---|---|---|
-| `nustack/nuxt/no-secret-in-public-runtimeconfig` | `minimal` | error | — | [doc](../src/rules/nuxt/no-secret-in-public-runtimeconfig/index.md) |
-| `nustack/nuxt/no-explicit-auto-import` | `recommended` | error | ✓ | [doc](../src/rules/nuxt/no-explicit-auto-import/index.md) |
-| `nustack/nuxt/no-process-env` | `recommended` | warn | — | [doc](../src/rules/nuxt/no-process-env/index.md) |
+| Rule | Variant | Severity | Fix |
+|---|---|---|---|
+| [`@nustack/nuxt/no-secret-in-public-runtimeconfig`](../../../packages/lint-plugin-nuxt/src/rules/no-secret-in-public-runtimeconfig/index.md) | `minimal` | error | — |
+| [`@nustack/nuxt/no-explicit-auto-import`](../../../packages/lint-plugin-nuxt/src/rules/no-explicit-auto-import/index.md) | `recommended` | error | ✓ |
+| [`@nustack/nuxt/no-process-env`](../../../packages/lint-plugin-nuxt/src/rules/no-process-env/index.md) | `recommended` | warn | — |
 
 Also configures (from `@nuxt/eslint` / antfu): `vue/block-lang` → require `lang="ts"`.
+
+## `vueuse`
+
+VueUse-on-Nuxt conventions from `@nustackjs/lint-plugin-vueuse`.
+
+| Rule | Variant | Severity | Fix |
+|---|---|---|---|
+| [`@nustack/vueuse/no-nuxt-auto-import-collision`](../../../packages/lint-plugin-vueuse/src/rules/no-nuxt-auto-import-collision/index.md) | `recommended` | warn | — |
+| [`@nustack/vueuse/no-namespace-import`](../../../packages/lint-plugin-vueuse/src/rules/no-namespace-import/index.md) | `recommended` | warn | — |
+| [`@nustack/vueuse/prefer-use-observers`](../../../packages/lint-plugin-vueuse/src/rules/prefer-use-observers/index.md) | `recommended` | warn | — |
+| [`@nustack/vueuse/prefer-use-storage`](../../../packages/lint-plugin-vueuse/src/rules/prefer-use-storage/index.md) | `recommended` | warn | — |
+| [`@nustack/vueuse/prefer-use-timers`](../../../packages/lint-plugin-vueuse/src/rules/prefer-use-timers/index.md) | `recommended` | warn | — |
+| [`@nustack/vueuse/prefer-useclipboard`](../../../packages/lint-plugin-vueuse/src/rules/prefer-useclipboard/index.md) | `recommended` | warn | — |
+| [`@nustack/vueuse/prefer-useevent-listener`](../../../packages/lint-plugin-vueuse/src/rules/prefer-useevent-listener/index.md) | `recommended` | warn | — |
+| [`@nustack/vueuse/prefer-usewindow-size`](../../../packages/lint-plugin-vueuse/src/rules/prefer-usewindow-size/index.md) | `recommended` | warn | — |
+
+## `vite`
+
+Starter Vite build/runtime conventions from `@nustackjs/lint-plugin-vite`.
+
+| Rule | Variant | Severity | Fix |
+|---|---|---|---|
+| [`@nustack/vite/no-public-src-import`](../../../packages/lint-plugin-vite/src/rules/assets/no-public-src-import/index.md) | `recommended` | warn | — |
+| [`@nustack/vite/no-client-secret-pattern`](../../../packages/lint-plugin-vite/src/rules/env/no-client-secret-pattern/index.md) | `recommended` | error | — |
 
 ## `vue`
 
@@ -37,10 +67,10 @@ SFC conventions.
 
 Active only when `@nuxt/ui` is detected.
 
-| Rule | Variant | Severity | Fix | Docs |
-|---|---|---|---|---|
-| `nustack/nuxt-ui/prefer-u-button` | `recommended` | warn | — | [doc](../src/rules/nuxt-ui/prefer-u-button/index.md) |
-| `nustack/nuxt-ui/prefer-u-form-controls` | `recommended` | warn | — | [doc](../src/rules/nuxt-ui/prefer-u-form-controls/index.md) |
+| Rule | Variant | Severity | Fix |
+|---|---|---|---|
+| [`@nustack/nuxt-ui/prefer-u-button`](../../../packages/lint-plugin-nuxt-ecosystem/src/rules/nuxt-ui/prefer-u-button/index.md) | `recommended` | warn | — |
+| [`@nustack/nuxt-ui/prefer-u-form-controls`](../../../packages/lint-plugin-nuxt-ecosystem/src/rules/nuxt-ui/prefer-u-form-controls/index.md) | `recommended` | warn | — |
 
 ## `tailwind`
 

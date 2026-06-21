@@ -1,4 +1,4 @@
-# `vueuse/prefer-useevent-listener`
+# `@nustack/vueuse/prefer-useevent-listener`
 
 Prefer `useEventListener()` from VueUse over `window.addEventListener()` or `document.addEventListener()` in Vue/Nuxt code. The composable automatically removes listeners when the current effect scope is disposed.
 

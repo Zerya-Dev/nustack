@@ -1,5 +1,7 @@
 import type { Linter } from 'eslint'
 
+export type Rules = Record<string, Linter.RuleEntry>
+
 /** Opinion strength — static, set in `eslint.config.ts`. Cumulative. */
 export type Variant = 'minimal' | 'recommended' | 'pedantic'
 /** Analysis depth — per-run, from `NUSTACK_LINT_DEPTH`. Cumulative. */
@@ -26,6 +28,16 @@ export interface ConcernContext {
 
 /** Base options shared by every per-concern option object. */
 export interface ConcernOptions {
-  /** Per-concern rule overrides, appended after the concern's own rules. */
-  overrides?: Record<string, Linter.RuleEntry>
+  /** Per-concern rule changes, merged after the concern's defaults. */
+  rules?: Rules
+  /** @deprecated Use `rules` instead. */
+  overrides?: Rules
+}
+
+/** Backward-compatible rule resolver while `rules` becomes the single public API. */
+export function resolveConcernRules(options: ConcernOptions): Rules {
+  return {
+    ...options.overrides,
+    ...options.rules,
+  }
 }

@@ -1,4 +1,4 @@
-# `vueuse/prefer-use-observers`
+# `@nustack/vueuse/prefer-use-observers`
 
 Prefer VueUse observer composables over raw browser observer constructors. VueUse wraps observer cleanup in the active Vue scope.
 

@@ -1,8 +1,11 @@
 import type { Linter } from 'eslint'
 import type { ConcernContext, ConcernOptions } from './types'
-import { nustackPlugin } from '../plugin'
+import nuxtEcosystemPlugin from '@nustackjs/lint-plugin-nuxt-ecosystem'
+import { resolveConcernRules } from './types'
 
 export interface NuxtUiConcernOptions extends ConcernOptions {}
+
+const uiRules = nuxtEcosystemPlugin.configs.ui.rules ?? {}
 
 /**
  * Nuxt UI component-preference rules — active only when `@nuxt/ui` is detected.
@@ -15,15 +18,15 @@ export function nuxtUiConfig(
   _axes: ConcernContext,
   opts: NuxtUiConcernOptions = {},
 ): Linter.Config[] {
+  const rules = resolveConcernRules(opts)
   return [
     {
       name: 'nustack/nuxt-ui',
       files: ['**/*.vue'],
-      plugins: { nustack: nustackPlugin },
+      plugins: { '@nustack/nuxt-ui': nuxtEcosystemPlugin },
       rules: {
-        'nustack/nuxt-ui/prefer-u-button': 'warn',
-        'nustack/nuxt-ui/prefer-u-form-controls': 'warn',
-        ...opts.overrides,
+        ...uiRules,
+        ...rules,
       },
     },
   ]

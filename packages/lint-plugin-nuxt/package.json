@@ -1,0 +1,56 @@
+{
+  "name": "@nustackjs/lint-plugin-nuxt",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "ESLint and Oxlint rules for Nuxt runtime conventions. Used by @nustackjs/lint, usable standalone.",
+  "author": "Norbiros <me@norbiros.dev>",
+  "license": "MIT",
+  "homepage": "https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Zerya-Dev/nustack.git",
+    "directory": "packages/lint-plugin-nuxt"
+  },
+  "keywords": [
+    "eslint",
+    "oxlint",
+    "eslint-plugin",
+    "nuxt",
+    "nustack",
+    "lint"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown src/index.ts --dts --clean",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@oxlint/plugins": "catalog:eslint"
+  },
+  "peerDependencies": {
+    "eslint": ">=9"
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "catalog:eslint",
+    "eslint": "catalog:eslint",
+    "tsdown": "catalog:build",
+    "typescript": "catalog:typescript",
+    "vitest": "catalog:test",
+    "vue-eslint-parser": "catalog:eslint"
+  }
+}

@@ -3,7 +3,7 @@ import type { NustackLintOptions } from '../src/config'
 import type { NustackContext } from '../src/context'
 import { composer } from 'eslint-flat-config-utils'
 import { afterEach, describe, expect, it } from 'vitest'
-import { nustackLint } from '../src/config'
+import { applyNustackConfig } from '../src/config'
 
 // A context where every detectable feature is present, so concern gating is driven
 // purely by the options under test rather than by missing detection.
@@ -15,7 +15,7 @@ const FULL_CONTEXT: NustackContext = {
 }
 
 async function resolve(options: NustackLintOptions): Promise<Linter.Config[]> {
-  return nustackLint(composer() as any, { context: FULL_CONTEXT, ...options }).toConfigs() as any
+  return applyNustackConfig(composer() as any, { context: FULL_CONTEXT, ...options }).toConfigs() as any
 }
 
 /** Names of the nustack-authored config objects in the resolved flat config. */
@@ -49,16 +49,16 @@ afterEach(() => {
 describe('variant ladder', () => {
   it('minimal applies only the security floor among nuxt rules', async () => {
     const ids = await nustackRuleIds({ variant: 'minimal' })
-    expect(ids).toContain('nustack/nuxt/no-secret-in-public-runtimeconfig')
-    expect(ids).not.toContain('nustack/nuxt/no-process-env')
-    expect(ids).not.toContain('nustack/nuxt/no-explicit-auto-import')
+    expect(ids).toContain('@nustack/nuxt/no-secret-in-public-runtimeconfig')
+    expect(ids).not.toContain('@nustack/nuxt/no-process-env')
+    expect(ids).not.toContain('@nustack/nuxt/no-explicit-auto-import')
   })
 
   it('recommended adds process-env and auto-import enforcement', async () => {
     const ids = await nustackRuleIds({ variant: 'recommended' })
-    expect(ids).toContain('nustack/nuxt/no-secret-in-public-runtimeconfig')
-    expect(ids).toContain('nustack/nuxt/no-process-env')
-    expect(ids).toContain('nustack/nuxt/no-explicit-auto-import')
+    expect(ids).toContain('@nustack/nuxt/no-secret-in-public-runtimeconfig')
+    expect(ids).toContain('@nustack/nuxt/no-process-env')
+    expect(ids).toContain('@nustack/nuxt/no-explicit-auto-import')
     expect(ids).toContain('vue/define-emits-declaration')
     expect(ids).toContain('vue/define-props-destructuring')
     expect(ids).toContain('vue/html-comment-content-newline')
@@ -93,7 +93,7 @@ describe('variant ladder', () => {
 
   it('defaults to recommended when variant is omitted', async () => {
     const ids = await nustackRuleIds({})
-    expect(ids).toContain('nustack/nuxt/no-process-env')
+    expect(ids).toContain('@nustack/nuxt/no-process-env')
   })
 })
 
@@ -112,10 +112,20 @@ describe('concern toggles', () => {
     expect(names).toContain('nustack/vue')
   })
 
-  it('applies global overrides as a trailing layer', async () => {
-    const configs = await resolve({ overrides: { 'no-console': 'off' } })
-    const override = configs.find(c => c.name === 'nustack/overrides')
+  it('applies global rules as a trailing layer', async () => {
+    const configs = await resolve({ rules: { 'no-console': 'off' } })
+    const override = configs.find(c => c.name === 'nustack/rules')
     expect(override?.rules).toMatchObject({ 'no-console': 'off' })
+  })
+
+  it('appends user flat configs after generated configs', async () => {
+    const configs = await applyNustackConfig(
+      composer() as any,
+      { context: FULL_CONTEXT },
+      { name: 'user/rules', rules: { 'no-alert': 'error' } },
+    ).toConfigs() as Linter.Config[]
+
+    expect(configs.at(-1)?.name).toBe('user/rules')
   })
 })
 

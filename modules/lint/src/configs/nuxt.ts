@@ -1,14 +1,23 @@
 import type { Linter } from 'eslint'
 import type { NustackContext } from '../context'
 import type { ConcernContext, ConcernOptions } from './types'
-import { nustackPlugin } from '../plugin'
-import { variantAtLeast } from './types'
+import nuxtPlugin from '@nustackjs/lint-plugin-nuxt'
+import { resolveConcernRules, variantAtLeast } from './types'
 
 /** App source globs (config files / server handled per-rule via `ignores`). */
 const GLOB_APP = ['**/*.vue', '**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}']
 const GLOB_NUXT_CONFIG = ['**/nuxt.config.{ts,js,mjs,mts,cjs,cts}']
+const IGNORE_NON_APP = [
+  '**/server/**',
+  '**/scripts/**',
+  '**/packages/**',
+  '**/*.{config,test,spec}.*',
+  '**/*.d.ts',
+]
 
 export interface NuxtConcernOptions extends ConcernOptions {}
+
+const recommendedRules = nuxtPlugin.configs.recommended.rules ?? {}
 
 /**
  * Core Nuxt conventions — runtimeConfig safety, no `process.env` in app code, and
@@ -25,14 +34,15 @@ export function nuxtConfig(
   axes: ConcernContext,
   opts: NuxtConcernOptions = {},
 ): Linter.Config[] {
+  const rules = resolveConcernRules(opts)
   const configs: Linter.Config[] = [
     {
       // Secret leakage is a correctness/security floor — on at every variant.
       name: 'nustack/nuxt/runtime-config',
       files: GLOB_NUXT_CONFIG,
-      plugins: { nustack: nustackPlugin },
+      plugins: { '@nustack/nuxt': nuxtPlugin },
       rules: {
-        'nustack/nuxt/no-secret-in-public-runtimeconfig': 'error',
+        '@nustack/nuxt/no-secret-in-public-runtimeconfig': 'error',
       },
     },
   ]
@@ -42,32 +52,36 @@ export function nuxtConfig(
       {
         name: 'nustack/nuxt/auto-imports',
         files: GLOB_APP,
-        plugins: { nustack: nustackPlugin },
+        ignores: IGNORE_NON_APP,
+        plugins: { '@nustack/nuxt': nuxtPlugin },
         rules: {
-          'nustack/nuxt/no-explicit-auto-import': ['error', {
+          ...recommendedRules,
+          '@nustack/nuxt/no-process-env': 'off',
+          '@nustack/nuxt/no-secret-in-public-runtimeconfig': 'off',
+          '@nustack/nuxt/no-explicit-auto-import': ['error', {
             imports: ctx.autoImports,
             components: ctx.components,
           }],
         },
       },
       {
-        name: 'nustack/nuxt/no-process-env',
+        name: '@nustack/nuxt/no-process-env',
         files: GLOB_APP,
         // process.env is legitimate in build/server config; only flag app code.
-        ignores: ['**/server/**', '**/*.config.*'],
-        plugins: { nustack: nustackPlugin },
+        ignores: IGNORE_NON_APP,
+        plugins: { '@nustack/nuxt': nuxtPlugin },
         rules: {
-          'nustack/nuxt/no-process-env': 'warn',
+          '@nustack/nuxt/no-process-env': recommendedRules['@nustack/nuxt/no-process-env'],
         },
       },
     )
   }
 
-  if (opts.overrides) {
+  if (Object.keys(rules).length) {
     configs.push({
-      name: 'nustack/nuxt/overrides',
+      name: 'nustack/nuxt/rules',
       files: GLOB_APP,
-      rules: opts.overrides,
+      rules,
     })
   }
 

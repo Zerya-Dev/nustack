@@ -39,22 +39,22 @@ standalone style/Tailwind/Vue plugins you were composing yourself, then use the 
 above. Tune the base through the `base` option instead of calling `antfu()` directly:
 
 ```ts
-import { nustackLint } from './.nuxt/nustack-eslint.mjs'
+import { nustack } from './.nuxt/nustack-eslint.mjs'
 
-export default nustackLint({
+export default nustack({
   base: { stylistic: { quotes: 'double' } }, // same options @antfu/eslint-config takes
 })
 ```
 
 ## Keeping your own rules
 
-Existing overrides don't need to be thrown away — fold them in:
+Existing rule overrides don't need to be thrown away — fold them in:
 
 ```ts
-nustackLint({
-  overrides: { 'no-console': 'off' }, // your rules, applied last
-})
-  .append({ files: ['scripts/**'], rules: { 'no-console': 'off' } }) // extra config objects
+nustack(
+  { rules: { 'no-console': 'off' } }, // your global rules, applied last
+  { files: ['scripts/**'], rules: { 'no-console': 'off' } }, // file-scoped config
+)
 ```
 
 See [Configuration](./configuration.md) for the full override surface.
@@ -65,7 +65,7 @@ A plain TypeScript/Vue repo migrates to the standalone entry instead of `withNux
 
 ```ts
 // eslint.config.ts
-import { defineNustackConfig } from '@nustackjs/lint/config'
+import nustack from '@nustackjs/lint/config'
 
-export default defineNustackConfig({ base: { type: 'lib' } })
+export default nustack({ base: { type: 'lib' } })
 ```

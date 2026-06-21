@@ -3,24 +3,25 @@
 All configuration is passed to the factory in `eslint.config.ts`. There is no `nustack`
 key in `nuxt.config`. Everything is optional — the defaults are the opinionated preset.
 
-The generated `nustackLint` already wraps `withNuxt()`, so you just pass options:
+The generated `nustack` factory already wraps `withNuxt()`, so you just pass options:
 
 ```ts
-import { nustackLint } from './.nuxt/nustack-eslint.mjs'
+import { nustack } from './.nuxt/nustack-eslint.mjs'
 
-export default nustackLint({
+export default nustack({
   variant: 'recommended', // 'minimal' | 'recommended' | 'pedantic'
   base: { /* antfu options */ }, // or `false` to drop the style base entirely
-  nuxt: true, // each concern: true | false | { ...opts, overrides }
+  nuxt: true, // each concern: true | false | { ...opts, rules }
   vue: true,
+  vueUse: true,
+  vite: true,
   nuxtUi: true, // auto-gated on @nuxt/ui detection
   tailwind: true, // auto-gated on a Tailwind entry point
-  overrides: { /* global rule overrides, applied last */ },
+  rules: { /* global rule changes, applied last */ },
 })
 ```
 
-(Extra arguments after the options object are forwarded to `withNuxt()` as additional
-flat configs, if you need to customize the Nuxt composer itself.)
+Extra arguments after the options object are appended as normal flat config objects.
 
 ## The two knobs
 
@@ -50,7 +51,7 @@ NUSTACK_LINT_DEPTH=full eslint .    # full — adds type-aware / cross-file rule
 
 ## Concerns
 
-Each concern is `true | false | { ...opts, overrides }`. They auto-gate on detection,
+Each concern is `true | false | { ...opts, rules }`. They auto-gate on detection,
 but you can force or disable any of them:
 
 | Concern | What it does | Auto-gated on |
@@ -58,42 +59,63 @@ but you can force or disable any of them:
 | `base` | the antfu style/TS/Vue base (style, imports, etc.) | always (set `base: false` to drop) |
 | `nuxt` | auto-import enforcement, `runtimeConfig` safety, no `process.env` in app code | always |
 | `vue` | SFC conventions (`vue/block-lang` → `lang="ts"`) | `.vue` files |
+| `vueUse` | VueUse/browser API conventions | Nuxt app/client files |
+| `vite` | Vite asset/env safety | Nuxt app/client files |
 | `nuxtUi` | prefer Nuxt UI components | `@nuxt/ui` installed |
 | `tailwind` | class sorting/correctness via better-tailwindcss (incl. the `:ui` prop) | a Tailwind entry point |
 
-## Overriding (the escape hatches)
+The standalone `@nustackjs/lint/config` entry defaults project-detected concerns off
+(`nuxt`, `nuxtUi`, `vueUse`, `vite`). Enable them explicitly in non-Nuxt projects.
+
+## Customizing
 
 Nothing is locked. From least to most surgical:
 
 ```ts
 // 1. Disable a concern or the base
-nustackLint({ tailwind: false, base: false })
+nustack({ tailwind: false, base: false })
 
-// 2. Configure a third-party plugin directly — rule options via `overrides`,
+// 2. Configure a third-party plugin directly — rule options via `rules`,
 //    shared plugin settings via `settings`. There are no bespoke wrapper knobs.
-nustackLint({
+nustack({
   tailwind: {
-    overrides: { 'better-tailwindcss/enforce-consistent-line-wrapping': ['warn', { printWidth: 100 }] },
+    rules: { 'better-tailwindcss/enforce-consistent-line-wrapping': ['warn', { printWidth: 100 }] },
     settings: { attributes: ['myClassProp'] },
   },
 })
 
-// 3. Global overrides (applied after everything)
-nustackLint({
-  overrides: { 'nustack/nuxt/no-process-env': 'off' },
+// 3. Global rules (applied after everything)
+nustack({
+  rules: { '@nustack/nuxt/no-process-env': 'off' },
 })
 
 // 4. Tune the antfu base directly (it's the same options antfu takes)
-nustackLint({
+nustack({
   base: { stylistic: { quotes: 'double' }, rules: { 'antfu/if-newline': 'off' } },
 })
 
-// 5. The composer floor — append or override any named config
-nustackLint()
-  .override('nustack/nuxt', { rules: { /* … */ } })
-  .append({ files: ['scripts/**'], rules: { 'no-console': 'off' } })
+// 5. File-scoped flat configs go after the options object
+nustack(
+  {},
+  { files: ['scripts/**'], rules: { 'no-console': 'off' } },
+)
+
+// 6. The composer floor — override or remove any named config
+nustack()
+  .override('nustack/nuxt/no-process-env', { rules: { /* … */ } })
+  .remove('nustack/tailwind')
 ```
 
 `.override(name, …)` targets config objects by their `name` — nustack names its objects
-`nustack/<concern>` (e.g. `nustack/nuxt`, `nustack/tailwind`); antfu names its own
-similarly.
+`nustack/<concern>` or a more specific concern slice (e.g.
+`nustack/nuxt/runtime-config`, `nustack/nuxt/auto-imports`,
+`nustack/nuxt/no-process-env`, `nustack/tailwind`); antfu names its own similarly.
+
+## Config inspector
+
+The package returns a `FlatConfigComposer`, so the final resolved config works with the
+standard inspector:
+
+```bash
+npx @eslint/config-inspector --config eslint.config.ts
+```

@@ -1,4 +1,4 @@
-# `vueuse/no-nuxt-auto-import-collision`
+# `@nustack/vueuse/no-nuxt-auto-import-collision`
 
 Alias VueUse imports whose names commonly collide with Nuxt auto-imports. This avoids ambiguous usage in files where Nuxt auto-imports and explicit VueUse imports coexist.
 
