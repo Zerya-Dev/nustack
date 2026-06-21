@@ -1,0 +1,28 @@
+{
+  "release-type": "node",
+  "separate-pull-requests": false,
+  "group-pull-request-title-pattern": "chore: release",
+  "plugins": [{ "type": "node-workspace", "updatePeerDependencies": true }],
+  "packages": {
+    "packages/lint-plugin-nuxt": {
+      "component": "lint-plugin-nuxt",
+      "package-name": "@nustackjs/lint-plugin-nuxt"
+    },
+    "packages/lint-plugin-nuxt-ecosystem": {
+      "component": "lint-plugin-nuxt-ecosystem",
+      "package-name": "@nustackjs/lint-plugin-nuxt-ecosystem"
+    },
+    "packages/lint-plugin-vite": {
+      "component": "lint-plugin-vite",
+      "package-name": "@nustackjs/lint-plugin-vite"
+    },
+    "packages/lint-plugin-vueuse": {
+      "component": "lint-plugin-vueuse",
+      "package-name": "@nustackjs/lint-plugin-vueuse"
+    },
+    "modules/lint": {
+      "component": "lint",
+      "package-name": "@nustackjs/lint"
+    }
+  }
+}

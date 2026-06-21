@@ -57,7 +57,6 @@
     "dev:prepare": "pnpm --filter '@nustackjs/lint-plugin-*' build && nuxt-module-build build && nuxt-module-build prepare && nuxt prepare playground",
     "dev:inspector": "npx @eslint/config-inspector --config eslint.config.ts",
     "build:inspector": "npx @eslint/config-inspector build --config eslint.config.ts --out-dir ./.eslint-config-inspector",
-    "release": "pnpm lint && pnpm test && pnpm prepack && changelogen --release && pnpm --dir ../.. release:lint && git push --follow-tags",
     "lint": "eslint .",
     "test": "pnpm --filter '@nustackjs/lint-plugin-*' build && vitest run",
     "test:watch": "vitest watch",
