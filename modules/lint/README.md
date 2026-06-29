@@ -68,6 +68,29 @@ eslint .                            # quick checks (fast)
 NUSTACK_LINT_DEPTH=full eslint .    # + type-aware checks (CI)
 ```
 
+## What gets enabled
+
+NuStack is an umbrella preset: it starts from
+[`@antfu/eslint-config`](https://github.com/antfu/eslint-config), lets Nuxt generate the
+project-aware `@nuxt/eslint` layer, then adds NuStack's own Nuxt ecosystem rules. The
+exact flat config is still inspectable with the config inspector command below.
+
+| Source | Enabled when | Plugins / rule namespaces | Enabled rules / presets |
+| --- | --- | --- | --- |
+| [`@antfu/eslint-config`](https://github.com/antfu/eslint-config) | Always, unless `base: false` | Core ESLint, TypeScript, Vue, import, node, unicorn, regexp, jsdoc, perfectionist, test/Vitest, pnpm, JSON/YAML/TOML/Markdown and other Antfu-detected slices | NuStack passes `stylistic: true`, `vue: true`, and keeps Antfu's normal defaults. Vitest rules are enabled as `test/*` in Antfu's renamed namespace. |
+| `@nuxt/eslint` / `@nuxt/eslint-config` | Nuxt module setup | `nuxt/*`, Nuxt globals, Nuxt file-aware Vue handling | Official Nuxt rules such as `nuxt/prefer-import-meta`, `nuxt/no-page-meta-runtime-values`, and `nuxt/no-nuxt-config-test-key`; config key sorting follows Nuxt's own feature options. |
+| `@nustack/nuxt` | Nuxt projects; `recommended` and above except the security floor | `@nustack/nuxt/*` | `@nustack/nuxt/no-secret-in-public-runtimeconfig` (`error`), `@nustack/nuxt/modules-order` (`error`), `@nustack/nuxt/no-deprecated-modules` (`error`), `@nustack/nuxt/no-explicit-auto-import` (`error`), `@nustack/nuxt/no-process-env` (`warn`) |
+| NuStack Vue layer | Vue SFCs | `vue/*` | `vue/block-lang` (`error`); in `recommended` and above also `vue/define-emits-declaration`, `vue/define-props-destructuring`, `vue/html-comment-content-newline`, `vue/html-comment-indent`, `vue/no-duplicate-class-names`, `vue/no-empty-component-block`, `vue/no-import-compiler-macros` |
+| `@nustack/vueuse` | App/client code; `recommended` and above | `@nustack/vueuse/*` | `@nustack/vueuse/no-nuxt-auto-import-collision`, `@nustack/vueuse/no-namespace-import`, `@nustack/vueuse/prefer-use-observers`, `@nustack/vueuse/prefer-use-storage`, `@nustack/vueuse/prefer-use-timers`, `@nustack/vueuse/prefer-useclipboard`, `@nustack/vueuse/prefer-useevent-listener`, `@nustack/vueuse/prefer-usewindow-size` |
+| `@nustack/vite` | App/client code; `recommended` and above | `@nustack/vite/*` | `@nustack/vite/no-client-secret-pattern` (`error`), `@nustack/vite/no-public-src-import` (`warn`) |
+| `eslint-plugin-better-tailwindcss` | Tailwind entry point detected, or `tailwind: true` | `better-tailwindcss/*` | `better-tailwindcss/enforce-consistent-class-order` (`warn`), `better-tailwindcss/no-unregistered-classes` (`warn`), `better-tailwindcss/no-conflicting-classes` (`error`), `better-tailwindcss/no-duplicate-classes` (`error`); `pedantic` also enables `better-tailwindcss/enforce-consistent-line-wrapping` |
+| `@nustack/nuxt-ui` | `@nuxt/ui` detected, or `nuxtUi: true` | `@nustack/nuxt-ui/*` | `@nustack/nuxt-ui/prefer-u-button`, `@nustack/nuxt-ui/prefer-u-form-controls` |
+| NuStack type-aware layer | `NUSTACK_LINT_DEPTH=full` | Antfu's renamed `ts/*` namespace | Enables TypeScript project service and `ts/no-deprecated` (`warn`) |
+
+The public factory mirrors Antfu's override model: pass `base` to tune the Antfu layer,
+pass per-concern options like `nuxt`, `vueUse`, or `tailwind` to tune NuStack concerns,
+and use top-level `rules` for final global overrides.
+
 See [Configuration](./docs/configuration.md), [Rules](./docs/rules.md) and
 [Migration](./docs/migration.md).
 

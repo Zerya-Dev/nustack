@@ -1,9 +1,10 @@
 # @nustackjs/lint-plugin-nuxt
 
 ESLint and [Oxlint](https://oxc.rs) rules for [Nuxt](https://nuxt.com) runtime
-conventions — `runtimeConfig` safety, auto-imports, and keeping `process.env` out of app
-code. Used by [`@nustackjs/lint`](../../modules/lint), but works standalone in any flat
-ESLint config.
+conventions — `runtimeConfig` safety, auto-imports, keeping `process.env` out of app
+code, and `nuxt.config` `modules` correctness (registration order, deprecated modules).
+Used by [`@nustackjs/lint`](../../modules/lint), but works standalone in any flat ESLint
+config.
 
 ## Install
 
@@ -40,6 +41,8 @@ The same default export also loads in Oxlint via its
 
 | Rule | Description |
 |---|---|
+| [`@nustack/nuxt/modules-order`](./src/rules/modules-order/index.md) | Enforce a correct registration order for interdependent Nuxt modules. |
+| [`@nustack/nuxt/no-deprecated-modules`](./src/rules/no-deprecated-modules/index.md) | Disallow deprecated Nuxt modules in favour of their maintained successors. |
 | [`@nustack/nuxt/no-explicit-auto-import`](./src/rules/no-explicit-auto-import/index.md) | Disallow explicit imports of identifiers/components Nuxt already auto-imports. |
 | [`@nustack/nuxt/no-process-env`](./src/rules/no-process-env/index.md) | Disallow `process.env` in app code; use `runtimeConfig` / `useRuntimeConfig()`. |
 | [`@nustack/nuxt/no-secret-in-public-runtimeconfig`](./src/rules/no-secret-in-public-runtimeconfig/index.md) | Disallow secret-looking keys under `runtimeConfig.public`. |
