@@ -25,26 +25,79 @@ const plugin = eslintCompatPlugin({
   },
 }) as unknown as ESLint.Plugin & {
   configs: {
-    recommended: Linter.Config
+    /** App-source-scoped rule set, ready to spread into a flat config. */
+    recommended: Linter.Config[]
   }
 }
 
+const pluginRef = { '@nustack/vueuse': plugin }
+
+/**
+ * File globs the rules are scoped to. The plugin owns the scoping so consumers
+ * spread {@link vueUseConfigs} (or `configs.recommended`) without re-declaring
+ * where the rules apply. VueUse is client-side, so server/tooling paths are
+ * excluded.
+ */
+export const APP_GLOB = ['**/*.vue', '**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}']
+export const APP_IGNORES = [
+  '**/server/**',
+  '**/scripts/**',
+  '**/packages/**',
+  '**/*.{config,test,spec}.*',
+  '**/*.d.ts',
+]
+
+/** Options for {@link vueUseConfigs}. */
+export interface VueUseConfigsOptions {
+  /** Cumulative variant; `minimal` ships nothing, `recommended` (default) the rule set. */
+  variant?: 'minimal' | 'recommended'
+  /** Extra rule overrides, merged onto the app-source scope. */
+  rules?: Linter.RulesRecord
+}
+
+/**
+ * The single source of truth for *where* these rules run: file-scoped flat-config
+ * objects on app source only. Consumers pass extra `rules` here instead of
+ * re-declaring any globs themselves.
+ */
+export function vueUseConfigs(options: VueUseConfigsOptions = {}): Linter.Config[] {
+  const { variant = 'recommended', rules } = options
+  const configs: Linter.Config[] = []
+
+  if (variant !== 'minimal') {
+    configs.push({
+      name: 'nustack/vueuse',
+      files: APP_GLOB,
+      ignores: APP_IGNORES,
+      plugins: pluginRef,
+      rules: {
+        '@nustack/vueuse/no-nuxt-auto-import-collision': 'warn',
+        '@nustack/vueuse/no-namespace-import': 'warn',
+        '@nustack/vueuse/prefer-use-observers': 'warn',
+        '@nustack/vueuse/prefer-use-storage': 'warn',
+        '@nustack/vueuse/prefer-use-timers': 'warn',
+        '@nustack/vueuse/prefer-useclipboard': 'warn',
+        '@nustack/vueuse/prefer-useevent-listener': 'warn',
+        '@nustack/vueuse/prefer-usewindow-size': 'warn',
+      },
+    })
+  }
+
+  if (rules && Object.keys(rules).length) {
+    configs.push({
+      name: 'nustack/vueuse/rules',
+      files: APP_GLOB,
+      ignores: APP_IGNORES,
+      plugins: pluginRef,
+      rules,
+    })
+  }
+
+  return configs
+}
+
 plugin.configs = {
-  recommended: {
-    plugins: {
-      '@nustack/vueuse': plugin,
-    },
-    rules: {
-      '@nustack/vueuse/no-nuxt-auto-import-collision': 'warn',
-      '@nustack/vueuse/no-namespace-import': 'warn',
-      '@nustack/vueuse/prefer-use-observers': 'warn',
-      '@nustack/vueuse/prefer-use-storage': 'warn',
-      '@nustack/vueuse/prefer-use-timers': 'warn',
-      '@nustack/vueuse/prefer-useclipboard': 'warn',
-      '@nustack/vueuse/prefer-useevent-listener': 'warn',
-      '@nustack/vueuse/prefer-usewindow-size': 'warn',
-    },
-  },
+  recommended: vueUseConfigs(),
 }
 
 export const noNuxtAutoImportCollision: Rule.RuleModule = plugin.rules!['no-nuxt-auto-import-collision'] as Rule.RuleModule
