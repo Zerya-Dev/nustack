@@ -20,6 +20,8 @@ a top-level one).
 | Rule | Variant | Severity | Fix |
 |---|---|---|---|
 | [`@nustack/nuxt/no-secret-in-public-runtimeconfig`](../../../packages/lint-plugin-nuxt/src/rules/no-secret-in-public-runtimeconfig/index.md) | `minimal` | error | — |
+| [`@nustack/nuxt/modules-order`](../../../packages/lint-plugin-nuxt/src/rules/modules-order/index.md) | `recommended` | error | — |
+| [`@nustack/nuxt/no-deprecated-modules`](../../../packages/lint-plugin-nuxt/src/rules/no-deprecated-modules/index.md) | `recommended` | error | — |
 | [`@nustack/nuxt/no-explicit-auto-import`](../../../packages/lint-plugin-nuxt/src/rules/no-explicit-auto-import/index.md) | `recommended` | error | ✓ |
 | [`@nustack/nuxt/no-process-env`](../../../packages/lint-plugin-nuxt/src/rules/no-process-env/index.md) | `recommended` | warn | — |
 
