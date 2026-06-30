@@ -41,3 +41,22 @@ export function resolveConcernRules(options: ConcernOptions): Rules {
     ...options.rules,
   }
 }
+
+/** A per-concern toggle: `true`/`undefined` = default, `false` = off, object = tune. */
+export type ConcernToggle<T> = boolean | T
+
+/** `false` = disabled; object = explicit opt-in; `true`/`undefined` = default. */
+export function isEnabled<T>(toggle: ConcernToggle<T> | undefined, gate: boolean): boolean {
+  if (toggle === false)
+    return false
+  // Explicit opt-in (`true` or an options object) forces the concern on even when
+  // the detection gate is false; otherwise rely on the gate.
+  if (toggle === true || (typeof toggle === 'object' && toggle !== null))
+    return true
+  return gate
+}
+
+/** Extracts the options object from a toggle, or `{}` for `true`/`undefined`/`false`. */
+export function subOptions<T>(toggle: ConcernToggle<T> | undefined): T {
+  return (typeof toggle === 'object' && toggle !== null ? toggle : {}) as T
+}

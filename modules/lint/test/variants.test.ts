@@ -106,8 +106,14 @@ describe('concern toggles', () => {
   })
 
   it('drops a concern when disabled', async () => {
-    const names = await nustackConfigNames({ tailwind: false, nuxtUi: false })
+    const names = await nustackConfigNames({ tailwind: false, nuxtEcosystem: { nuxtUi: false } })
     expect(names).not.toContain('nustack/tailwind')
+    expect(names).not.toContain('nustack/nuxt-ui')
+    expect(names).toContain('nustack/vue')
+  })
+
+  it('drops the whole ecosystem when nuxtEcosystem is false', async () => {
+    const names = await nustackConfigNames({ nuxtEcosystem: false })
     expect(names).not.toContain('nustack/nuxt-ui')
     expect(names).toContain('nustack/vue')
   })
