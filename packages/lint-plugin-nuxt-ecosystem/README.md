@@ -48,6 +48,8 @@ The same default export also loads in Oxlint via its
 | [`@nustack/nuxt-ui/prefer-u-form-controls`](./src/rules/nuxt-ui/prefer-u-form-controls/index.md) | Prefer Nuxt UI form controls over raw native form elements; type-aware (e.g. `<input type="number">` / `<UInput type="number">` → `<UInputNumber>`). |
 | [`@nustack/nuxt-ui/prefer-u-link`](./src/rules/nuxt-ui/prefer-u-link/index.md) | Prefer `<ULink>` over raw `<a>` when `@nuxt/ui` is available. |
 | [`@nustack/nuxt-ui/prefer-u-table`](./src/rules/nuxt-ui/prefer-u-table/index.md) | Prefer `<UTable>` over raw `<table>` when `@nuxt/ui` is available. |
+| [`@nustack/nuxt-ui/no-deprecated-components`](./src/rules/nuxt-ui/no-deprecated-components/index.md) | Disallow Nuxt UI components renamed in v4 (e.g. `UButtonGroup` → `UFieldGroup`). |
+| [`@nustack/nuxt-ui/no-deprecated-model-modifiers`](./src/rules/nuxt-ui/no-deprecated-model-modifiers/index.md) | Disallow the `v-model.nullify` modifier renamed to `.nullable` in Nuxt UI v4. |
 
 ## License
 

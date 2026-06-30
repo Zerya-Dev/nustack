@@ -1,5 +1,7 @@
 import type { ESLint, Linter, Rule } from 'eslint'
 import { eslintCompatPlugin } from '@oxlint/plugins'
+import { noDeprecatedComponents as rawNoDeprecatedComponents } from './rules/nuxt-ui/no-deprecated-components/index.js'
+import { noDeprecatedModelModifiers as rawNoDeprecatedModelModifiers } from './rules/nuxt-ui/no-deprecated-model-modifiers/index.js'
 import { preferUButton as rawPreferUButton } from './rules/nuxt-ui/prefer-u-button/index.js'
 import { preferUFormControls as rawPreferUFormControls } from './rules/nuxt-ui/prefer-u-form-controls/index.js'
 import { preferULink as rawPreferULink } from './rules/nuxt-ui/prefer-u-link/index.js'
@@ -14,6 +16,8 @@ const plugin = eslintCompatPlugin({
     'prefer-u-form-controls': rawPreferUFormControls,
     'prefer-u-link': rawPreferULink,
     'prefer-u-table': rawPreferUTable,
+    'no-deprecated-components': rawNoDeprecatedComponents,
+    'no-deprecated-model-modifiers': rawNoDeprecatedModelModifiers,
   },
 }) as unknown as ESLint.Plugin & {
   configs: {
@@ -66,6 +70,8 @@ export function nuxtUiConfigs(options: NuxtUiConfigsOptions = {}): Linter.Config
         '@nustack/nuxt-ui/prefer-u-form-controls': 'warn',
         '@nustack/nuxt-ui/prefer-u-link': 'warn',
         '@nustack/nuxt-ui/prefer-u-table': 'warn',
+        '@nustack/nuxt-ui/no-deprecated-components': 'warn',
+        '@nustack/nuxt-ui/no-deprecated-model-modifiers': 'warn',
       },
     })
   }
@@ -92,4 +98,6 @@ export const preferUButton: Rule.RuleModule = plugin.rules!['prefer-u-button'] a
 export const preferUFormControls: Rule.RuleModule = plugin.rules!['prefer-u-form-controls'] as Rule.RuleModule
 export const preferULink: Rule.RuleModule = plugin.rules!['prefer-u-link'] as Rule.RuleModule
 export const preferUTable: Rule.RuleModule = plugin.rules!['prefer-u-table'] as Rule.RuleModule
+export const noDeprecatedComponents: Rule.RuleModule = plugin.rules!['no-deprecated-components'] as Rule.RuleModule
+export const noDeprecatedModelModifiers: Rule.RuleModule = plugin.rules!['no-deprecated-model-modifiers'] as Rule.RuleModule
 export default plugin
