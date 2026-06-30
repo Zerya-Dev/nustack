@@ -1,7 +1,7 @@
 import type { ESLint, Linter, Rule } from 'eslint'
 import { eslintCompatPlugin } from '@oxlint/plugins'
-import { noClientSecretPattern as rawNoClientSecretPattern } from './rules/env/no-client-secret-pattern/index.js'
 import { noPublicSrcImport as rawNoPublicSrcImport } from './rules/assets/no-public-src-import/index.js'
+import { noClientSecretPattern as rawNoClientSecretPattern } from './rules/env/no-client-secret-pattern/index.js'
 
 const plugin = eslintCompatPlugin({
   meta: {

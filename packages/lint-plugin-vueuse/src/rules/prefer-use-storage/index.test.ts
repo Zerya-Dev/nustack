@@ -9,9 +9,9 @@ describe('prefer-use-storage', () => {
     const tester = new RuleTester({ languageOptions: { ecmaVersion: 'latest', sourceType: 'module' } })
 
     tester.run('prefer-use-storage', rule as never, {
-      valid: [{ code: "const theme = useStorage('theme', 'light')" }],
+      valid: [{ code: 'const theme = useStorage(\'theme\', \'light\')' }],
       invalid: [
-        { code: "localStorage.setItem('theme', theme)", errors: [{ messageId: 'preferUseStorage' }] },
+        { code: 'localStorage.setItem(\'theme\', theme)', errors: [{ messageId: 'preferUseStorage' }] },
         { code: 'window.localStorage', errors: [{ messageId: 'preferUseStorage' }] },
       ],
     })

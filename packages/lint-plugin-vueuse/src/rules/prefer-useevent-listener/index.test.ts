@@ -10,12 +10,12 @@ describe('prefer-useevent-listener', () => {
 
     tester.run('prefer-useevent-listener', rule as never, {
       valid: [
-        { code: "useEventListener(window, 'resize', onResize)" },
-        { code: "el.addEventListener('click', onClick)" },
+        { code: 'useEventListener(window, \'resize\', onResize)' },
+        { code: 'el.addEventListener(\'click\', onClick)' },
       ],
       invalid: [
-        { code: "window.addEventListener('resize', onResize)", errors: [{ messageId: 'preferUseEventListener' }] },
-        { code: "document.removeEventListener('click', onClick)", errors: [{ messageId: 'preferUseEventListener' }] },
+        { code: 'window.addEventListener(\'resize\', onResize)', errors: [{ messageId: 'preferUseEventListener' }] },
+        { code: 'document.removeEventListener(\'click\', onClick)', errors: [{ messageId: 'preferUseEventListener' }] },
       ],
     })
   })

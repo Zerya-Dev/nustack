@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process'
-import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 
 const root = process.cwd()
@@ -10,23 +10,27 @@ mkdirSync(tarballsDir, { recursive: true })
 const scanRoots = [join(root, 'packages'), join(root, 'modules')]
 const packageDirs = []
 for (const scanRoot of scanRoots) {
-  if (!existsSync(scanRoot)) continue
+  if (!existsSync(scanRoot))
+    continue
   for (const child of readdirSync(scanRoot)) {
     const dir = join(scanRoot, child)
-    if (existsSync(join(dir, 'package.json'))) packageDirs.push(dir)
+    if (existsSync(join(dir, 'package.json')))
+      packageDirs.push(dir)
   }
 }
 
 for (const dir of packageDirs) {
   const pkg = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'))
-  if (pkg.private) continue
+  if (pkg.private)
+    continue
   const spec = `${pkg.name}@${pkg.version}`
 
   let published = false
   try {
     execFileSync('npm', ['view', spec, 'version'], { stdio: 'ignore' })
     published = true
-  } catch {
+  }
+  catch {
     published = false
   }
   if (published) {
@@ -52,7 +56,8 @@ for (const dir of packageDirs) {
       encoding: 'utf8',
       stdio: ['ignore', 'inherit', 'pipe'],
     })
-  } catch (err) {
+  }
+  catch (err) {
     const stderr = err.stderr ?? ''
     // The registry read endpoint is CDN-cached, so `npm view` above can lag
     // behind a fresh publish and report a package as missing. Treat the

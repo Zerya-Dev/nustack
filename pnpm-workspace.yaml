@@ -1,7 +1,7 @@
 packages:
-  - "packages/*"
-  - "modules/*"
-  - "modules/*/playground"
+  - 'packages/*'
+  - 'modules/*'
+  - 'modules/*/playground'
 catalogs:
   build:
     '@nuxt/module-builder': ^1.0.2

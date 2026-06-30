@@ -39,11 +39,11 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {
-    "@oxlint/plugins": "catalog:eslint"
-  },
   "peerDependencies": {
     "eslint": ">=9"
+  },
+  "dependencies": {
+    "@oxlint/plugins": "catalog:eslint"
   },
   "devDependencies": {
     "@typescript-eslint/parser": "catalog:eslint",

@@ -10,15 +10,15 @@ describe('no-nuxt-auto-import-collision', () => {
 
     tester.run('no-nuxt-auto-import-collision', rule as never, {
       valid: [
-        { code: "import { useFetch as vueuseUseFetch } from '@vueuse/core'" },
-        { code: "import { useMouse } from '@vueuse/core'" },
-        { code: "import { useImage } from '@vueuse/core'", options: [{ ignoreNames: ['useImage'] }] },
+        { code: 'import { useFetch as vueuseUseFetch } from \'@vueuse/core\'' },
+        { code: 'import { useMouse } from \'@vueuse/core\'' },
+        { code: 'import { useImage } from \'@vueuse/core\'', options: [{ ignoreNames: ['useImage'] }] },
       ],
       invalid: [
-        { code: "import { useFetch } from '@vueuse/core'", errors: [{ messageId: 'noCollision' }] },
-        { code: "import { useStorage } from '@vueuse/core'", errors: [{ messageId: 'noCollision' }] },
+        { code: 'import { useFetch } from \'@vueuse/core\'', errors: [{ messageId: 'noCollision' }] },
+        { code: 'import { useStorage } from \'@vueuse/core\'', errors: [{ messageId: 'noCollision' }] },
         {
-          code: "import { useI18n } from '@vueuse/core'",
+          code: 'import { useI18n } from \'@vueuse/core\'',
           options: [{ additionalNames: ['useI18n'] }],
           errors: [{ messageId: 'noCollision' }],
         },

@@ -12,31 +12,31 @@ describe('no-explicit-auto-import', () => {
 
     tester.run('no-explicit-auto-import', rule as never, {
       valid: [
-        { code: "import type { Ref } from 'vue'", options },
-        { code: "import { watch } from 'vue'", options },
-        { code: "import AppButton from '../not-components/AppButton.vue'", options },
+        { code: 'import type { Ref } from \'vue\'', options },
+        { code: 'import { watch } from \'vue\'', options },
+        { code: 'import AppButton from \'../not-components/AppButton.vue\'', options },
       ],
       invalid: [
         {
-          code: "import { ref } from 'vue'\nconst value = ref(1)",
-          output: "\nconst value = ref(1)",
+          code: 'import { ref } from \'vue\'\nconst value = ref(1)',
+          output: '\nconst value = ref(1)',
           options,
           errors: [{ messageId: 'noExplicitAutoImport' }],
         },
         {
-          code: "import { ref, watch } from 'vue'\nwatch(ref(1), () => {})",
-          output: "import { watch } from 'vue'\nwatch(ref(1), () => {})",
+          code: 'import { ref, watch } from \'vue\'\nwatch(ref(1), () => {})',
+          output: 'import { watch } from \'vue\'\nwatch(ref(1), () => {})',
           options,
           errors: [{ messageId: 'noExplicitAutoImport' }],
         },
         {
-          code: "import { useRuntimeConfig } from '#imports'\nuseRuntimeConfig()",
+          code: 'import { useRuntimeConfig } from \'#imports\'\nuseRuntimeConfig()',
           output: '\nuseRuntimeConfig()',
           options,
           errors: [{ messageId: 'noExplicitAutoImport' }],
         },
         {
-          code: "import AppButton from '~/components/AppButton.vue'\nconsole.log(AppButton)",
+          code: 'import AppButton from \'~/components/AppButton.vue\'\nconsole.log(AppButton)',
           output: '\nconsole.log(AppButton)',
           options,
           errors: [{ messageId: 'noExplicitAutoImport' }],

@@ -10,12 +10,12 @@ describe('assets/no-public-src-import', () => {
 
     tester.run('assets/no-public-src-import', rule as never, {
       valid: [
-        { code: "import logo from './assets/logo.svg'" },
-        { code: "export { icon } from './src/icon'" },
+        { code: 'import logo from \'./assets/logo.svg\'' },
+        { code: 'export { icon } from \'./src/icon\'' },
       ],
       invalid: [
-        { code: "import logo from '../public/logo.svg'", errors: [{ messageId: 'noPublicSrcImport' }] },
-        { code: "export * from './public/icons.js'", errors: [{ messageId: 'noPublicSrcImport' }] },
+        { code: 'import logo from \'../public/logo.svg\'', errors: [{ messageId: 'noPublicSrcImport' }] },
+        { code: 'export * from \'./public/icons.js\'', errors: [{ messageId: 'noPublicSrcImport' }] },
       ],
     })
   })
