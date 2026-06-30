@@ -20,7 +20,7 @@ describe('env/no-client-secret-pattern', () => {
       ],
       invalid: [
         { code: 'const token = import.meta.env.VITE_API_TOKEN', errors: [{ messageId: 'noClientSecretPattern' }] },
-        { code: "const secret = import.meta.env['VITE_CLIENT_SECRET']", errors: [{ messageId: 'noClientSecretPattern' }] },
+        { code: 'const secret = import.meta.env[\'VITE_CLIENT_SECRET\']', errors: [{ messageId: 'noClientSecretPattern' }] },
         { code: 'const key = import.meta.env.VITE_PRIVATE_KEY', errors: [{ messageId: 'noClientSecretPattern' }] },
       ],
     })

@@ -1,12 +1,12 @@
 import type { ESLint, Linter, Rule } from 'eslint'
 import { eslintCompatPlugin } from '@oxlint/plugins'
-import { noNuxtAutoImportCollision as rawNoNuxtAutoImportCollision } from './rules/no-nuxt-auto-import-collision/index.js'
 import { noNamespaceImport as rawNoNamespaceImport } from './rules/no-namespace-import/index.js'
+import { noNuxtAutoImportCollision as rawNoNuxtAutoImportCollision } from './rules/no-nuxt-auto-import-collision/index.js'
 import { preferUseObservers as rawPreferUseObservers } from './rules/prefer-use-observers/index.js'
 import { preferUseStorage as rawPreferUseStorage } from './rules/prefer-use-storage/index.js'
 import { preferUseTimers as rawPreferUseTimers } from './rules/prefer-use-timers/index.js'
-import { preferUseEventListener as rawPreferUseEventListener } from './rules/prefer-useevent-listener/index.js'
 import { preferUseClipboard as rawPreferUseClipboard } from './rules/prefer-useclipboard/index.js'
+import { preferUseEventListener as rawPreferUseEventListener } from './rules/prefer-useevent-listener/index.js'
 import { preferUseWindowSize as rawPreferUseWindowSize } from './rules/prefer-usewindow-size/index.js'
 
 const plugin = eslintCompatPlugin({

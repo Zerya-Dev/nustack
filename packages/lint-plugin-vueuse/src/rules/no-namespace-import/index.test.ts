@@ -13,12 +13,12 @@ describe('no-namespace-import', () => {
 
     tester.run('no-namespace-import', rule as never, {
       valid: [
-        { code: "import { useStorage } from '@vueuse/core'" },
-        { code: "import * as Vue from 'vue'" },
+        { code: 'import { useStorage } from \'@vueuse/core\'' },
+        { code: 'import * as Vue from \'vue\'' },
       ],
       invalid: [
         {
-          code: "import * as VueUse from '@vueuse/core'",
+          code: 'import * as VueUse from \'@vueuse/core\'',
           errors: [{ messageId: 'noNamespace' }],
         },
       ],
