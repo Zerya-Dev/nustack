@@ -2,6 +2,8 @@ import type { ESLint, Linter, Rule } from 'eslint'
 import { eslintCompatPlugin } from '@oxlint/plugins'
 import { preferUButton as rawPreferUButton } from './rules/nuxt-ui/prefer-u-button/index.js'
 import { preferUFormControls as rawPreferUFormControls } from './rules/nuxt-ui/prefer-u-form-controls/index.js'
+import { preferULink as rawPreferULink } from './rules/nuxt-ui/prefer-u-link/index.js'
+import { preferUTable as rawPreferUTable } from './rules/nuxt-ui/prefer-u-table/index.js'
 
 const plugin = eslintCompatPlugin({
   meta: {
@@ -10,6 +12,8 @@ const plugin = eslintCompatPlugin({
   rules: {
     'prefer-u-button': rawPreferUButton,
     'prefer-u-form-controls': rawPreferUFormControls,
+    'prefer-u-link': rawPreferULink,
+    'prefer-u-table': rawPreferUTable,
   },
 }) as unknown as ESLint.Plugin & {
   configs: {
@@ -60,6 +64,8 @@ export function nuxtUiConfigs(options: NuxtUiConfigsOptions = {}): Linter.Config
       rules: {
         '@nustack/nuxt-ui/prefer-u-button': 'warn',
         '@nustack/nuxt-ui/prefer-u-form-controls': 'warn',
+        '@nustack/nuxt-ui/prefer-u-link': 'warn',
+        '@nustack/nuxt-ui/prefer-u-table': 'warn',
       },
     })
   }
@@ -84,4 +90,6 @@ plugin.configs = {
 
 export const preferUButton: Rule.RuleModule = plugin.rules!['prefer-u-button'] as Rule.RuleModule
 export const preferUFormControls: Rule.RuleModule = plugin.rules!['prefer-u-form-controls'] as Rule.RuleModule
+export const preferULink: Rule.RuleModule = plugin.rules!['prefer-u-link'] as Rule.RuleModule
+export const preferUTable: Rule.RuleModule = plugin.rules!['prefer-u-table'] as Rule.RuleModule
 export default plugin
