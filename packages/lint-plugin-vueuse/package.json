@@ -1,7 +1,7 @@
 {
   "name": "@nustackjs/lint-plugin-vueuse",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "ESLint and Oxlint rules for VueUse. Used by @nustackjs/lint, usable standalone.",
   "author": "Norbiros <me@norbiros.dev>",
   "license": "MIT",
