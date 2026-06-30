@@ -1,7 +1,6 @@
 {
   "release-type": "node",
   "separate-pull-requests": false,
-  "group-pull-request-title-pattern": "chore: release",
   "plugins": [{ "type": "node-workspace", "updatePeerDependencies": true }],
   "packages": {
     "packages/lint-plugin-nuxt": {
