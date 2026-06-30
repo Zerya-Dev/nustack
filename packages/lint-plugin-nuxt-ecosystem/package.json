@@ -1,7 +1,7 @@
 {
   "name": "@nustackjs/lint-plugin-nuxt-ecosystem",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "ESLint and Oxlint rules for the Nuxt module ecosystem (Nuxt UI). Used by @nustackjs/lint, usable standalone.",
   "author": "Norbiros <me@norbiros.dev>",
   "license": "MIT",
@@ -11,7 +11,15 @@
     "url": "https://github.com/Zerya-Dev/nustack.git",
     "directory": "packages/lint-plugin-nuxt-ecosystem"
   },
-  "keywords": ["eslint", "oxlint", "eslint-plugin", "nuxt", "nuxt-ui", "nustack", "lint"],
+  "keywords": [
+    "eslint",
+    "oxlint",
+    "eslint-plugin",
+    "nuxt",
+    "nuxt-ui",
+    "nustack",
+    "lint"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -22,7 +30,11 @@
       "default": "./dist/index.mjs"
     }
   },
-  "files": ["LICENSE", "README.md", "dist"],
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist"
+  ],
   "scripts": {
     "build": "tsdown src/index.ts --dts --clean",
     "test": "vitest run",
