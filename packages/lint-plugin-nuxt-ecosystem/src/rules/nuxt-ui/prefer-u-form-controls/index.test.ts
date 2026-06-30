@@ -24,6 +24,9 @@ describe('prefer-u-form-controls', () => {
         { filename: 'component.vue', code: '<template><textarea></textarea></template>', errors: [{ messageId: 'preferUFormControl' }] },
         { filename: 'component.vue', code: '<template><UInput type="number" /></template>', errors: [{ messageId: 'preferSpecificControl' }] },
         { filename: 'component.vue', code: '<template><UInput type="file" /></template>', errors: [{ messageId: 'preferSpecificControl' }] },
+        // Extended via options: extra native-element and type mappings.
+        { filename: 'component.vue', code: '<template><progress /></template>', options: [{ controls: { progress: 'UProgress' } }], errors: [{ messageId: 'preferUFormControl' }] },
+        { filename: 'component.vue', code: '<template><UInput type="email" /></template>', options: [{ types: { email: 'UEmailInput' } }], errors: [{ messageId: 'preferSpecificControl' }] },
       ],
     })
   })

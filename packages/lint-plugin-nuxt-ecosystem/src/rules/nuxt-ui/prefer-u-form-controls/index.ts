@@ -42,7 +42,16 @@ export const preferUFormControls: Rule = {
     docs: {
       description: 'Prefer Nuxt UI form controls over raw form elements.',
     },
-    schema: [],
+    schema: [{
+      type: 'object',
+      properties: {
+        /** Extra `tag` → `Component` mappings, merged onto the built-in native-element map. */
+        controls: { type: 'object', additionalProperties: { type: 'string' } },
+        /** Extra input-`type` → `Component` mappings, merged onto the built-in type map. */
+        types: { type: 'object', additionalProperties: { type: 'string' } },
+      },
+      additionalProperties: false,
+    }],
     messages: {
       preferUFormControl: 'NuStack standardizes on Nuxt UI form controls for consistent styling and a11y. Use `<{{ replacement }}>` instead of a raw `<{{ tag }}>` (add `data-raw` to opt out).',
       preferSpecificControl: 'Nuxt UI ships a dedicated component for this input type. Use `<{{ replacement }}>` instead of `<UInput type="{{ type }}">` (add `data-raw` to opt out).',
@@ -52,6 +61,10 @@ export const preferUFormControls: Rule = {
     const services = context.sourceCode.parserServices
     if (typeof services?.defineTemplateBodyVisitor !== 'function')
       return {}
+
+    const options = context.options[0] ?? {}
+    const controlMap: Record<string, string> = { ...CONTROL_MAP, ...options.controls }
+    const typeMap: Record<string, string> = { ...TYPE_MAP, ...options.types }
 
     return services.defineTemplateBodyVisitor({
       VElement(node: any) {
@@ -63,7 +76,7 @@ export const preferUFormControls: Rule = {
         // `<UInput type="number">` — already Nuxt UI, but a dedicated component fits better.
         // (vue-eslint-parser lowercases element names, so `UInput` is `uinput` here.)
         if (node.name === 'uinput') {
-          const replacement = type ? TYPE_MAP[type] : null
+          const replacement = type ? typeMap[type] : null
           if (replacement) {
             context.report({
               loc: node.startTag.loc,
@@ -75,13 +88,13 @@ export const preferUFormControls: Rule = {
         }
 
         // Raw native form elements.
-        const base = CONTROL_MAP[node.name]
+        const base = controlMap[node.name]
         if (!base)
           return
 
         // A raw `<input type="number">` is best replaced by the specialized component.
-        const replacement = node.name === 'input' && type && TYPE_MAP[type]
-          ? TYPE_MAP[type]
+        const replacement = node.name === 'input' && type && typeMap[type]
+          ? typeMap[type]
           : base
 
         context.report({

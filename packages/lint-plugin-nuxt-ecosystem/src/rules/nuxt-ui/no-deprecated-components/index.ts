@@ -23,7 +23,14 @@ export const noDeprecatedComponents: Rule = {
     docs: {
       description: 'Disallow Nuxt UI components renamed in v4 in favour of their current names.',
     },
-    schema: [],
+    schema: [{
+      type: 'object',
+      properties: {
+        /** Extra `OldName` → `NewName` renames, merged onto the built-in v4 table. */
+        components: { type: 'object', additionalProperties: { type: 'string' } },
+      },
+      additionalProperties: false,
+    }],
     messages: {
       deprecated: '`<{{ name }}>` was renamed in Nuxt UI v4 — use `<{{ replacement }}>` instead.',
     },
@@ -33,9 +40,16 @@ export const noDeprecatedComponents: Rule = {
     if (typeof services?.defineTemplateBodyVisitor !== 'function')
       return {}
 
+    // User entries are written proper-cased (`{ UOld: 'UNew' }`) but matched lowercased,
+    // since vue-eslint-parser lowercases element names.
+    const table: Record<string, DeprecatedComponent> = { ...DEPRECATED_COMPONENTS }
+    const extra = context.options[0]?.components ?? {}
+    for (const [name, replacement] of Object.entries(extra) as [string, string][])
+      table[name.toLowerCase()] = { name, replacement }
+
     return services.defineTemplateBodyVisitor({
       VElement(node: any) {
-        const deprecated = DEPRECATED_COMPONENTS[node.name]
+        const deprecated = table[node.name]
         if (deprecated) {
           context.report({
             loc: node.startTag.loc,

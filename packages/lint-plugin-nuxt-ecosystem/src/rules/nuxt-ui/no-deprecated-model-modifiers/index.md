@@ -19,3 +19,12 @@ Nuxt UI v4 (both convert empty/blank values to `null`; v4 also adds `.optional` 
   <UInput v-model.nullable="value" />
 </template>
 ```
+
+## Options
+
+```js
+'@nustack/nuxt-ui/no-deprecated-model-modifiers': ['warn', {
+  modifiers: { coerce: 'transform' }, // extra old → new renames, merged onto the built-ins
+  components: ['uinput', 'utextarea'], // lowercased components to check (replaces the default list)
+}]
+```

@@ -19,6 +19,8 @@ describe('no-deprecated-components', () => {
         { filename: 'component.vue', code: '<template><UButtonGroup /></template>', errors: [{ messageId: 'deprecated' }] },
         { filename: 'component.vue', code: '<template><UPageMarquee :items="items" /></template>', errors: [{ messageId: 'deprecated' }] },
         { filename: 'component.vue', code: '<template><UPageAccordion :items="items" /></template>', errors: [{ messageId: 'deprecated' }] },
+        // Extended via options with a team-specific rename.
+        { filename: 'component.vue', code: '<template><UFoo /></template>', options: [{ components: { UFoo: 'UBar' } }], errors: [{ messageId: 'deprecated' }] },
       ],
     })
   })

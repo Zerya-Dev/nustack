@@ -1,7 +1,12 @@
 import type { Rule } from '@oxlint/plugins'
 
+/** Renamed `v-model` modifiers: old → new. Verified 2026-06-30 against ui.nuxt.com (v4). */
+const DEPRECATED_MODIFIERS: Record<string, string> = {
+  nullify: 'nullable',
+}
+
 /** Components whose `v-model` carried the renamed modifier (lowercased for the parser). */
-const TARGET_COMPONENTS = new Set(['uinput', 'uinputnumber', 'utextarea'])
+const TARGET_COMPONENTS = ['uinput', 'uinputnumber', 'utextarea']
 
 /** Returns the `v-model` directive on a start tag, or `null`. */
 function vModel(node: any): any {
@@ -16,9 +21,18 @@ export const noDeprecatedModelModifiers: Rule = {
     docs: {
       description: 'Disallow the `v-model.nullify` modifier renamed to `.nullable` in Nuxt UI v4.',
     },
-    schema: [],
+    schema: [{
+      type: 'object',
+      properties: {
+        /** Extra `old` → `new` modifier renames, merged onto the built-in table. */
+        modifiers: { type: 'object', additionalProperties: { type: 'string' } },
+        /** Components to check, lowercased. Replaces the built-in list when provided. */
+        components: { type: 'array', items: { type: 'string' } },
+      },
+      additionalProperties: false,
+    }],
     messages: {
-      preferNullable: 'The `v-model.nullify` modifier was renamed in Nuxt UI v4 — use `v-model.nullable` instead.',
+      preferNullable: 'The `v-model.{{ old }}` modifier was renamed in Nuxt UI v4 — use `v-model.{{ replacement }}` instead.',
     },
   },
   create(context: any) {
@@ -26,15 +40,26 @@ export const noDeprecatedModelModifiers: Rule = {
     if (typeof services?.defineTemplateBodyVisitor !== 'function')
       return {}
 
+    const options = context.options[0] ?? {}
+    const modifiers: Record<string, string> = { ...DEPRECATED_MODIFIERS, ...options.modifiers }
+    const targets = new Set<string>(options.components ?? TARGET_COMPONENTS)
+
     return services.defineTemplateBodyVisitor({
       VElement(node: any) {
-        if (!TARGET_COMPONENTS.has(node.name))
+        if (!targets.has(node.name))
           return
 
         const model = vModel(node)
-        const nullify = model?.key.modifiers?.find((modifier: any) => modifier.name === 'nullify')
-        if (nullify)
-          context.report({ loc: nullify.loc ?? model.key.loc, messageId: 'preferNullable' })
+        for (const modifier of model?.key.modifiers ?? []) {
+          const replacement = modifiers[modifier.name]
+          if (replacement) {
+            context.report({
+              loc: modifier.loc ?? model.key.loc,
+              messageId: 'preferNullable',
+              data: { old: modifier.name, replacement },
+            })
+          }
+        }
       },
     })
   },

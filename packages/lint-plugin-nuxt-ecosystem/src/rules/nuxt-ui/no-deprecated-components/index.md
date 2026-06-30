@@ -33,3 +33,13 @@ verified against the live v4 docs.
   </UFieldGroup>
 </template>
 ```
+
+## Options
+
+Register team-specific renames (proper-cased keys), merged onto the built-in table:
+
+```js
+'@nustack/nuxt-ui/no-deprecated-components': ['warn', {
+  components: { UOldWidget: 'UNewWidget' },
+}]
+```

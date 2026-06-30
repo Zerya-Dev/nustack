@@ -19,6 +19,9 @@ describe('no-deprecated-model-modifiers', () => {
         { filename: 'component.vue', code: '<template><UInput v-model.nullify="value" /></template>', errors: [{ messageId: 'preferNullable' }] },
         { filename: 'component.vue', code: '<template><UInputNumber v-model.nullify="value" /></template>', errors: [{ messageId: 'preferNullable' }] },
         { filename: 'component.vue', code: '<template><UTextarea v-model.nullify="value" /></template>', errors: [{ messageId: 'preferNullable' }] },
+        // Extended via options: extra modifier rename and a custom target component.
+        { filename: 'component.vue', code: '<template><UInput v-model.coerce="value" /></template>', options: [{ modifiers: { coerce: 'transform' } }], errors: [{ messageId: 'preferNullable' }] },
+        { filename: 'component.vue', code: '<template><UCustom v-model.nullify="value" /></template>', options: [{ components: ['ucustom'] }], errors: [{ messageId: 'preferNullable' }] },
       ],
     })
   })

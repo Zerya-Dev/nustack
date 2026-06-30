@@ -42,3 +42,14 @@ points you at that component — both for a raw `<input type="number">` and for 
 
 Dynamic types (`<UInput :type="kind" />`) are ignored — only a statically-written `type`
 is checked. Use `data-raw` as a local escape hatch when a native control is intentional.
+
+## Options
+
+Both maps are extensible (entries are merged onto the built-ins):
+
+```js
+'@nustack/nuxt-ui/prefer-u-form-controls': ['warn', {
+  controls: { progress: 'UProgress' }, // extra raw-element → component
+  types: { email: 'UEmailInput' },     // extra input-type → component
+}]
+```
