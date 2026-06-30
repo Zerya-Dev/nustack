@@ -2,9 +2,9 @@ import type { Linter } from 'eslint'
 import type { FlatConfigComposer } from 'eslint-flat-config-utils'
 import type { AntfuOptions } from './configs/base'
 import type { NuxtConcernOptions } from './configs/nuxt'
-import type { NuxtUiConcernOptions } from './configs/nuxt-ui'
+import type { NuxtEcosystemToggle } from './configs/nuxt-ecosystem'
 import type { TailwindConcernOptions } from './configs/tailwind'
-import type { ConcernContext, Depth, Rules, Variant } from './configs/types'
+import type { ConcernContext, ConcernToggle, Depth, Rules, Variant } from './configs/types'
 import type { ViteConcernOptions } from './configs/vite'
 import type { VueConcernOptions } from './configs/vue'
 import type { VueUseConcernOptions } from './configs/vueuse'
@@ -13,9 +13,10 @@ import { defu } from 'defu'
 import { composer } from 'eslint-flat-config-utils'
 import { antfuBase } from './configs/base'
 import { nuxtConfig } from './configs/nuxt'
-import { nuxtUiConfig } from './configs/nuxt-ui'
+import { nuxtEcosystemConfig } from './configs/nuxt-ecosystem'
 import { tailwindConfig } from './configs/tailwind'
 import { typeAwareConfig } from './configs/type-aware'
+import { isEnabled, subOptions } from './configs/types'
 import { viteConfig } from './configs/vite'
 import { vueConfig } from './configs/vue'
 import { vueUseConfig } from './configs/vueuse'
@@ -27,9 +28,6 @@ export type { Rules } from './configs/types'
 export type Awaitable<T> = T | Promise<T>
 export type NustackFlatConfig = Linter.Config | Linter.Config[] | FlatConfigComposer
 export type NustackUserConfig = Awaitable<NustackFlatConfig>
-
-/** A per-concern toggle: `true`/`undefined` = default, `false` = off, object = tune. */
-type ConcernToggle<T> = boolean | T
 
 /**
  * Options for the public nustack ESLint factory. Mirrors `@antfu/eslint-config`'s
@@ -49,8 +47,12 @@ export interface NustackLintOptions {
   vueUse?: ConcernToggle<VueUseConcernOptions>
   /** Vite build/runtime conventions. */
   vite?: ConcernToggle<ViteConcernOptions>
-  /** Nuxt UI component preferences. Auto-gated on `@nuxt/ui` detection. */
-  nuxtUi?: ConcernToggle<NuxtUiConcernOptions>
+  /**
+   * Nuxt-module ecosystem rules (Nuxt UI today; Pinia/Content later). `false`
+   * disables the whole ecosystem; an object tunes each module in depth, e.g.
+   * `{ nuxtUi: false }`. Each module auto-gates on its own detection.
+   */
+  nuxtEcosystem?: NuxtEcosystemToggle
   /** Tailwind class sorting/correctness. Auto-gated on a detected entry point. */
   tailwind?: ConcernToggle<TailwindConcernOptions>
   /** Global rule changes, merged after every concern. */
@@ -70,21 +72,6 @@ export function resolveDepth(): Depth {
 
 function mergeContext(context: NustackContext | undefined): NustackContext {
   return defu(context, EMPTY_CONTEXT)
-}
-
-/** `false` = disabled; object = explicit opt-in; `true`/`undefined` = default. */
-function isEnabled<T>(toggle: ConcernToggle<T> | undefined, gate: boolean): boolean {
-  if (toggle === false)
-    return false
-  // Explicit opt-in (`true` or an options object) forces the concern on even when
-  // the detection gate is false; otherwise rely on the gate.
-  if (toggle === true || (typeof toggle === 'object' && toggle !== null))
-    return true
-  return gate
-}
-
-function subOptions<T>(toggle: ConcernToggle<T> | undefined): T {
-  return (typeof toggle === 'object' && toggle !== null ? toggle : {}) as T
 }
 
 function resolveRules(options: Pick<NustackLintOptions, 'rules' | 'overrides'>): Rules {
@@ -130,8 +117,10 @@ export function applyNustackConfig(
     configs.push(...viteConfig(axes, subOptions(options.vite)))
   if (isEnabled(options.tailwind, ctx.tailwind.detected))
     configs.push(...tailwindConfig(ctx, axes, subOptions(options.tailwind)))
-  if (isEnabled(options.nuxtUi, ctx.modules.nuxtUi))
-    configs.push(...nuxtUiConfig(ctx, axes, subOptions(options.nuxtUi)))
+  // The ecosystem concern owns its own per-module gating; the umbrella toggle only
+  // needs to honour an explicit `false`.
+  if (options.nuxtEcosystem !== false)
+    configs.push(...nuxtEcosystemConfig(ctx, axes, subOptions(options.nuxtEcosystem)))
 
   // The type-aware layer is a full-depth-only, cross-cutting concern.
   if (depth === 'full')
@@ -161,7 +150,7 @@ export function nustack(
 ): FlatConfigComposer {
   return applyNustackConfig(composer(), {
     nuxt: false,
-    nuxtUi: false,
+    nuxtEcosystem: false,
     vite: false,
     vueUse: false,
     ...options,
