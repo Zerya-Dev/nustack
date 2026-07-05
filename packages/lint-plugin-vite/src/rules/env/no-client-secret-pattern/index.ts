@@ -1,36 +1,8 @@
 import type { Rule } from '@oxlint/plugins'
-
-const SECRET_WORDS = new Set(['SECRET', 'TOKEN', 'PASSWORD', 'PRIVATE'])
-const PUBLIC_KEY_QUALIFIERS = new Set(['PUBLIC', 'PUBLISHABLE', 'SITE'])
-
-function envWords(name: string): string[] {
-  return name
-    .replace(/^VITE_/, '')
-    .split(/[^A-Z0-9]+/i)
-    .map(word => word.toUpperCase())
-    .filter(Boolean)
-}
+import { isSecretLikeName } from '../../../utils/secret-name.js'
 
 function isClientSecretName(name: string): boolean {
-  if (!name.startsWith('VITE_'))
-    return false
-
-  const parts = envWords(name)
-
-  if (parts.some(part => SECRET_WORDS.has(part)))
-    return true
-
-  if (!parts.includes('KEY'))
-    return false
-
-  if (parts.some(part => PUBLIC_KEY_QUALIFIERS.has(part)))
-    return false
-
-  // Common public client SDK naming (`VITE_API_KEY`) is noisy as a hard error.
-  if (parts.length === 2 && parts[0] === 'API' && parts[1] === 'KEY')
-    return false
-
-  return true
+  return name.startsWith('VITE_') && isSecretLikeName(name.replace(/^VITE_/, ''))
 }
 
 function isImportMetaEnv(node: any): boolean {

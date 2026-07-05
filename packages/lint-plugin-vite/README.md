@@ -42,7 +42,9 @@ The same default export also loads in Oxlint via its
 | Rule | Description |
 |---|---|
 | [`@nustack/vite/no-public-src-import`](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-vite/src/rules/assets/no-public-src-import/index.md) | Disallow importing files from Vite `public/` directories. |
+| [`@nustack/vite/no-dynamic-new-url`](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-vite/src/rules/assets/no-dynamic-new-url/index.md) | Disallow dynamic template literals in `new URL(..., import.meta.url)`. |
 | [`@nustack/vite/no-client-secret-pattern`](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-vite/src/rules/env/no-client-secret-pattern/index.md) | Disallow secret-looking `VITE_*` environment variable names. |
+| [`@nustack/vite/no-secret-define`](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-vite/src/rules/define/no-secret-define/index.md) | Disallow secret-looking values in Vite `define` config. |
 
 ## License
 

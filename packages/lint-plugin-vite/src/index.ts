@@ -1,6 +1,8 @@
 import type { ESLint, Linter, Rule } from 'eslint'
 import { eslintCompatPlugin } from '@oxlint/plugins'
+import { noDynamicNewUrl as rawNoDynamicNewUrl } from './rules/assets/no-dynamic-new-url/index.js'
 import { noPublicSrcImport as rawNoPublicSrcImport } from './rules/assets/no-public-src-import/index.js'
+import { noSecretDefine as rawNoSecretDefine } from './rules/define/no-secret-define/index.js'
 import { noClientSecretPattern as rawNoClientSecretPattern } from './rules/env/no-client-secret-pattern/index.js'
 
 const plugin = eslintCompatPlugin({
@@ -9,7 +11,9 @@ const plugin = eslintCompatPlugin({
   },
   rules: {
     'no-public-src-import': rawNoPublicSrcImport,
+    'no-dynamic-new-url': rawNoDynamicNewUrl,
     'no-client-secret-pattern': rawNoClientSecretPattern,
+    'no-secret-define': rawNoSecretDefine,
   },
 }) as unknown as ESLint.Plugin & {
   configs: {
@@ -34,6 +38,12 @@ export const APP_IGNORES = [
   '**/*.{config,test,spec}.*',
   '**/*.d.ts',
 ]
+
+/**
+ * Vite config files — the inverse scope of {@link APP_GLOB}, for rules that only
+ * make sense inside `vite.config.*` (e.g. inspecting the `define` option).
+ */
+export const CONFIG_GLOB = ['**/vite.config.*']
 
 /** Options for {@link viteConfigs}. */
 export interface ViteConfigsOptions {
@@ -60,7 +70,17 @@ export function viteConfigs(options: ViteConfigsOptions = {}): Linter.Config[] {
       plugins: pluginRef,
       rules: {
         '@nustack/vite/no-public-src-import': 'warn',
+        '@nustack/vite/no-dynamic-new-url': 'error',
         '@nustack/vite/no-client-secret-pattern': 'error',
+      },
+    })
+
+    configs.push({
+      name: 'nustack/vite/config',
+      files: CONFIG_GLOB,
+      plugins: pluginRef,
+      rules: {
+        '@nustack/vite/no-secret-define': 'error',
       },
     })
   }
@@ -84,4 +104,6 @@ plugin.configs = {
 
 export const noClientSecretPattern: Rule.RuleModule = plugin.rules!['no-client-secret-pattern'] as Rule.RuleModule
 export const noPublicSrcImport: Rule.RuleModule = plugin.rules!['no-public-src-import'] as Rule.RuleModule
+export const noDynamicNewUrl: Rule.RuleModule = plugin.rules!['no-dynamic-new-url'] as Rule.RuleModule
+export const noSecretDefine: Rule.RuleModule = plugin.rules!['no-secret-define'] as Rule.RuleModule
 export default plugin
