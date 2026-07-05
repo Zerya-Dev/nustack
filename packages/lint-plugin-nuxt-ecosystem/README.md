@@ -2,7 +2,8 @@
 
 ESLint and [Oxlint](https://oxc.rs) rules for the Nuxt module ecosystem — today that
 means [Nuxt UI](https://ui.nuxt.com) component-preference rules. Used by
-[`@nustackjs/lint`](../../modules/lint), but works standalone in any flat ESLint config.
+[`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint), but
+works standalone in any flat ESLint config.
 
 This package is the home for ecosystem sub-packs (Nuxt UI, and more to come); they all
 ship under the scoped plugin name `@nustack/nuxt-ui` for now.
@@ -44,13 +45,13 @@ The same default export also loads in Oxlint via its
 
 | Rule | Description |
 |---|---|
-| [`@nustack/nuxt-ui/prefer-u-button`](./src/rules/nuxt-ui/prefer-u-button/index.md) | Prefer `<UButton>` over raw `<button>` when `@nuxt/ui` is available. |
-| [`@nustack/nuxt-ui/prefer-u-form-controls`](./src/rules/nuxt-ui/prefer-u-form-controls/index.md) | Prefer Nuxt UI form controls over raw native form elements; type-aware (e.g. `<input type="number">` / `<UInput type="number">` → `<UInputNumber>`). |
-| [`@nustack/nuxt-ui/prefer-u-link`](./src/rules/nuxt-ui/prefer-u-link/index.md) | Prefer `<ULink>` over raw `<a>` when `@nuxt/ui` is available. |
-| [`@nustack/nuxt-ui/prefer-u-table`](./src/rules/nuxt-ui/prefer-u-table/index.md) | Prefer `<UTable>` over raw `<table>` when `@nuxt/ui` is available. |
-| [`@nustack/nuxt-ui/no-deprecated-components`](./src/rules/nuxt-ui/no-deprecated-components/index.md) | Disallow Nuxt UI components renamed in v4 (e.g. `UButtonGroup` → `UFieldGroup`). |
-| [`@nustack/nuxt-ui/no-deprecated-model-modifiers`](./src/rules/nuxt-ui/no-deprecated-model-modifiers/index.md) | Disallow the `v-model.nullify` modifier renamed to `.nullable` in Nuxt UI v4. |
+| [`@nustack/nuxt-ui/prefer-u-button`](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-nuxt-ecosystem/src/rules/nuxt-ui/prefer-u-button/index.md) | Prefer `<UButton>` over raw `<button>` when `@nuxt/ui` is available. |
+| [`@nustack/nuxt-ui/prefer-u-form-controls`](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-nuxt-ecosystem/src/rules/nuxt-ui/prefer-u-form-controls/index.md) | Prefer Nuxt UI form controls over raw native form elements; type-aware (e.g. `<input type="number">` / `<UInput type="number">` → `<UInputNumber>`). |
+| [`@nustack/nuxt-ui/prefer-u-link`](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-nuxt-ecosystem/src/rules/nuxt-ui/prefer-u-link/index.md) | Prefer `<ULink>` over raw `<a>` when `@nuxt/ui` is available. |
+| [`@nustack/nuxt-ui/prefer-u-table`](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-nuxt-ecosystem/src/rules/nuxt-ui/prefer-u-table/index.md) | Prefer `<UTable>` over raw `<table>` when `@nuxt/ui` is available. |
+| [`@nustack/nuxt-ui/no-deprecated-components`](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-nuxt-ecosystem/src/rules/nuxt-ui/no-deprecated-components/index.md) | Disallow Nuxt UI components renamed in v4 (e.g. `UButtonGroup` → `UFieldGroup`). |
+| [`@nustack/nuxt-ui/no-deprecated-model-modifiers`](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-nuxt-ecosystem/src/rules/nuxt-ui/no-deprecated-model-modifiers/index.md) | Disallow the `v-model.nullify` modifier renamed to `.nullable` in Nuxt UI v4. |
 
 ## License
 
-[MIT](./LICENSE) © Zerya
+[MIT](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-nuxt-ecosystem/LICENSE) © Zerya

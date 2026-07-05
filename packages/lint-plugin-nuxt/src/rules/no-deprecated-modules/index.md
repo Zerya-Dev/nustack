@@ -1,6 +1,6 @@
 # `@nustack/nuxt/no-deprecated-modules`
 
-Disallow deprecated Nuxt modules in favour of their maintained successors.
+Disallow deprecated Nuxt modules in favor of their maintained successors.
 
 Some widely used Nuxt modules are deprecated or were only ever needed for Nuxt 2.
 Keeping them means missing fixes, fighting the framework's built-ins, or shipping an

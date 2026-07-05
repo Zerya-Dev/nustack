@@ -2,7 +2,8 @@
 
 ESLint and [Oxlint](https://oxc.rs) rules for [Vite](https://vite.dev) asset and
 environment safety — catching `public/` imports and secret-looking `VITE_*` variables
-that leak into the client bundle. Used by [`@nustackjs/lint`](../../modules/lint), but
+that leak into the client bundle. Used by
+[`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint), but
 works standalone in any flat ESLint config.
 
 ## Install
@@ -40,9 +41,9 @@ The same default export also loads in Oxlint via its
 
 | Rule | Description |
 |---|---|
-| [`@nustack/vite/no-public-src-import`](./src/rules/assets/no-public-src-import/index.md) | Disallow importing files from Vite `public/` directories. |
-| [`@nustack/vite/no-client-secret-pattern`](./src/rules/env/no-client-secret-pattern/index.md) | Disallow secret-looking `VITE_*` environment variable names. |
+| [`@nustack/vite/no-public-src-import`](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-vite/src/rules/assets/no-public-src-import/index.md) | Disallow importing files from Vite `public/` directories. |
+| [`@nustack/vite/no-client-secret-pattern`](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-vite/src/rules/env/no-client-secret-pattern/index.md) | Disallow secret-looking `VITE_*` environment variable names. |
 
 ## License
 
-[MIT](./LICENSE) © Zerya
+[MIT](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-vite/LICENSE) © Zerya

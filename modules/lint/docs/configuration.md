@@ -10,7 +10,7 @@ import { nustack } from './.nuxt/nustack-eslint.mjs'
 
 export default nustack({
   variant: 'recommended', // 'minimal' | 'recommended' | 'pedantic'
-  base: { /* antfu options */ }, // or `false` to drop the style base entirely
+  base: { /* Antfu options */ }, // or `false` to drop the style base entirely
   nuxt: true, // each concern: true | false | { ...opts, rules }
   vue: true,
   vueUse: true,
@@ -56,7 +56,7 @@ but you can force or disable any of them:
 
 | Concern | What it does | Auto-gated on |
 |---|---|---|
-| `base` | the antfu style/TS/Vue base (style, imports, etc.) | always (set `base: false` to drop) |
+| `base` | the Antfu style/TS/Vue base (style, imports, etc.) | always (set `base: false` to drop) |
 | `nuxt` | auto-import enforcement, `runtimeConfig` safety, no `process.env` in app code | always |
 | `vue` | SFC conventions (`vue/block-lang` → `lang="ts"`) | `.vue` files |
 | `vueUse` | VueUse/browser API conventions | Nuxt app/client files |
@@ -89,7 +89,7 @@ nustack({
   rules: { '@nustack/nuxt/no-process-env': 'off' },
 })
 
-// 4. Tune the antfu base directly (it's the same options antfu takes)
+// 4. Tune the Antfu base directly (it's the same options Antfu takes)
 nustack({
   base: { stylistic: { quotes: 'double' }, rules: { 'antfu/if-newline': 'off' } },
 })
@@ -102,14 +102,16 @@ nustack(
 
 // 6. The composer floor — override or remove any named config
 nustack()
-  .override('nustack/nuxt/no-process-env', { rules: { /* … */ } })
+  .override('nustack/nuxt/app', { rules: { '@nustack/nuxt/no-process-env': 'off' } })
   .remove('nustack/tailwind')
 ```
 
-`.override(name, …)` targets config objects by their `name` — nustack names its objects
-`nustack/<concern>` or a more specific concern slice (e.g.
-`nustack/nuxt/runtime-config`, `nustack/nuxt/auto-imports`,
-`nustack/nuxt/no-process-env`, `nustack/tailwind`); antfu names its own similarly.
+`.override(name, …)` targets config objects by their `name`. Single-object concerns are
+named after the concern (`nustack/vue`, `nustack/tailwind`, `nustack/nuxt-ui`,
+`nustack/type-aware`); the `nuxt` concern is split into slices —
+`nustack/nuxt/runtime-config` (secret floor), `nustack/nuxt/modules` (module order /
+deprecations), `nustack/nuxt/app` (app-source rules incl. `no-process-env`); Antfu names
+its own similarly. Inspect the exact names with the config inspector below.
 
 ## Config inspector
 
