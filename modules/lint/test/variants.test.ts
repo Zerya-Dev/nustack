@@ -4,18 +4,23 @@ import type { NustackContext } from '../src/context'
 import { composer } from 'eslint-flat-config-utils'
 import { afterEach, describe, expect, it } from 'vitest'
 import { applyNustackConfig } from '../src/config'
+import { resolveMarkdownPreset } from '../src/configs/markdown'
 
 // A context where every detectable feature is present, so concern gating is driven
 // purely by the options under test rather than by missing detection.
 const FULL_CONTEXT: NustackContext = {
-  modules: { nuxtUi: true, pinia: false, nuxtImage: false, nuxtContent: false },
+  modules: { nuxtUi: true, pinia: false, nuxtImage: false, nuxtContent: false, mdc: false },
   tailwind: { detected: true, entryPoint: 'app/assets/css/main.css' },
   autoImports: ['ref'],
   components: ['UButton'],
 }
 
 async function resolve(options: NustackLintOptions): Promise<Linter.Config[]> {
-  return applyNustackConfig(composer() as any, { context: FULL_CONTEXT, ...options }).toConfigs() as any
+  return await applyNustackConfig(composer() as any, {context: FULL_CONTEXT, ...options}).toConfigs() as any
+}
+
+async function resolveWithContext(context: NustackContext, options: NustackLintOptions = {}): Promise<Linter.Config[]> {
+  return await applyNustackConfig(composer() as any, {context, ...options}).toConfigs() as any
 }
 
 /** Names of the nustack-authored config objects in the resolved flat config. */
@@ -132,6 +137,34 @@ describe('concern toggles', () => {
     ).toConfigs() as Linter.Config[]
 
     expect(configs.at(-1)?.name).toBe('user/rules')
+  })
+})
+
+describe('markdown concern', () => {
+  it('adds mdclint without overriding its default rules', async () => {
+    const configs = await resolve({})
+    const markdown = configs.find(c => c.name === 'nustack/markdown')
+
+    expect(markdown).toBeTruthy()
+    expect(markdown?.rules).toEqual({})
+    expect(resolveMarkdownPreset(FULL_CONTEXT)).toBe('markdown')
+  })
+
+  it('selects the MDC preset when the Nuxt context detects MDC content', async () => {
+    const context = {
+      ...FULL_CONTEXT,
+      modules: { ...FULL_CONTEXT.modules, mdc: true },
+    }
+    const configs = await resolveWithContext(context)
+    const markdown = configs.find(c => c.name === 'nustack/markdown')
+
+    expect(markdown?.rules).toEqual({})
+    expect(resolveMarkdownPreset(context)).toBe('mdc')
+  })
+
+  it('can be disabled', async () => {
+    const names = await nustackConfigNames({ markdown: false })
+    expect(names).not.toContain('nustack/markdown')
   })
 })
 

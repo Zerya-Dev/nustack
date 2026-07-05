@@ -15,6 +15,8 @@ export interface NustackContext {
     nuxtImage: boolean
     /** `@nuxt/content` — reserved for a future pack. */
     nuxtContent: boolean
+    /** MDC-capable Markdown renderer (`@nuxt/content`, `@comark/nuxt`, or legacy `@nuxtjs/mdc`). */
+    mdc: boolean
   }
   tailwind: {
     /** Whether a Tailwind v4 CSS entry point was found. */
@@ -37,7 +39,7 @@ export interface NustackContext {
 
 /** A safe, empty context used as a fallback when the generated file is absent. */
 export const EMPTY_CONTEXT: NustackContext = {
-  modules: { nuxtUi: false, pinia: false, nuxtImage: false, nuxtContent: false },
+  modules: { nuxtUi: false, pinia: false, nuxtImage: false, nuxtContent: false, mdc: false },
   tailwind: { detected: false, entryPoint: null },
   autoImports: [],
   components: [],

@@ -17,6 +17,7 @@ export default nustack({
   vite: true,
   nuxtUi: true, // auto-gated on @nuxt/ui detection
   tailwind: true, // auto-gated on a Tailwind entry point
+  markdown: true, // mdclint for content/**/*.md; MDC auto-detected
   rules: { /* global rule changes, applied last */ },
 })
 ```
@@ -63,6 +64,7 @@ but you can force or disable any of them:
 | `vite` | Vite asset/env safety | Nuxt app/client files |
 | `nuxtUi` | prefer Nuxt UI components | `@nuxt/ui` installed |
 | `tailwind` | class sorting/correctness via better-tailwindcss (incl. the `:ui` prop) | a Tailwind entry point |
+| `markdown` | Markdown/MDC linting via mdclint for `content/**/*.md` | always; MDC preset when `@nuxt/content`, `@comark/nuxt`, or `@nuxtjs/mdc` is detected |
 
 The standalone `@nustackjs/lint/config` entry defaults project-detected concerns off
 (`nuxt`, `nuxtUi`, `vueUse`, `vite`). Enable them explicitly in non-Nuxt projects.
@@ -89,18 +91,23 @@ nustack({
   rules: { '@nustack/nuxt/no-process-env': 'off' },
 })
 
-// 4. Tune the Antfu base directly (it's the same options Antfu takes)
+// 4. Force MDC parsing for a non-Nuxt setup
+nustack({
+  markdown: { preset: 'mdc', files: ['docs/**/*.md'] },
+})
+
+// 5. Tune the Antfu base directly (it's the same options Antfu takes)
 nustack({
   base: { stylistic: { quotes: 'double' }, rules: { 'antfu/if-newline': 'off' } },
 })
 
-// 5. File-scoped flat configs go after the options object
+// 6. File-scoped flat configs go after the options object
 nustack(
   {},
   { files: ['scripts/**'], rules: { 'no-console': 'off' } },
 )
 
-// 6. The composer floor — override or remove any named config
+// 7. The composer floor — override or remove any named config
 nustack()
   .override('nustack/nuxt/app', { rules: { '@nustack/nuxt/no-process-env': 'off' } })
   .remove('nustack/tailwind')
@@ -108,7 +115,7 @@ nustack()
 
 `.override(name, …)` targets config objects by their `name`. Single-object concerns are
 named after the concern (`nustack/vue`, `nustack/tailwind`, `nustack/nuxt-ui`,
-`nustack/type-aware`); the `nuxt` concern is split into slices —
+`nustack/markdown`, `nustack/type-aware`); the `nuxt` concern is split into slices —
 `nustack/nuxt/runtime-config` (secret floor), `nustack/nuxt/modules` (module order /
 deprecations), `nustack/nuxt/app` (app-source rules incl. `no-process-env`); Antfu names
 its own similarly. Inspect the exact names with the config inspector below.

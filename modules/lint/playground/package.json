@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@nustackjs/lint": "workspace:*",
+    "@nuxt/content": "catalog:nuxt",
     "@nuxt/eslint": "catalog:eslint",
     "@nuxt/ui": "catalog:nuxt",
     "@vueuse/core": "catalog:vue",

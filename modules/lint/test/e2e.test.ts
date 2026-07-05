@@ -11,7 +11,7 @@ import { applyNustackConfig } from '../src/config'
 const TAILWIND_ENTRY = fileURLToPath(new URL('./fixtures/tailwind.css', import.meta.url))
 
 const CONTEXT: NustackContext = {
-  modules: { nuxtUi: true, pinia: false, nuxtImage: false, nuxtContent: false },
+  modules: { nuxtUi: true, pinia: false, nuxtImage: false, nuxtContent: false, mdc: false },
   tailwind: { detected: true, entryPoint: TAILWIND_ENTRY },
   autoImports: ['ref', 'useRuntimeConfig'],
   components: ['UButton'],

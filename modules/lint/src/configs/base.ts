@@ -16,6 +16,8 @@ export type AntfuOptions = NonNullable<Parameters<typeof antfu>[0]>
  * so Antfu also enables its type-aware rule set.
  */
 const ANTFU_DEFAULTS: Omit<AntfuOptions, 'typescript'> = {
+  // Markdown is handled by another plugin - `mdclint`.
+  markdown: false,
   stylistic: true,
   vue: true,
   rules: {

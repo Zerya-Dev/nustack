@@ -15,6 +15,8 @@ const MODULE_FLAGS = {
   '@pinia/nuxt': 'pinia',
   '@nuxt/image': 'nuxtImage',
   '@nuxt/content': 'nuxtContent',
+  '@comark/nuxt': 'mdc',
+  '@nuxtjs/mdc': 'mdc',
 } as const satisfies Record<string, keyof NustackContext['modules']>
 
 interface NitroWithUnimport {
@@ -72,11 +74,14 @@ export function setupNustackContext(nuxt: Nuxt): void {
       pinia: false,
       nuxtImage: false,
       nuxtContent: false,
+      mdc: false,
     }
     for (const [name, flag] of Object.entries(MODULE_FLAGS)) {
       if (installed.has(name))
         modules[flag] = true
     }
+    if (installed.has('@nuxt/content'))
+      modules.mdc = true
     return modules
   }
 

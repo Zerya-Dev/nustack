@@ -1,6 +1,7 @@
 import type { Linter } from 'eslint'
 import type { FlatConfigComposer } from 'eslint-flat-config-utils'
 import type { AntfuOptions } from './configs/base'
+import type { MarkdownConcernOptions } from './configs/markdown'
 import type { NuxtConcernOptions } from './configs/nuxt'
 import type { NuxtEcosystemToggle } from './configs/nuxt-ecosystem'
 import type { TailwindConcernOptions } from './configs/tailwind'
@@ -12,6 +13,7 @@ import type { NustackContext } from './context'
 import { defu } from 'defu'
 import { composer } from 'eslint-flat-config-utils'
 import { antfuBase } from './configs/base'
+import { markdownConfig } from './configs/markdown'
 import { nuxtConfig } from './configs/nuxt'
 import { nuxtEcosystemConfig } from './configs/nuxt-ecosystem'
 import { tailwindConfig } from './configs/tailwind'
@@ -55,6 +57,8 @@ export interface NustackLintOptions {
   nuxtEcosystem?: NuxtEcosystemToggle
   /** Tailwind class sorting/correctness. Auto-gated on a detected entry point. */
   tailwind?: ConcernToggle<TailwindConcernOptions>
+  /** Markdown/MDC linting via mdclint. MDC auto-gates on @nuxt/content, @comark/nuxt, or @nuxtjs/mdc. */
+  markdown?: ConcernToggle<MarkdownConcernOptions>
   /** Global rule changes, merged after every concern. */
   rules?: Rules
   /** @deprecated Use `rules` instead. */
@@ -117,6 +121,8 @@ export function applyNustackConfig(
     configs.push(...viteConfig(axes, subOptions(options.vite)))
   if (isEnabled(options.tailwind, ctx.tailwind.detected))
     configs.push(...tailwindConfig(ctx, axes, subOptions(options.tailwind)))
+  if (isEnabled(options.markdown, true))
+    configs.push(...markdownConfig(ctx, subOptions(options.markdown)))
   // The ecosystem concern owns its own per-module gating; the umbrella toggle only
   // needs to honour an explicit `false`.
   if (options.nuxtEcosystem !== false)
