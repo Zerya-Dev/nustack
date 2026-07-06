@@ -3,5 +3,5 @@
   "packages/lint-plugin-nuxt-ecosystem": "0.2.0",
   "packages/lint-plugin-vite": "0.1.0",
   "packages/lint-plugin-vueuse": "0.2.0",
-  "modules/lint": "0.3.0"
+  "modules/lint": "0.3.1"
 }
