@@ -16,11 +16,11 @@ const FULL_CONTEXT: NustackContext = {
 }
 
 async function resolve(options: NustackLintOptions): Promise<Linter.Config[]> {
-  return await applyNustackConfig(composer() as any, {context: FULL_CONTEXT, ...options}).toConfigs() as any
+  return await applyNustackConfig(composer() as any, { context: FULL_CONTEXT, ...options }).toConfigs() as any
 }
 
 async function resolveWithContext(context: NustackContext, options: NustackLintOptions = {}): Promise<Linter.Config[]> {
-  return await applyNustackConfig(composer() as any, {context, ...options}).toConfigs() as any
+  return await applyNustackConfig(composer() as any, { context, ...options }).toConfigs() as any
 }
 
 /** Names of the nustack-authored config objects in the resolved flat config. */

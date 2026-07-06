@@ -1,6 +1,7 @@
+import type { Linter as LinterNs } from 'eslint'
 import { existsSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { Linter, type Linter as LinterNs } from 'eslint'
+import { Linter } from 'eslint'
 import { describe, expect, it } from 'vitest'
 import { generateCode } from '../src/addon'
 import { EMPTY_CONTEXT } from '../src/context'
