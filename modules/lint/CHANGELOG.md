@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.1](https://github.com/Zerya-Dev/nustack/compare/lint-v0.3.0...lint-v0.3.1) (2026-07-06)
+
+
+### Bug Fixes
+
+* **lint:** migrate better-tailwindcss config to v4 ([2501176](https://github.com/Zerya-Dev/nustack/commit/250117636c90b1e9c5b0f58328cec5fb3eabf1c5))
+* **lint:** remove invalid `vue/no-multiple-template-root` override ([c98b96f](https://github.com/Zerya-Dev/nustack/commit/c98b96f2fdff76d989754347bd7858f64241752c))
+
 ## [0.3.0](https://github.com/Zerya-Dev/nustack/compare/lint-v0.2.0...lint-v0.3.0) (2026-07-06)
 
 
