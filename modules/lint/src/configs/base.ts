@@ -21,8 +21,6 @@ const ANTFU_DEFAULTS: Omit<AntfuOptions, 'typescript'> = {
   stylistic: true,
   vue: true,
   rules: {
-    // Nuxt pages/layouts legitimately have multiple root nodes.
-    'vue/no-multiple-template-root': 'off',
     // `process` is always available as a Nuxt/Nitro global, so prefer it over
     // importing `node:process` (antfu's default is the opposite, `'never'`). App
     // code is separately steered off `process.env` by @nustack/nuxt/no-process-env.
