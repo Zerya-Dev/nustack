@@ -82,7 +82,15 @@ nustack({ tailwind: false, base: false })
 nustack({
   tailwind: {
     rules: { 'better-tailwindcss/enforce-consistent-line-wrapping': ['warn', { printWidth: 100 }] },
-    settings: { attributes: ['myClassProp'] },
+    settings: {
+      selectors: [
+        {
+          kind: 'attribute',
+          name: 'myClassProp',
+          match: [{ type: 'string' }],
+        },
+      ],
+    },
   },
 })
 

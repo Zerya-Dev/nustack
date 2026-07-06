@@ -3,8 +3,8 @@ import type { NustackContext } from '../context'
 import type { ConcernContext, ConcernOptions } from './types'
 import { defu } from 'defu'
 import betterTailwind from 'eslint-plugin-better-tailwindcss'
-import { getDefaultAttributes, getDefaultCallees } from 'eslint-plugin-better-tailwindcss/api/defaults'
-import { MatcherType } from 'eslint-plugin-better-tailwindcss/api/types'
+import { getDefaultSelectors } from 'eslint-plugin-better-tailwindcss/defaults'
+import { SelectorKind } from 'eslint-plugin-better-tailwindcss/types'
 import { resolveConcernRules, variantAtLeast } from './types'
 
 const GLOB_CODE = ['**/*.vue', '**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}']
@@ -14,7 +14,7 @@ export interface TailwindConcernOptions extends ConcernOptions {
   entryPoint?: string
   /**
    * Extra `better-tailwindcss` shared settings, merged over the defaults — e.g.
-   * `attributes`, `callees`, `tailwindConfig`. Rule options (printWidth etc.) go
+   * `selectors`, `tailwindConfig`. Rule options (printWidth etc.) go
    * through `rules`, not here.
    */
   settings?: Record<string, unknown>
@@ -35,12 +35,13 @@ export function tailwindConfig(
   opts: TailwindConcernOptions = {},
 ): Linter.Config[] {
   const rules = resolveConcernRules(opts)
-  const uiAttributes = ctx.modules.nuxtUi
+  const uiSelectors = ctx.modules.nuxtUi
     ? [
-        // Bound `:ui` — better-tailwindcss normalizes it to `v-bind:ui`;
-        // the leading `:` in the config name is the signal it does so.
-        [':ui', [{ match: MatcherType.ObjectValue }]],
-        ['ui', [{ match: MatcherType.ObjectValue }]],
+        {
+          kind: SelectorKind.Attribute,
+          name: '^(?::|v-bind:)ui$',
+          match: [{ type: 'objectValues' }],
+        },
       ]
     : []
 
@@ -54,8 +55,7 @@ export function tailwindConfig(
       settings: {
         'better-tailwindcss': defu(opts.settings, {
           ...(entryPoint ? { entryPoint } : {}),
-          attributes: [...getDefaultAttributes(), ...uiAttributes],
-          callees: getDefaultCallees(),
+          selectors: [...getDefaultSelectors(), ...uiSelectors],
         }),
       },
       rules: {
@@ -63,7 +63,7 @@ export function tailwindConfig(
         ...(variantAtLeast(axes.variant, 'pedantic')
           ? { 'better-tailwindcss/enforce-consistent-line-wrapping': 'warn' }
           : {}),
-        'better-tailwindcss/no-unregistered-classes': 'warn',
+        'better-tailwindcss/no-unknown-classes': 'warn',
         'better-tailwindcss/no-conflicting-classes': 'error',
         'better-tailwindcss/no-duplicate-classes': 'error',
         ...rules,
