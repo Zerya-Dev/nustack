@@ -1,4 +1,5 @@
 import type { Rule } from '@oxlint/plugins'
+import { docsUrl } from '../../utils/docs-url.js'
 
 const SECRET_WORDS = new Set(['secret', 'token', 'password', 'private'])
 const PUBLIC_KEY_QUALIFIERS = new Set(['public', 'publishable', 'site'])
@@ -49,6 +50,7 @@ export const noSecretInPublicRuntimeConfig: Rule = {
     type: 'problem',
     docs: {
       description: 'Disallow secret-looking keys under `runtimeConfig.public`.',
+      url: docsUrl('no-secret-in-public-runtimeconfig'),
     },
     schema: [],
     messages: {

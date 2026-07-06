@@ -1,4 +1,5 @@
 import type { Rule } from '@oxlint/plugins'
+import { docsUrl } from '../../../utils/docs-url.js'
 
 const CONTROL_MAP: Record<string, string> = {
   input: 'UInput',
@@ -41,6 +42,7 @@ export const preferUFormControls: Rule = {
     type: 'suggestion',
     docs: {
       description: 'Prefer Nuxt UI form controls over raw form elements.',
+      url: docsUrl('nuxt-ui/prefer-u-form-controls'),
     },
     schema: [{
       type: 'object',

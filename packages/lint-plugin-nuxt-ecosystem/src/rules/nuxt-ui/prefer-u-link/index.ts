@@ -1,4 +1,5 @@
 import type { Rule } from '@oxlint/plugins'
+import { docsUrl } from '../../../utils/docs-url.js'
 
 function hasEscapeHatch(node: any): boolean {
   return node.startTag.attributes.some(
@@ -11,6 +12,7 @@ export const preferULink: Rule = {
     type: 'suggestion',
     docs: {
       description: 'Prefer `<ULink>` over raw `<a>` when Nuxt UI is available.',
+      url: docsUrl('nuxt-ui/prefer-u-link'),
     },
     schema: [],
     messages: {

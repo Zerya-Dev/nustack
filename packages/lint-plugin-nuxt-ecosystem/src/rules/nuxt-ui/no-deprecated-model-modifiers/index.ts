@@ -1,4 +1,5 @@
 import type { Rule } from '@oxlint/plugins'
+import { docsUrl } from '../../../utils/docs-url.js'
 
 /** Renamed `v-model` modifiers: old → new. Verified 2026-06-30 against ui.nuxt.com (v4). */
 const DEPRECATED_MODIFIERS: Record<string, string> = {
@@ -20,6 +21,7 @@ export const noDeprecatedModelModifiers: Rule = {
     type: 'problem',
     docs: {
       description: 'Disallow the `v-model.nullify` modifier renamed to `.nullable` in Nuxt UI v4.',
+      url: docsUrl('nuxt-ui/no-deprecated-model-modifiers'),
     },
     schema: [{
       type: 'object',

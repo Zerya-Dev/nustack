@@ -1,10 +1,12 @@
 import type { Rule } from '@oxlint/plugins'
+import { docsUrl } from '../../utils/docs-url.js'
 
 export const noProcessEnv: Rule = {
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Disallow `process.env` in app code; use `useRuntimeConfig()`.',
+      url: docsUrl('no-process-env'),
     },
     schema: [],
     messages: {

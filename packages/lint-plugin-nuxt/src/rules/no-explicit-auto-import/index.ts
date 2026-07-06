@@ -1,4 +1,5 @@
 import type { Rule } from '@oxlint/plugins'
+import { docsUrl } from '../../utils/docs-url.js'
 
 interface Options {
   imports?: string[]
@@ -20,6 +21,7 @@ export const noExplicitAutoImport: Rule = {
     type: 'problem',
     docs: {
       description: 'Disallow explicit imports of Nuxt auto-imported identifiers and components.',
+      url: docsUrl('no-explicit-auto-import'),
     },
     fixable: 'code',
     schema: [{

@@ -1,4 +1,5 @@
 import type { Rule } from '@oxlint/plugins'
+import { docsUrl } from '../../../utils/docs-url.js'
 
 function isImportMetaUrl(node: any): boolean {
   return node?.type === 'MemberExpression'
@@ -15,6 +16,7 @@ export const noDynamicNewUrl: Rule = {
     type: 'problem',
     docs: {
       description: 'Disallow dynamic template literals in `new URL(..., import.meta.url)`.',
+      url: docsUrl('assets/no-dynamic-new-url'),
     },
     schema: [],
     messages: {

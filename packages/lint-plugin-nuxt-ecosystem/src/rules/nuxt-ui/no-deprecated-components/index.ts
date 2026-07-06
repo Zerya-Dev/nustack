@@ -1,4 +1,5 @@
 import type { Rule } from '@oxlint/plugins'
+import { docsUrl } from '../../../utils/docs-url.js'
 
 interface DeprecatedComponent {
   /** Canonical (proper-cased) name, for the message. */
@@ -22,6 +23,7 @@ export const noDeprecatedComponents: Rule = {
     type: 'problem',
     docs: {
       description: 'Disallow Nuxt UI components renamed in v4 in favour of their current names.',
+      url: docsUrl('nuxt-ui/no-deprecated-components'),
     },
     schema: [{
       type: 'object',

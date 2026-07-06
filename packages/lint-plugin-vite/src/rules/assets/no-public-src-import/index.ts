@@ -1,10 +1,12 @@
 import type { Rule } from '@oxlint/plugins'
+import { docsUrl } from '../../../utils/docs-url.js'
 
 export const noPublicSrcImport: Rule = {
   meta: {
     type: 'problem',
     docs: {
       description: 'Disallow importing assets from Vite public directories.',
+      url: docsUrl('assets/no-public-src-import'),
     },
     schema: [],
     messages: {

@@ -1,4 +1,5 @@
 import type { Rule } from '@oxlint/plugins'
+import { docsUrl } from '../../utils/docs-url.js'
 
 /**
  * Ordering constraints between Nuxt ecosystem modules. Each entry means "`before`
@@ -66,6 +67,7 @@ export const modulesOrder: Rule = {
     type: 'problem',
     docs: {
       description: 'Enforce a correct registration order for interdependent Nuxt modules.',
+      url: docsUrl('modules-order'),
     },
     schema: [],
     messages: {

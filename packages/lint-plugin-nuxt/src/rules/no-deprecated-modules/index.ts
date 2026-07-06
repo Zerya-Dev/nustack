@@ -1,4 +1,5 @@
 import type { Rule } from '@oxlint/plugins'
+import { docsUrl } from '../../utils/docs-url.js'
 
 interface DeprecatedModule {
   replacement: string
@@ -51,6 +52,7 @@ export const noDeprecatedModules: Rule = {
     type: 'problem',
     docs: {
       description: 'Disallow deprecated Nuxt modules in favour of their maintained successors.',
+      url: docsUrl('no-deprecated-modules'),
     },
     schema: [],
     messages: {

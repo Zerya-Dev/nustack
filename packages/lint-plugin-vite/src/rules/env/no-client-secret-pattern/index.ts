@@ -1,4 +1,5 @@
 import type { Rule } from '@oxlint/plugins'
+import { docsUrl } from '../../../utils/docs-url.js'
 import { isSecretLikeName } from '../../../utils/secret-name.js'
 
 function isClientSecretName(name: string): boolean {
@@ -20,6 +21,7 @@ export const noClientSecretPattern: Rule = {
     type: 'problem',
     docs: {
       description: 'Disallow secret-looking `VITE_*` env variables in client code.',
+      url: docsUrl('env/no-client-secret-pattern'),
     },
     schema: [],
     messages: {

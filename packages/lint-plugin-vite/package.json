@@ -32,7 +32,8 @@
   "files": [
     "LICENSE",
     "README.md",
-    "dist"
+    "dist",
+    "src/**/*.md"
   ],
   "scripts": {
     "build": "tsdown src/index.ts --dts --clean",

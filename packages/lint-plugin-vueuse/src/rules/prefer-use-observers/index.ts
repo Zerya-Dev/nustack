@@ -1,11 +1,12 @@
 import type { Rule } from '@oxlint/plugins'
+import { docsUrl } from '../../utils/docs-url.js'
 
 const observers = ['IntersectionObserver', 'MutationObserver', 'ResizeObserver', 'PerformanceObserver'] as const
 
 export const preferUseObservers: Rule = {
   meta: {
     type: 'suggestion',
-    docs: { description: 'Prefer VueUse observer composables over raw Observer constructors.' },
+    docs: { description: 'Prefer VueUse observer composables over raw Observer constructors.', url: docsUrl('prefer-use-observers') },
     schema: [],
     messages: {
       preferUseObservers: 'Prefer VueUse observer composables like `useIntersectionObserver()`, `useMutationObserver()`, or `useResizeObserver()`.',

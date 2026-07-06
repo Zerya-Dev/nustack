@@ -1,4 +1,5 @@
 import type { Rule } from '@oxlint/plugins'
+import { docsUrl } from '../../utils/docs-url.js'
 
 interface Options {
   additionalNames?: string[]
@@ -22,7 +23,7 @@ const defaultCollidingNames = [
 export const noNuxtAutoImportCollision: Rule = {
   meta: {
     type: 'problem',
-    docs: { description: 'Require aliases for VueUse imports that collide with common Nuxt auto-imports.' },
+    docs: { description: 'Require aliases for VueUse imports that collide with common Nuxt auto-imports.', url: docsUrl('no-nuxt-auto-import-collision') },
     schema: [
       {
         type: 'object',

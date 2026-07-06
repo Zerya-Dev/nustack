@@ -1,10 +1,11 @@
 import type { Rule } from '@oxlint/plugins'
+import { docsUrl } from '../../utils/docs-url.js'
 import { isMemberCall } from '../helpers.js'
 
 export const preferUseEventListener: Rule = {
   meta: {
     type: 'suggestion',
-    docs: { description: 'Prefer `useEventListener()` over raw DOM event listener APIs.' },
+    docs: { description: 'Prefer `useEventListener()` over raw DOM event listener APIs.', url: docsUrl('prefer-useevent-listener') },
     schema: [],
     messages: {
       preferUseEventListener: 'Prefer `useEventListener()` from VueUse so listeners are cleaned up with the component scope.',

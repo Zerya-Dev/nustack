@@ -1,4 +1,5 @@
 import type { Rule } from '@oxlint/plugins'
+import { docsUrl } from '../../../utils/docs-url.js'
 import { isSecretLikeName } from '../../../utils/secret-name.js'
 
 function propertyKeyName(node: any): string | undefined {
@@ -37,6 +38,7 @@ export const noSecretDefine: Rule = {
     type: 'problem',
     docs: {
       description: 'Disallow secret-looking values in Vite `define` config.',
+      url: docsUrl('define/no-secret-define'),
     },
     schema: [],
     messages: {
