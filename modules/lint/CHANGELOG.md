@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.3.0](https://github.com/Zerya-Dev/nustack/compare/lint-v0.2.0...lint-v0.3.0) (2026-07-06)
+
+
+### Features
+
+* use `mdclint` instead of `@eslint/markdown` ([6108cdd](https://github.com/Zerya-Dev/nustack/commit/6108cdd2271d7f3405dfb08a7559cf8df09b3bc4))
+
+
+### Bug Fixes
+
+* use exact workspace versions for internal packages ([041d361](https://github.com/Zerya-Dev/nustack/commit/041d3610398c1bfdc876d95c75bbaa74f47f2bbc))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @nustackjs/lint-plugin-vite bumped to 0.1.0
+
 ## [0.2.0](https://github.com/Zerya-Dev/nustack/compare/lint-v0.1.0...lint-v0.2.0) (2026-06-30)
 
 
