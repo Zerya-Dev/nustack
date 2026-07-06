@@ -25,6 +25,8 @@ const ANTFU_DEFAULTS: Omit<AntfuOptions, 'typescript'> = {
     // importing `node:process` (antfu's default is the opposite, `'never'`). App
     // code is separately steered off `process.env` by @nustack/nuxt/no-process-env.
     'node/prefer-global/process': ['error', 'always'],
+    // oxfmt (planned formatter migration) hardcodes 1tbs and doesn't allow
+    // customizing brace style, so we align ESLint with it now.
     'style/brace-style': ['warn', '1tbs'],
   },
 }
