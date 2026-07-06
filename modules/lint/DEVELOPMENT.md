@@ -14,7 +14,7 @@ one zero-config Nuxt preset.
 Run from this directory (`modules/lint`).
 
 | Script               | What it does                                                                                                                                                |
-|----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `pnpm dev`           | Build the module and run the playground in dev (`nuxt dev playground`).                                                                                     |
 | `pnpm dev:prepare`   | Build the plugins + module + prepare the playground. Run once after a fresh clone or when plugin/module output is stale.                                    |
 | `pnpm dev:inspector` | Open [`@eslint/config-inspector`](https://github.com/eslint/config-inspector) against `eslint.config.ts` — the fastest way to see the resolved flat config. |

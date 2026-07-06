@@ -78,3 +78,4 @@
     * @nustackjs/lint-plugin-nuxt bumped to 0.1.0
     * @nustackjs/lint-plugin-nuxt-ecosystem bumped to 0.1.0
     * @nustackjs/lint-plugin-vueuse bumped to 0.1.0
+

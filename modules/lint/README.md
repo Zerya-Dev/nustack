@@ -23,7 +23,7 @@ ESLint/Oxlint plugins. Part of [NuStack](https://github.com/Zerya-Dev/nustack).
 - **One canonical way.** Where the ecosystem offers several ways to do the same thing, the
   preset standardizes on one and enforces it — so conventions live in the linter, not in
   every code review, `DEVELOPMENT.md`, or `AGENTS.md`. Disagree with a pick?
-  Override it; everything *should be* configurable.
+  Override it; everything _should be_ configurable.
 
 ## Coverage
 
@@ -137,5 +137,6 @@ the design contract and local workflow.
 [MIT](https://github.com/Zerya-Dev/nustack/blob/master/modules/lint/LICENSE) © Zerya
 
 <!-- Badges -->
+
 [nuxt-src]: https://img.shields.io/badge/Nuxt-020420?logo=nuxt
 [nuxt-href]: https://nuxt.com

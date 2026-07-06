@@ -28,11 +28,11 @@ Extra arguments after the options object are appended as normal flat config obje
 
 ### `variant` — how opinionated (static)
 
-| Variant | Adds |
-|---|---|
-| `minimal` | only the security/correctness floor (e.g. no secrets in public runtimeConfig) |
-| `recommended` *(default)* | the full opinionated, fast rule set |
-| `pedantic` | extra aggressive rules with higher false-positive rates |
+| Variant                   | Adds                                                                          |
+| ------------------------- | ----------------------------------------------------------------------------- |
+| `minimal`                 | only the security/correctness floor (e.g. no secrets in public runtimeConfig) |
+| `recommended` _(default)_ | the full opinionated, fast rule set                                           |
+| `pedantic`                | extra aggressive rules with higher false-positive rates                       |
 
 Cumulative: `pedantic` includes `recommended` includes `minimal`. Set it once for the
 project.
@@ -55,16 +55,16 @@ NUSTACK_LINT_DEPTH=full eslint .    # full — adds type-aware / cross-file rule
 Each concern is `true | false | { ...opts, rules }`. They auto-gate on detection,
 but you can force or disable any of them:
 
-| Concern | What it does | Auto-gated on |
-|---|---|---|
-| `base` | the Antfu style/TS/Vue base (style, imports, etc.) | always (set `base: false` to drop) |
-| `nuxt` | auto-import enforcement, `runtimeConfig` safety, no `process.env` in app code | always |
-| `vue` | SFC conventions (`vue/block-lang` → `lang="ts"`) | `.vue` files |
-| `vueUse` | VueUse/browser API conventions | Nuxt app/client files |
-| `vite` | Vite asset/env safety | Nuxt app/client files |
-| `nuxtUi` | prefer Nuxt UI components | `@nuxt/ui` installed |
-| `tailwind` | class sorting/correctness via better-tailwindcss (incl. the `:ui` prop) | a Tailwind entry point |
-| `markdown` | Markdown/MDC linting via mdclint for `content/**/*.md` | always; MDC preset when `@nuxt/content`, `@comark/nuxt`, or `@nuxtjs/mdc` is detected |
+| Concern    | What it does                                                                  | Auto-gated on                                                                         |
+| ---------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `base`     | the Antfu style/TS/Vue base (style, imports, etc.)                            | always (set `base: false` to drop)                                                    |
+| `nuxt`     | auto-import enforcement, `runtimeConfig` safety, no `process.env` in app code | always                                                                                |
+| `vue`      | SFC conventions (`vue/block-lang` → `lang="ts"`)                              | `.vue` files                                                                          |
+| `vueUse`   | VueUse/browser API conventions                                                | Nuxt app/client files                                                                 |
+| `vite`     | Vite asset/env safety                                                         | Nuxt app/client files                                                                 |
+| `nuxtUi`   | prefer Nuxt UI components                                                     | `@nuxt/ui` installed                                                                  |
+| `tailwind` | class sorting/correctness via better-tailwindcss (incl. the `:ui` prop)       | a Tailwind entry point                                                                |
+| `markdown` | Markdown/MDC linting via mdclint for `content/**/*.md`                        | always; MDC preset when `@nuxt/content`, `@comark/nuxt`, or `@nuxtjs/mdc` is detected |
 
 The standalone `@nustackjs/lint/config` entry defaults project-detected concerns off
 (`nuxt`, `nuxtUi`, `vueUse`, `vite`). Enable them explicitly in non-Nuxt projects.

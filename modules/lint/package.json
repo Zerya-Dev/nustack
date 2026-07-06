@@ -79,6 +79,7 @@
     "defu": "catalog:nuxt",
     "eslint-flat-config-utils": "catalog:eslint",
     "eslint-plugin-better-tailwindcss": "catalog:eslint",
+    "eslint-plugin-format": "catalog:eslint",
     "eslint-plugin-vue": "catalog:eslint",
     "mdclint": "catalog:eslint",
     "unimport": "catalog:nuxt",

@@ -20,6 +20,10 @@ const ANTFU_DEFAULTS: Omit<AntfuOptions, 'typescript'> = {
   markdown: false,
   stylistic: true,
   vue: true,
+  // Some formats like CSS/HTML/Markdown (incl. `<style>` blocks in `.vue` SFCs)
+  // cannot be handled by eslint and eslint stylistics. For that reason we need
+  // to enable prettier for them. This will be replaced with oxfmt in the future.
+  formatters: true,
   rules: {
     // `process` is always available as a Nuxt/Nitro global, so prefer it over
     // importing `node:process` (antfu's default is the opposite, `'never'`). App

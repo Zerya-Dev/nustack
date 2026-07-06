@@ -1,7 +1,7 @@
 # Migration
 
 NuStack Lint bundles `@nuxt/eslint` and the antfu base, so migrating mostly means
-*removing* the pieces you wired by hand and pointing your config at the factory.
+_removing_ the pieces you wired by hand and pointing your config at the factory.
 
 ## From `@nuxt/eslint`
 
