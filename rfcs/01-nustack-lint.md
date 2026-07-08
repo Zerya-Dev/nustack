@@ -1,4 +1,12 @@
-# Linting
+# RFC 01: Nustack Lint
+
+**Status:** Draft
+
+NuStack treats linting as an ecosystem problem, not just a Vue or TypeScript problem.
+Nuxt projects combine Nuxt core, Vite, modules, VueUse, Tailwind, runtime config,
+auto-imports, and deployment conventions. Generic linting catches only part of that
+surface, so `@nustackjs/lint` composes project-aware checks for the stack a project
+actually uses.
 
 Linting was always worth it. In the era of AI-generated code it's load-bearing: every
 inconsistency an agent produces is something a human flags in review or has to pre-empt
@@ -6,6 +14,20 @@ in `agents.md`. So the nustack linter (`@nustackjs/lint`) doesn't try to be "cor
 it picks **one explicit way per decision and enforces it**, so people and agents stop
 re-litigating style. You can disagree with any specific pick and override it; the value
 is the consistency, not the choice.
+
+Rules should be grounded in official docs, conventions, and recommendations for the
+tool they target. The goal is not arbitrary preference; it is moving known production
+failure modes and recurring review comments into automated checks.
+
+## Module and plugin split
+
+The Nuxt module is the default path because it can detect project context, generate the
+right config, and keep the base config, `@nuxt/eslint`, and NuStack rule packages upgraded
+together.
+
+The rules also ship as standalone ESLint/Oxlint-ready plugins with no Nuxt dependency.
+That lets projects adopt one slice, such as runtime config or VueUse rules, without
+taking the full opinionated module.
 
 ## Engine: ESLint now, oxlint later
 

@@ -9,48 +9,38 @@ Opinionated tooling shaped by real projects for the entire Nuxt ecosystem.
 
 ## ❓ Why?
 
-Ever had a random minor dependency update break your Nuxt website?
+Nuxt is a great framework, but building big, production apps with it still involves **too much
+ecosystem work**: choosing tools, fixing incompatibilities, switching between 5 different libraries
+that should do the same thing, and fixing random issues that should not be part of building a product.
 
-That happens because nobody treats the ecosystem as a whole.
+NuStack's goal is a stable, opinionated ecosystem for Nuxt. That means looking at the
+whole picture: core framework usage, popular modules, linting, testing, starters,
+layers, and upstream contributions.
 
-[Nuxt](https://nuxt.com) is one of the biggest JS frameworks in the world. If you're
-here, you're probably already using it — and you love it. Nuxt has a lot of advantages
-and a great ecosystem, but it is still fairly young. New features land often, which means
-the ecosystem is not always stable: dependency updates break things, starters and
-resources use outdated methods, and there are not enough good examples of how to build
-proper apps with modern best practices.
+We **aim to provide you** starters, tools, conventions, and modules, so
+you can focus on building your product (*and we start today with [linting](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint)*).
 
-NuStack's goal is a stable, opinionated ecosystem for Nuxt: looking at the whole
-picture — core library, popular modules, and tooling — to improve the web development
-experience. To make that possible we use **opinionated** software (for example, we love
-the [VoidZero](https://void.dev/lander) ecosystem).
-
-We aim to cover most Nuxt use cases over time. For now the primary focus is Nuxt web apps
-with an external API, but most of the work generalizes across the other use cases too.
+For the longer rationale, see [RFC 00: NuStack rationale](rfcs/00-nustack-rationale.md).
 
 ## 🎯 Goals
 
 Our long-term goals for NuStack (for shipped pieces, see [Packages](#-packages)):
 
 - **Tests**: end-to-end tests across all of the libraries treated as part of the stack.
-- **Opinionated starters**: real, maintained Nuxt starters, based on the best tooling,
-  so you don't have to pick between bad options.
-- **Layers** and **Modules**: offload as much work and configuration as possible from you,
-  the developer.
+- **Opinionated starters**: maintained Nuxt starters based on our selected tooling.
+- **Layers** and **Modules**: move common code, setup and logic out of your app code.
 - **Ecosystem Contributions**: upstream improvements across the entire ecosystem.
 
-**The goal is to make the Nuxt experience significantly better — not just for simple websites,
+**The goal is to make the Nuxt experience significantly better - not just for simple websites,
 but for real-world projects that we and other Nuxters want to build.**
 
 ## 🧭 Principles
 
+Things we want NuStack conventions to promote in end applications.
+
 - **Full type safety.**
-- **Comprehensive testability**: everything is covered by automated tests.
-  Frontend testing should be straightforward, so every convention and
-  standard must be enforceable by automated tests.
-- **Best practices over endless choice**: we intentionally avoid supporting
-  multiple interchangeable libraries. Instead, we select the best tools for each job
-  and standardize on them to reduce fragmentation.
+- **Comprehensive testability**: all conventions/implementations need to be enforceable by automated tests.
+- **Best practices over endless choice**: we select the best tools for the job and standardize on them to reduce fragmentation.
 
 ## 📦 Packages
 
@@ -60,6 +50,12 @@ but for real-world projects that we and other Nuxters want to build.**
   [vueuse](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vueuse),
   [vite](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vite),
   [nuxt-ecosystem](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt-ecosystem).
+
+## 🤝 Community
+
+NuStack is meant to be **a community effort**. We want feedback from people building real
+Nuxt apps: what breaks, what is the way that you are solving problems, what tooling is missing, and what should
+be pushed upstream. **Open an issue, start a discussion, or contribute directly.**
 
 ## License
 
