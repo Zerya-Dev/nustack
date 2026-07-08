@@ -11,7 +11,7 @@ export interface NuxtUiConcernOptions extends ConcernOptions {}
  * Per-module toggles for the Nuxt ecosystem concern. Each third-party Nuxt module
  * gets its own toggle here — `true`/object enables (and tunes) it, `false` turns it
  * off, and the default auto-gates it on detection. New ecosystem modules (Pinia,
- * Content, …) are added as sibling toggles rather than as new `configs/` files.
+ * Content, ...) are added as sibling toggles rather than as new `configs/` files.
  */
 export interface NuxtEcosystemOptions {
   /** Nuxt UI component preferences. Auto-gated on `@nuxt/ui` detection. */

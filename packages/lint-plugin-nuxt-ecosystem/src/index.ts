@@ -51,7 +51,7 @@ export interface NuxtUiConfigsOptions {
  * configs on Vue SFCs only.
  *
  * Nuxt UI is the first pack in the Nuxt-module *ecosystem* this package hosts.
- * Future packs (Pinia, Content, …) ship their own `<module>Configs` factory and
+ * Future packs (Pinia, Content, ...) ship their own `<module>Configs` factory and
  * `@nustack/<module>` plugin domain alongside this one — each detected, gated, and
  * file-scoped independently — rather than being merged into a single
  * ecosystem-wide rule bag, since no two modules share the same files or detection.

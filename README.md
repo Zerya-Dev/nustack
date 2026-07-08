@@ -2,6 +2,11 @@
 
 Opinionated tooling shaped by real projects for the entire Nuxt ecosystem.
 
+> [!NOTE]
+> The full stack is **heavily Work in Progress** - the vision is big and still taking shape.\
+> But some pieces are already solid and used daily. If you're here now, you're probably looking for
+> [`@nustackjs/lint`](modules/lint) - zero-config, project-aware ESLint (Oxlint-ready) for the Nuxt ecosystem.
+
 ## ❓ Why?
 
 Ever had a random minor dependency update break your Nuxt website?
@@ -27,12 +32,12 @@ with an external API, but most of the work generalizes across the other use case
 
 Our long-term goals for NuStack (for shipped pieces, see [Packages](#-packages)):
 
-- **Tests** — end-to-end tests across all of the libraries treated as part of the stack.
-- **Opinionated starters** — real, maintained Nuxt starters, based on the best tooling,
+- **Tests**: end-to-end tests across all of the libraries treated as part of the stack.
+- **Opinionated starters**: real, maintained Nuxt starters, based on the best tooling,
   so you don't have to pick between bad options.
-- **Layers** and **Modules** — offload as much work and configuration as possible from you,
+- **Layers** and **Modules**: offload as much work and configuration as possible from you,
   the developer.
-- **Ecosystem Contributions** — upstream improvements across the entire ecosystem.
+- **Ecosystem Contributions**: upstream improvements across the entire ecosystem.
 
 **The goal is to make the Nuxt experience significantly better — not just for simple websites,
 but for real-world projects that we and other Nuxters want to build.**
@@ -40,10 +45,10 @@ but for real-world projects that we and other Nuxters want to build.**
 ## 🧭 Principles
 
 - **Full type safety.**
-- **Comprehensive testability** — everything is covered by automated tests.
+- **Comprehensive testability**: everything is covered by automated tests.
   Frontend testing should be straightforward, so every convention and
   standard must be enforceable by automated tests.
-- **Best practices over endless choice** — we intentionally avoid supporting
+- **Best practices over endless choice**: we intentionally avoid supporting
   multiple interchangeable libraries. Instead, we select the best tools for each job
   and standardize on them to reduce fragmentation.
 
@@ -58,7 +63,7 @@ but for real-world projects that we and other Nuxters want to build.**
 
 ## License
 
-[MIT](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE) © Zerya
+[MIT](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE) © Zerya and contributors
 
 ---
 

@@ -8,15 +8,24 @@ VueUse, Tailwind, and more. Built on top of [`@nuxt/eslint`](https://eslint.nuxt
 [`@antfu/eslint-config`](https://github.com/antfu/eslint-config), and several custom
 ESLint/Oxlint plugins. Part of [NuStack](https://github.com/Zerya-Dev/nustack).
 
+> [!NOTE]
+> Don't want the whole opinionated module? You don't have to. The rules ship as standalone,
+> ESLint/Oxlint plugins — [`@nustackjs/lint-plugin-nuxt`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt),
+> [`@nustackjs/lint-plugin-vueuse`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vueuse),
+> [`@nustackjs/lint-plugin-nuxt-ecosystem`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt-ecosystem).
+> You can drop into any project to sharpen its linting, without NuStack lock-in.
+
 > [!IMPORTANT]
 > It runs on ESLint for now, but will be migrated to [Oxlint](https://oxc.rs) before releasing `v1` — see [Roadmap](#roadmap).
+> Until then, expect rules to be redesigned, and changed as things settle.
 
 ## What it does for you
 
 - **Deep, ecosystem-aware rules.** Rules are enabled based on what your project actually uses,
   with dedicated, in-depth checks for each technology in your stack — Nuxt, Vite, popular Nuxt
   modules, VueUse, Tailwind. They catch the class of bug generic Vue/TS linting won't,
-  which matters especially for AI-written code.
+  which matters especially for AI-written code. Every rule is grounded in the official docs,
+  conventions, and recommendations of the tool it targets — not arbitrary preference.
 - **Configure lint once, everywhere.** One module bundles and wires the antfu base,
   `@nuxt/eslint`, and the NuStack rule packages, and upgrades them together — no
   plugin list to keep in sync across all your projects.
@@ -129,12 +138,11 @@ the design contract and local workflow.
 ## Credits
 
 - [Anthony Fu](https://github.com/antfu): for
-  [`@antfu/eslint-config`](https://github.com/antfu/eslint-config), which inspired the
-  base config.
+  [`@antfu/eslint-config`](https://github.com/antfu/eslint-config)  which this project is based on.
 
 ## License
 
-[MIT](https://github.com/Zerya-Dev/nustack/blob/master/modules/lint/LICENSE) © Zerya
+[MIT](https://github.com/Zerya-Dev/nustack/blob/master/modules/lint/LICENSE) © Zerya and contributors
 
 <!-- Badges -->
 

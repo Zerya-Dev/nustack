@@ -1,12 +1,14 @@
 # @nustackjs/lint-plugin-nuxt-ecosystem
 
-ESLint and [Oxlint](https://oxc.rs) rules for the Nuxt module ecosystem — today that
-means [Nuxt UI](https://ui.nuxt.com) component-preference rules. Used by
-[`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint), but
-works standalone in any flat ESLint config.
+ESLint and [Oxlint](https://oxc.rs) rules for the [Nuxt module ecosystem](https://nuxt.com/modules).
+Currently supports `@nuxt/ui`, but the list will grow fast.
 
-This package is the home for ecosystem sub-packs (Nuxt UI, and more to come); they all
-ship under the scoped plugin name `@nustack/nuxt-ui` for now.
+Every rule is grounded in each module's official docs, conventions, and recommendations,
+so they're enforced in your project, not just documented.
+
+If you are a developer of a fairly popular module, please reach out; we'd love to add it!
+
+Used by [`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint), but works standalone in any flat ESLint config.
 
 ## Install
 
@@ -24,10 +26,10 @@ Rule ids read `@nustack/nuxt-ui/<rule>`. Use `configs.ui` for just the Nuxt UI p
 import nuxtEcosystem from '@nustackjs/lint-plugin-nuxt-ecosystem'
 
 export default [
-  // just the Nuxt UI pack…
+  // just the Nuxt UI pack...
   nuxtEcosystem.configs.ui,
 
-  // …or wire rules yourself
+  // ...or wire rules yourself
   {
     plugins: { '@nustack/nuxt-ui': nuxtEcosystem },
     rules: { '@nustack/nuxt-ui/prefer-u-button': 'warn' },
@@ -35,9 +37,7 @@ export default [
 ]
 ```
 
-The same default export also loads in Oxlint via its
-[JS-plugin support](https://oxc.rs/docs/guide/usage/linter/plugins) (built on
-`@oxlint/plugins`).
+The same applies for OXLint, but some rules may not work due to limited Vue support.
 
 ## Rules
 
@@ -54,4 +54,4 @@ The same default export also loads in Oxlint via its
 
 ## License
 
-[MIT](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-nuxt-ecosystem/LICENSE) © Zerya
+[MIT](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-nuxt-ecosystem/LICENSE) © Zerya and contributors

@@ -1,10 +1,13 @@
 # @nustackjs/lint-plugin-nuxt
 
-ESLint and [Oxlint](https://oxc.rs) rules for [Nuxt](https://nuxt.com) runtime
-conventions — `runtimeConfig` safety, auto-imports, keeping `process.env` out of app
+ESLint and [Oxlint](https://oxc.rs) rules for [Nuxt](https://nuxt.com) conventions - 
+`runtimeConfig` safety, auto-imports, keeping `process.env` out of app
 code, and `nuxt.config` `modules` correctness (registration order, deprecated modules).
-Used by [`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint),
-but works standalone in any flat ESLint config.
+
+Every rule is grounded in Nuxt's official docs, conventions, and recommendations, so
+they're enforced in your project, not just documented.
+
+Used by [`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint), but works standalone in any flat ESLint config.
 
 ## Install
 
@@ -22,10 +25,10 @@ The plugin registers under the scoped name `@nustack/nuxt`, so every rule id rea
 import nuxt from '@nustackjs/lint-plugin-nuxt'
 
 export default [
-  // turn on the curated set…
+  // turn on the curated set...
   nuxt.configs.recommended,
 
-  // …or wire rules yourself
+  // ...or wire rules yourself
   {
     plugins: { '@nustack/nuxt': nuxt },
     rules: { '@nustack/nuxt/no-process-env': 'warn' },
@@ -33,9 +36,7 @@ export default [
 ]
 ```
 
-The same default export also loads in Oxlint via its
-[JS-plugin support](https://oxc.rs/docs/guide/usage/linter/plugins) (built on
-`@oxlint/plugins`).
+The same applies for OXLint, but some rules may not work due to limited Vue support.
 
 ## Rules
 
@@ -49,4 +50,4 @@ The same default export also loads in Oxlint via its
 
 ## License
 
-[MIT](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-nuxt/LICENSE) © Zerya
+[MIT](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-nuxt/LICENSE) © Zerya and contributors

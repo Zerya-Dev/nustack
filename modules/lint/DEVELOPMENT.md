@@ -32,7 +32,7 @@ Because tests and the playground consume the plugins' **built** output, rebuild 
 Releases are automated via [release-please](https://github.com/googleapis/release-please)
 (`release-please-config.json`), driven by [Conventional Commits](https://www.conventionalcommits.org).
 
-1. Land changes on `master` with conventional commit messages (`fix:`, `feat:`, `feat!:` …).
+1. Land changes on `master` with conventional commit messages (`fix:`, `feat:`, `feat!:` ...).
 2. release-please maintains a "chore: release" PR that bumps versions and updates
    `CHANGELOG.md` across the workspace (plugins + this module are versioned together via
    the `node-workspace` plugin, so internal `workspace:*` deps get pinned on release).

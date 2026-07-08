@@ -11,7 +11,7 @@ export function nameWords(name: string): string[] {
 
 /**
  * Shared secret-shape heuristic: `SECRET`/`TOKEN`/`PASSWORD`/`PRIVATE` words, or a
- * `KEY` word not qualified as public (`PUBLIC_KEY`, `API_KEY`, …).
+ * `KEY` word not qualified as public (`PUBLIC_KEY`, `API_KEY`, ...).
  */
 export function isSecretLikeName(name: string): boolean {
   const parts = nameWords(name)

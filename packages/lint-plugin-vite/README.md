@@ -1,10 +1,13 @@
 # @nustackjs/lint-plugin-vite
 
-ESLint and [Oxlint](https://oxc.rs) rules for [Vite](https://vite.dev) asset and
-environment safety — catching `public/` imports and secret-looking `VITE_*` variables
-that leak into the client bundle. Used by
-[`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint), but
-works standalone in any flat ESLint config.
+ESLint and [Oxlint](https://oxc.rs) rules for [Vite](https://vite.dev) asset and environment safety -
+catching `public/` imports and secret-looking `VITE_*` variables that leak 
+into the client bundle.
+
+Every rule is grounded in Vite's official docs, conventions, and recommendations, so
+they're enforced in your project, not just documented.
+
+Used by [`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint), but works standalone in any flat ESLint config.
 
 ## Install
 
@@ -22,10 +25,10 @@ The plugin registers under the scoped name `@nustack/vite`, so every rule id rea
 import vite from '@nustackjs/lint-plugin-vite'
 
 export default [
-  // turn on the curated set…
+  // turn on the curated set...
   vite.configs.recommended,
 
-  // …or wire rules yourself
+  // ...or wire rules yourself
   {
     plugins: { '@nustack/vite': vite },
     rules: { '@nustack/vite/no-client-secret-pattern': 'error' },
@@ -33,9 +36,7 @@ export default [
 ]
 ```
 
-The same default export also loads in Oxlint via its
-[JS-plugin support](https://oxc.rs/docs/guide/usage/linter/plugins) (built on
-`@oxlint/plugins`).
+The same applies for OXLint — these rules are plain JS/TS, so they run there too.
 
 ## Rules
 
@@ -48,4 +49,4 @@ The same default export also loads in Oxlint via its
 
 ## License
 
-[MIT](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-vite/LICENSE) © Zerya
+[MIT](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-vite/LICENSE) © Zerya and contributors

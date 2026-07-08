@@ -1,9 +1,12 @@
 # @nustackjs/lint-plugin-vueuse
 
 ESLint and [Oxlint](https://oxc.rs) rules for [VueUse](https://vueuse.org) — nudging you
-toward the composables and away from the raw browser APIs they wrap. Used by
-[`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint), but
-works standalone in any flat ESLint config.
+toward the composables and away from the raw browser APIs they wrap.
+
+Every rule is grounded in VueUse's official docs, conventions, and recommendations, so
+they're enforced in your project, not just documented.
+
+Used by [`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint), but works standalone in any flat ESLint config.
 
 ## Install
 
@@ -21,10 +24,10 @@ The plugin registers under the scoped name `@nustack/vueuse`, so every rule id r
 import vueuse from '@nustackjs/lint-plugin-vueuse'
 
 export default [
-  // turn on the curated set…
+  // turn on the curated set...
   vueuse.configs.recommended,
 
-  // …or wire rules yourself
+  // ...or wire rules yourself
   {
     plugins: { '@nustack/vueuse': vueuse },
     rules: { '@nustack/vueuse/no-namespace-import': 'error' },
@@ -32,9 +35,7 @@ export default [
 ]
 ```
 
-The same default export also loads in Oxlint via its
-[JS-plugin support](https://oxc.rs/docs/guide/usage/linter/plugins) (built on
-`@oxlint/plugins`).
+The same applies for OXLint, but some rules may not work due to limited Vue support.
 
 ## Rules
 

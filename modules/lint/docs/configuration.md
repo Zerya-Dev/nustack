@@ -121,7 +121,7 @@ nustack()
   .remove('nustack/tailwind')
 ```
 
-`.override(name, …)` targets config objects by their `name`. Single-object concerns are
+`.override(name, ...)` targets config objects by their `name`. Single-object concerns are
 named after the concern (`nustack/vue`, `nustack/tailwind`, `nustack/nuxt-ui`,
 `nustack/markdown`, `nustack/type-aware`); the `nuxt` concern is split into slices —
 `nustack/nuxt/runtime-config` (secret floor), `nustack/nuxt/modules` (module order /
