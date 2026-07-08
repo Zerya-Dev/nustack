@@ -23,7 +23,7 @@ Nuxt, Vite, Nuxt UI, VueUse, Tailwind, and more. Part of [NuStack](https://githu
 
 - **Deep, ecosystem-aware rules.** Detect the Nuxt modules and tools your project uses, then auto-enable rules built from each tool's best practices.
 - **One module, shared presets.** Stop wiring the same plugins and configs in every project; install one module and reuse the same preset across your apps.
-- **Enforced decisions.** Keep practices and architectural decisions in executable rules instead of review comments or *even worse* [`AGENTS.md`](https://evilmartians.com/chronicles/stop-writing-rules-in-agents-md-use-agent-hooks-and-nano-staged-instead).
+- **Enforced decisions.** Keep practices and architectural decisions in executable rules instead of review comments or _even worse_ [`AGENTS.md`](https://evilmartians.com/chronicles/stop-writing-rules-in-agents-md-use-agent-hooks-and-nano-staged-instead).
 
 For the longer design rationale, see the [RFC 01: NuStack Lint](../../rfcs/01-nustack-lint.md).
 
