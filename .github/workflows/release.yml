@@ -16,6 +16,7 @@ concurrency:
 
 jobs:
   release:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     outputs:
       releases_created: ${{ steps.release.outputs.releases_created }}
@@ -28,9 +29,7 @@ jobs:
 
   publish:
     needs: release
-    # Publish on a real release, or on a manual re-run to recover a failed
-    # publish (the publish script is idempotent, so this is safe).
-    if: ${{ needs.release.outputs.releases_created == 'true' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ always() && (github.event_name == 'workflow_dispatch' || needs.release.outputs.releases_created == 'true') }}
     runs-on: ubuntu-latest
     environment: npm-publish
     steps:
@@ -46,11 +45,7 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - run: pnpm install --frozen-lockfile
-
       - run: pnpm build
-
       - run: pnpm test
-
       - run: pnpm typecheck
-
       - run: node scripts/publish-unpublished.mjs
