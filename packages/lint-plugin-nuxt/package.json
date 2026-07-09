@@ -1,7 +1,7 @@
 {
   "name": "@nustackjs/lint-plugin-nuxt",
   "type": "module",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "ESLint and Oxlint rules for Nuxt runtime conventions. Used by @nustackjs/lint, usable standalone.",
   "author": "Norbiros <me@norbiros.dev>",
   "license": "MIT",
