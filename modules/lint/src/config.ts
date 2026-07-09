@@ -141,7 +141,7 @@ export function applyNustackConfig(
   if (isEnabled(merged.nuxt, true))
     configs.push(...nuxtConfig(ctx, subOptions(merged.nuxt)))
   if (isEnabled(merged.vue, true))
-    configs.push(...vueConfig(subOptions(merged.vue)))
+    configs.push(...vueConfig(ctx, subOptions(merged.vue)))
   if (isEnabled(merged.vueUse, true))
     configs.push(...vueUseConfig(subOptions(merged.vueUse)))
   if (isEnabled(merged.vite, true))
