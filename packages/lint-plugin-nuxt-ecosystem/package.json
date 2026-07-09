@@ -1,7 +1,7 @@
 {
   "name": "@nustackjs/lint-plugin-nuxt-ecosystem",
   "type": "module",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "ESLint and Oxlint rules for the Nuxt module ecosystem (Nuxt UI). Used by @nustackjs/lint, usable standalone.",
   "author": "Norbiros <me@norbiros.dev>",
   "license": "MIT",

@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.4.0](https://github.com/Zerya-Dev/nustack/compare/lint-v0.3.1...lint-v0.4.0) (2026-07-09)
+
+
+### Features
+
+* **lint:** add `eslint-plugin-format` integration ([225ae28](https://github.com/Zerya-Dev/nustack/commit/225ae2884792e46daf9821a1ef728b1b62e00560))
+* **lint:** expand vue rule coverage ([e2f4df5](https://github.com/Zerya-Dev/nustack/commit/e2f4df572dcec599097744d6c6f24a5ceced3da1))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @nustackjs/lint-plugin-nuxt bumped to 0.3.0
+    * @nustackjs/lint-plugin-nuxt-ecosystem bumped to 0.3.0
+    * @nustackjs/lint-plugin-vite bumped to 0.2.0
+    * @nustackjs/lint-plugin-vueuse bumped to 0.3.0
+
 ## [0.3.1](https://github.com/Zerya-Dev/nustack/compare/lint-v0.3.0...lint-v0.3.1) (2026-07-06)
 
 
@@ -78,4 +96,3 @@
     * @nustackjs/lint-plugin-nuxt bumped to 0.1.0
     * @nustackjs/lint-plugin-nuxt-ecosystem bumped to 0.1.0
     * @nustackjs/lint-plugin-vueuse bumped to 0.1.0
-
