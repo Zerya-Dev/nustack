@@ -38,9 +38,10 @@ but for real-world projects that we and other Nuxters want to build.**
 
 Things we want NuStack conventions to promote in end applications.
 
-- **Full type safety.**
-- **Comprehensive testability**: all conventions/implementations need to be enforceable by automated tests.
 - **Best practices over endless choice**: we select the best tools for the job and standardize on them to reduce fragmentation.
+- **Stability, but not legacy**: we prefer stable, well-tested tools, but don't stay on legacy tooling when clearly better alternatives exist.
+- **Comprehensive testability**: all conventions/implementations need to be enforceable by automated tests.
+- **Community first**: built with the community (RFCs etc.), contributing upstream improvements.
 
 ## 📦 Packages
 
