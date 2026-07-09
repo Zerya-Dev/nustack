@@ -23,8 +23,8 @@ export { default } from './.nuxt/nustack-eslint.mjs'
 Run lint:
 
 ```bash
-eslint .
-NUSTACK_LINT_DEPTH=full eslint .
+eslint .                            # quick checks
+NUSTACK_LINT_DEPTH=full eslint .    # type-aware checks, typically for CI
 ```
 
 Use [Configuration](./configuration.md) for options and overrides, or
