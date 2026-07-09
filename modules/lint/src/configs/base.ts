@@ -1,5 +1,5 @@
 import type { FlatConfigComposer } from 'eslint-flat-config-utils'
-import type { Depth } from './types'
+import type { Depth } from '../utils'
 import antfu from '@antfu/eslint-config'
 import { defu } from 'defu'
 
@@ -7,60 +7,68 @@ import { defu } from 'defu'
 export type AntfuOptions = NonNullable<Parameters<typeof antfu>[0]>
 
 /**
- * The style base. The factory applies it so consumers never hand-wire the
- * style/quality layer. `@nuxt/eslint` must run in `standalone: false` so antfu owns
- * the Vue/TS/import rules and there is no plugin-instance conflict.
- *
- * TypeScript is resolved separately so it is always enabled. In quick mode this
- * keeps Antfu's syntax-only TS rules on; in full mode it passes `tsconfigPath`
- * so Antfu also enables its type-aware rule set.
+ * Style preset. `'nustack'` layers nustack's stylistic overrides (`1tbs` braces) on top
+ * of antfu; `'antfu'` is plain antfu with no nustack deviations.
  */
-const ANTFU_DEFAULTS: Omit<AntfuOptions, 'typescript'> = {
-  // Markdown is handled by another plugin - `mdclint`.
-  markdown: false,
-  stylistic: true,
+export type StylePreset = 'nustack' | 'antfu'
+
+/** `base` options: antfu's own options plus a nustack style-preset selector. */
+export type AntfuBaseOptions = AntfuOptions & {
+  /** Which style preset to build on. @default 'nustack' */
+  preset?: StylePreset
+}
+
+/** The nustack preset's stylistic overrides over antfu (which defaults to `stroustrup`). */
+const NUSTACK_STYLISTIC: NonNullable<AntfuOptions['stylistic']> = {
+  braceStyle: '1tbs',
+}
+
+const ANTFU_DEFAULTS: Omit<AntfuOptions, 'typescript' | 'stylistic'> = {
+  markdown: false, // handled by the markdown concern (mdclint)
   vue: true,
-  // Some formats like CSS/HTML/Markdown (incl. `<style>` blocks in `.vue` SFCs)
-  // cannot be handled by eslint and eslint stylistics. For that reason we need
-  // to enable prettier for them. This will be replaced with oxfmt in the future.
+  // Prettier formats what ESLint can't: CSS/HTML/Markdown and SFC `<style>` blocks.
   formatters: true,
-  rules: {
-    // `process` is always available as a Nuxt/Nitro global, so prefer it over
-    // importing `node:process` (antfu's default is the opposite, `'never'`). App
-    // code is separately steered off `process.env` by @nustack/nuxt/no-process-env.
-    'node/prefer-global/process': ['error', 'always'],
-    // oxfmt (planned formatter migration) hardcodes 1tbs and doesn't allow
-    // customizing brace style, so we align ESLint with it now.
-    'style/brace-style': ['warn', '1tbs'],
-  },
 }
 
 function resolveTypescriptOptions(
-  userBase: AntfuOptions | undefined,
+  userBase: AntfuOptions,
   depth: Depth,
 ): NonNullable<AntfuOptions['typescript']> {
-  const userTypescript = userBase?.typescript
+  const userTypescript = userBase.typescript
+  const userObject = typeof userTypescript === 'object' && userTypescript !== null ? userTypescript : undefined
 
-  if (depth === 'full') {
-    return defu(
-      typeof userTypescript === 'object' && userTypescript !== null ? userTypescript : {},
-      { tsconfigPath: 'tsconfig.json' },
-    )
-  }
+  // `full` depth points antfu at the tsconfig, enabling its type-aware rule set.
+  if (depth === 'full')
+    return defu(userObject ?? {}, { tsconfigPath: 'tsconfig.json' })
 
-  return typeof userTypescript === 'object' && userTypescript !== null ? userTypescript : true
+  return userObject ?? true
+}
+
+function resolveStylistic(
+  preset: StylePreset,
+  userStylistic: AntfuOptions['stylistic'],
+): AntfuOptions['stylistic'] {
+  if (userStylistic === false)
+    return false
+  // The preset only seeds defaults; an explicit `base.stylistic` still wins per key.
+  const presetStylistic = preset === 'nustack' ? NUSTACK_STYLISTIC : {}
+  return defu(userStylistic, presetStylistic)
 }
 
 /**
- * Builds the antfu base, with user `base` options taking precedence over the
- * defaults (their `rules` merge over ours). Returns `null` when `base: false`.
+ * Builds the antfu base, with user `base` options taking precedence over the defaults.
+ * Returns `null` when `base: false`. The style preset (default `'nustack'`) decides
+ * whether nustack's stylistic overrides are seeded; `stylistic: false` drops the layer.
  */
-export function antfuBase(userBase: AntfuOptions | false | undefined, depth: Depth): FlatConfigComposer | null {
+export function antfuBase(userBase: AntfuBaseOptions | false | undefined, depth: Depth): FlatConfigComposer | null {
   if (userBase === false)
     return null
 
+  const { preset = 'nustack', ...base } = userBase ?? {}
+
   return antfu({
-    ...defu(userBase, ANTFU_DEFAULTS),
-    typescript: resolveTypescriptOptions(userBase, depth),
+    ...defu(base, ANTFU_DEFAULTS),
+    stylistic: resolveStylistic(preset, base.stylistic),
+    typescript: resolveTypescriptOptions(base, depth),
   })
 }

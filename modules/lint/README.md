@@ -42,6 +42,19 @@ The preset composes these layers and gates each on what your project actually us
 **Want a rule added, or a plugin integrated?** [Open an issue](https://github.com/Zerya-Dev/nustack/issues) -
 the ruleset is meant to grow with what the community uses.
 
+## Environments
+
+A `target` option pre-fills the preset for the project you're actually in — a normal
+Nuxt app, a non-Nuxt Vue SPA, or a Nuxt module/library:
+
+```ts
+nustack({ target: 'nuxt-app' })    // default for the generated Nuxt-path config
+nustack({ target: 'vue-app' })     // non-Nuxt Vue SPA — no `nuxt prepare` needed
+nustack({ target: 'nuxt-module' }) // authoring a Nuxt module; `playground/**` lints itself
+```
+
+See [Configuration](docs/configuration.md) for what each target pre-fills.
+
 ## Setup
 
 ```bash

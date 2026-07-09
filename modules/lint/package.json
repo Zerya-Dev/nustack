@@ -81,6 +81,7 @@
     "eslint-plugin-better-tailwindcss": "catalog:eslint",
     "eslint-plugin-format": "catalog:eslint",
     "eslint-plugin-vue": "catalog:eslint",
+    "exsolve": "catalog:nuxt",
     "mdclint": "catalog:eslint",
     "unimport": "catalog:nuxt",
     "vue-eslint-parser": "catalog:eslint"

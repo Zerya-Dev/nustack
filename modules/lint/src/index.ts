@@ -4,6 +4,8 @@
  * want to pass context/options manually.
  */
 export { applyNustackConfig, default, nustack } from './config'
-export type { Awaitable, Depth, NustackFlatConfig, NustackLintOptions, NustackOptions, NustackUserConfig, Rules, Variant } from './config'
+export type { Awaitable, Depth, EnforceOptions, NustackFlatConfig, NustackLintOptions, NustackOptions, NustackUserConfig, Rules, Target, TargetKind } from './config'
 export { EMPTY_CONTEXT } from './context'
 export type { NustackContext } from './context'
+export { createContext, detectStandaloneContext } from './context/detect'
+export type { PartialContext } from './context/detect'

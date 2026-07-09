@@ -1,17 +1,19 @@
 import type { Linter } from 'eslint'
 import type { NustackContext } from '../context'
-import type { ConcernContext, ConcernOptions } from './types'
+import type { ConcernOptions } from '../utils'
 import { defu } from 'defu'
 import betterTailwind from 'eslint-plugin-better-tailwindcss'
 import { getDefaultSelectors } from 'eslint-plugin-better-tailwindcss/defaults'
 import { SelectorKind } from 'eslint-plugin-better-tailwindcss/types'
-import { resolveConcernRules, variantAtLeast } from './types'
+import { resolveConcernRules } from '../utils'
 
 const GLOB_CODE = ['**/*.vue', '**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}']
 
 export interface TailwindConcernOptions extends ConcernOptions {
   /** Override the auto-detected Tailwind entry point (`@import "tailwindcss"`). */
   entryPoint?: string
+  /** Enable `enforce-consistent-line-wrapping` — opt-in, higher-false-positive. @default false */
+  lineWrapping?: boolean
   /**
    * Extra `better-tailwindcss` shared settings, merged over the defaults — e.g.
    * `selectors`, `tailwindConfig`. Rule options (printWidth etc.) go
@@ -21,17 +23,13 @@ export interface TailwindConcernOptions extends ConcernOptions {
 }
 
 /**
- * Tailwind v4 class sorting/correctness via better-tailwindcss, gated on a detected
- * Tailwind entry point. When `@nuxt/ui` is present, the `:ui` object prop is added so
- * class strings inside `:ui="{ base: 'px-2' }"` are sorted and validated too.
- *
- * The rule severities below are the only NuStack opinion; everything else is plain
- * better-tailwindcss config, tunable directly via `rules` (rule options) and
- * `settings` (shared plugin settings).
+ * Tailwind v4 class sorting/correctness via better-tailwindcss, gated on a detected entry
+ * point. When `@nuxt/ui` is present, the `:ui` object prop is added so class strings
+ * inside `:ui="{ base: 'px-2' }"` are sorted and validated too. Rule severities are the
+ * only nustack opinion; everything else is tunable via `rules` and `settings`.
  */
 export function tailwindConfig(
   ctx: NustackContext,
-  axes: ConcernContext,
   opts: TailwindConcernOptions = {},
 ): Linter.Config[] {
   const rules = resolveConcernRules(opts)
@@ -60,9 +58,7 @@ export function tailwindConfig(
       },
       rules: {
         'better-tailwindcss/enforce-consistent-class-order': 'warn',
-        ...(variantAtLeast(axes.variant, 'pedantic')
-          ? { 'better-tailwindcss/enforce-consistent-line-wrapping': 'warn' }
-          : {}),
+        ...(opts.lineWrapping ? { 'better-tailwindcss/enforce-consistent-line-wrapping': 'warn' } : {}),
         'better-tailwindcss/no-unknown-classes': 'warn',
         'better-tailwindcss/no-conflicting-classes': 'error',
         'better-tailwindcss/no-duplicate-classes': 'error',

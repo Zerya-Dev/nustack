@@ -1,8 +1,8 @@
 import type { Linter } from 'eslint'
 import type { NustackContext } from '../context'
-import type { ConcernOptions } from './types'
+import type { ConcernOptions } from '../utils'
 import { mdcLint } from 'mdclint'
-import { resolveConcernRules } from './types'
+import { resolveConcernRules } from '../utils'
 
 const GLOB_MARKDOWN = ['content/**/*.md']
 export type MarkdownPreset = NonNullable<MarkdownConcernOptions['preset']>

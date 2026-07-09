@@ -8,7 +8,7 @@ const count = ref(0)
     <UButton
       class="px-4 py-2 bg-primary flex"
       :ui="{ base: 'rounded-lg text-white px-2' }"
-      @click="count++"
+      @click="void count++"
     >
       Clicked {{ count }}
     </UButton>

@@ -3,9 +3,8 @@
 import nustack from './src/config'
 
 export default nustack({
+  target: 'nuxt-module',
   base: {
-    type: 'lib',
-    // The playground is its own workspace package and lints itself via the Nuxt path.
-    ignores: ['dist', 'playground'],
+    ignores: ['dist'],
   },
 })

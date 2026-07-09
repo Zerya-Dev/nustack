@@ -43,12 +43,20 @@ Releases are automated via [release-please](https://github.com/googleapis/releas
 ## Layout
 
 ```
-src/config.ts     public API: nustack(options, ...userConfigs)
-src/configs/*     one file per concern (base, vue, nuxt, vite, vueuse, nuxt-ui, tailwind)
-eslint.config.ts  this package's own config (dogfooding + inspector target)
-playground/       Nuxt app to exercise the module end-to-end
-test/             Vitest suite
+src/config.ts             public API: nustack(options, ...userConfigs)
+src/configs/*             one file per concern (base, vue, nuxt, vite, vueuse,
+                          nuxt-ecosystem, tailwind, markdown, complexity, type-aware);
+                          base.ts carries the style presets (nustack/antfu)
+src/target.ts             `target` resolution (per-environment defaults)
+src/context/index.ts      NustackContext type + EMPTY_CONTEXT
+src/context/detect.ts     standalone (non-Nuxt) context detection via node resolution (exsolve)
+src/context/module-flags.ts  module→context-flag map shared by the Nuxt and standalone paths
+src/addon.ts              Nuxt-module hooks that write .nuxt/nustack-eslint.mjs on prepare
+eslint.config.ts          this package's own config (dogfooding + inspector target)
+playground/               Nuxt app to exercise the module end-to-end
+test/                     Vitest suite
 ```
 
-See [`README.md`](./README.md) for the user-facing config surface and the two axes
-(`variant` / `depth`).
+See [`README.md`](./README.md) and [`docs/configuration.md`](./docs/configuration.md)
+for the user-facing config surface: `target`, the opt-in `enforce` checks, the `base`
+visual style, and `depth`.

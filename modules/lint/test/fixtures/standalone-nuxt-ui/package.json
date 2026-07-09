@@ -1,0 +1,7 @@
+{
+  "name": "fixture-standalone-nuxt-ui",
+  "private": true,
+  "dependencies": {
+    "@nuxt/ui": "catalog:nuxt"
+  }
+}

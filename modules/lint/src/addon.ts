@@ -5,19 +5,9 @@ import { existsSync } from 'node:fs'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join, relative } from 'node:path'
 import { resolveAlias } from '@nuxt/kit'
+import { resolveModuleFlags } from './context/module-flags'
 
 const TAILWIND_IMPORT_RE = /@import\s+["']tailwindcss["']/
-
-/** Module name → context flag. Detected from the resolved module registry. */
-const MODULE_FLAGS = {
-  '@nuxt/ui': 'nuxtUi',
-  '@nuxt/ui-pro': 'nuxtUi',
-  '@pinia/nuxt': 'pinia',
-  '@nuxt/image': 'nuxtImage',
-  '@nuxt/content': 'nuxtContent',
-  '@comark/nuxt': 'mdc',
-  '@nuxtjs/mdc': 'mdc',
-} as const satisfies Record<string, keyof NustackContext['modules']>
 
 interface NitroWithUnimport {
   unimport?: Unimport
@@ -69,20 +59,7 @@ export function setupNustackContext(nuxt: Nuxt): void {
         installed.add(m)
     }
 
-    const modules: NustackContext['modules'] = {
-      nuxtUi: false,
-      pinia: false,
-      nuxtImage: false,
-      nuxtContent: false,
-      mdc: false,
-    }
-    for (const [name, flag] of Object.entries(MODULE_FLAGS)) {
-      if (installed.has(name))
-        modules[flag] = true
-    }
-    if (installed.has('@nuxt/content'))
-      modules.mdc = true
-    return modules
+    return resolveModuleFlags(installed)
   }
 
   async function detectTailwind(): Promise<NustackContext['tailwind']> {
@@ -146,7 +123,7 @@ export function generateCode(context: NustackContext): string {
     ' * you can chain `.append()` / `.override()` / `.remove()` as an escape hatch.',
     ' */',
     'export function nustack(options = {}, ...configs) {',
-    '  return factory(withNuxt(), { ...options, context: nustackContext }, ...configs)',
+    `  return factory(withNuxt(), { target: 'nuxt-app', ...options, context: nustackContext }, ...configs)`,
     '}',
     '',
     'export const nustackLint = nustack',

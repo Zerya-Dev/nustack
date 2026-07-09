@@ -31,6 +31,7 @@ catalogs:
     '@nuxt/test-utils': ^4.0.3
     '@nuxt/ui': ^4.9.0
     defu: ^6.1.7
+    exsolve: ^1.1.0
     nuxt: ^4.4.8
     unimport: ^6.3.0
   release:

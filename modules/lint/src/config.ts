@@ -1,31 +1,41 @@
 import type { Linter } from 'eslint'
 import type { FlatConfigComposer } from 'eslint-flat-config-utils'
-import type { AntfuOptions } from './configs/base'
+import type { AntfuBaseOptions } from './configs/base'
 import type { MarkdownConcernOptions } from './configs/markdown'
 import type { NuxtConcernOptions } from './configs/nuxt'
 import type { NuxtEcosystemToggle } from './configs/nuxt-ecosystem'
 import type { TailwindConcernOptions } from './configs/tailwind'
-import type { ConcernContext, ConcernToggle, Depth, Rules, Variant } from './configs/types'
 import type { ViteConcernOptions } from './configs/vite'
 import type { VueConcernOptions } from './configs/vue'
 import type { VueUseConcernOptions } from './configs/vueuse'
 import type { NustackContext } from './context'
+import type { Target } from './target'
+import type { ConcernToggle, Depth, Rules } from './utils'
 import { defu } from 'defu'
 import { composer } from 'eslint-flat-config-utils'
 import { antfuBase } from './configs/base'
+import { complexityConfig } from './configs/complexity'
 import { markdownConfig } from './configs/markdown'
 import { nuxtConfig } from './configs/nuxt'
 import { nuxtEcosystemConfig } from './configs/nuxt-ecosystem'
 import { tailwindConfig } from './configs/tailwind'
 import { typeAwareConfig } from './configs/type-aware'
-import { isEnabled, subOptions } from './configs/types'
 import { viteConfig } from './configs/vite'
 import { vueConfig } from './configs/vue'
 import { vueUseConfig } from './configs/vueuse'
 import { EMPTY_CONTEXT } from './context'
+import { detectStandaloneContext } from './context/detect'
+import { resolveTarget } from './target'
+import { isEnabled, subOptions } from './utils'
 
-export type { Depth, Variant } from './configs/types'
-export type { Rules } from './configs/types'
+export type { Target, TargetKind } from './target'
+export type { Depth, Rules } from './utils'
+
+/** Opt-in opinionated checks that not every team wants. Plain on/off — not tiers. */
+export interface EnforceOptions {
+  /** Cyclomatic-complexity + size-limit budget. Off by default (noisy on existing code). @default false */
+  complexity?: boolean
+}
 
 export type Awaitable<T> = T | Promise<T>
 export type NustackFlatConfig = Linter.Config | Linter.Config[] | FlatConfigComposer
@@ -37,10 +47,21 @@ export type NustackUserConfig = Awaitable<NustackFlatConfig>
  * `depth` is intentionally absent — it is read per-run from `NUSTACK_LINT_DEPTH`.
  */
 export interface NustackLintOptions {
-  /** Opinion strength. Default `recommended`. Cumulative: minimal ⊂ recommended ⊂ pedantic. */
-  variant?: Variant
-  /** The antfu style base. Object tunes it, `false` disables it. */
-  base?: AntfuOptions | false
+  /**
+   * The project environment: `'nuxt-app' | 'vue-app' | 'nuxt-module'`. Pre-fills concern
+   * toggles and base rules for that environment as a `defu` layer, so any option set
+   * explicitly below still wins. Defaults to `'nuxt-app'` in `applyNustackConfig`; the
+   * standalone `nustack()` factory defaults to `'vue-app'`.
+   */
+  target?: Target
+  /** Opt-in opinionated checks (each a plain on/off), e.g. `enforce: { complexity: true }`. */
+  enforce?: EnforceOptions
+  /**
+   * The antfu style base. Object tunes it, `false` disables it. `base.preset` picks the
+   * style preset: `'nustack'` (default, antfu + our overrides like `1tbs`) or `'antfu'`
+   * (plain antfu). `base: { stylistic: false }` drops the stylistic layer entirely.
+   */
+  base?: AntfuBaseOptions | false
   /** Core Nuxt conventions (auto-imports, runtimeConfig, process.env). */
   nuxt?: ConcernToggle<NuxtConcernOptions>
   /** SFC conventions (vue/block-lang etc.). */
@@ -50,9 +71,9 @@ export interface NustackLintOptions {
   /** Vite build/runtime conventions. */
   vite?: ConcernToggle<ViteConcernOptions>
   /**
-   * Nuxt-module ecosystem rules (Nuxt UI today; Pinia/Content later). `false`
-   * disables the whole ecosystem; an object tunes each module in depth, e.g.
-   * `{ nuxtUi: false }`. Each module auto-gates on its own detection.
+   * Nuxt-ecosystem rules (Nuxt UI today; Pinia/Content later). `false` disables the whole
+   * ecosystem; an object tunes each module, e.g. `{ nuxtUi: false }`. Each module
+   * auto-gates on its own detection.
    */
   nuxtEcosystem?: NuxtEcosystemToggle
   /** Tailwind class sorting/correctness. Auto-gated on a detected entry point. */
@@ -63,7 +84,11 @@ export interface NustackLintOptions {
   rules?: Rules
   /** @deprecated Use `rules` instead. */
   overrides?: Rules
-  /** Detected project context. Injected by the generated `.nuxt/nustack-eslint.mjs`. */
+  /**
+   * Detected project context. Injected by the generated `.nuxt/nustack-eslint.mjs`
+   * for Nuxt apps; the standalone `nustack()` factory fills it via
+   * `detectStandaloneContext()` when omitted.
+   */
   context?: NustackContext
 }
 
@@ -86,53 +111,56 @@ function resolveRules(options: Pick<NustackLintOptions, 'rules' | 'overrides'>):
 }
 
 /**
- * Wraps a `withNuxt()` composer with the full nustack config. Mirrors antfu: the
- * style base is prepended, then each enabled, context-gated concern is appended,
- * then global rules and user flat configs. Returns the same composer for chaining.
- *
- * The generated `.nuxt/nustack-eslint.mjs` calls this with the detected context in
- * `options.context`; callers normally import the pre-bound `nustack` from there
- * and may pass their own options plus file-scoped flat configs.
+ * Wraps a `withNuxt()` composer with the full nustack config: the style base is
+ * prepended, then each enabled, context-gated concern is appended, then global rules and
+ * user flat configs. `target` (default `'nuxt-app'`) is `defu`-merged under the explicit
+ * `options`, so it only fills gaps. Returns the same composer for chaining.
  */
 export function applyNustackConfig(
   base: FlatConfigComposer,
   options: NustackLintOptions = {},
   ...userConfigs: NustackUserConfig[]
 ): FlatConfigComposer {
-  const variant: Variant = options.variant ?? 'recommended'
-  const depth = resolveDepth()
-  const ctx = mergeContext(options.context)
-  const axes: ConcernContext = { variant, depth }
+  const target = options.target ?? 'nuxt-app'
+  const merged: NustackLintOptions = defu(options, resolveTarget(target))
+  // `defu(false, {...})` yields the object, so re-honour an explicit `base: false` that a
+  // target's base defaults would otherwise resurrect.
+  if (options.base === false)
+    merged.base = false
 
-  // Style base, prepended so it's foundational (concerns win on conflicts).
-  const antfu = antfuBase(options.base, depth)
+  const depth = resolveDepth()
+  const ctx = mergeContext(merged.context)
+
+  // Prepended so it's foundational — concerns win on conflicts.
+  const antfu = antfuBase(merged.base, depth)
   if (antfu)
     base.prepend(antfu)
 
   const configs: Linter.Config[] = []
 
-  if (isEnabled(options.nuxt, true))
-    configs.push(...nuxtConfig(ctx, axes, subOptions(options.nuxt)))
-  if (isEnabled(options.vue, true))
-    configs.push(...vueConfig(ctx, axes, subOptions(options.vue)))
-  if (isEnabled(options.vueUse, true))
-    configs.push(...vueUseConfig(axes, subOptions(options.vueUse)))
-  if (isEnabled(options.vite, true))
-    configs.push(...viteConfig(axes, subOptions(options.vite)))
-  if (isEnabled(options.tailwind, ctx.tailwind.detected))
-    configs.push(...tailwindConfig(ctx, axes, subOptions(options.tailwind)))
-  if (isEnabled(options.markdown, true))
-    configs.push(...markdownConfig(ctx, subOptions(options.markdown)))
-  // The ecosystem concern owns its own per-module gating; the umbrella toggle only
-  // needs to honour an explicit `false`.
-  if (options.nuxtEcosystem !== false)
-    configs.push(...nuxtEcosystemConfig(ctx, axes, subOptions(options.nuxtEcosystem)))
+  if (isEnabled(merged.nuxt, true))
+    configs.push(...nuxtConfig(ctx, subOptions(merged.nuxt)))
+  if (isEnabled(merged.vue, true))
+    configs.push(...vueConfig(subOptions(merged.vue)))
+  if (isEnabled(merged.vueUse, true))
+    configs.push(...vueUseConfig(subOptions(merged.vueUse)))
+  if (isEnabled(merged.vite, true))
+    configs.push(...viteConfig(subOptions(merged.vite)))
+  if (isEnabled(merged.tailwind, ctx.tailwind.detected))
+    configs.push(...tailwindConfig(ctx, subOptions(merged.tailwind)))
+  if (isEnabled(merged.markdown, true))
+    configs.push(...markdownConfig(ctx, subOptions(merged.markdown)))
+  // The ecosystem concern owns its per-module gating; the umbrella toggle only honours
+  // an explicit `false`.
+  if (merged.nuxtEcosystem !== false)
+    configs.push(...nuxtEcosystemConfig(ctx, subOptions(merged.nuxtEcosystem)))
 
-  // The type-aware layer is a full-depth-only, cross-cutting concern.
+  configs.push(...complexityConfig(merged.enforce?.complexity ?? false))
+
   if (depth === 'full')
     configs.push(...typeAwareConfig())
 
-  const rules = resolveRules(options)
+  const rules = resolveRules(merged)
   if (Object.keys(rules).length) {
     configs.push({
       name: 'nustack/rules',
@@ -145,22 +173,18 @@ export function applyNustackConfig(
 
 /**
  * Public standalone (non-Nuxt) entry. Builds a composer from scratch — no `withNuxt()` —
- * so a plain TypeScript/Vue repo can consume the nustack preset directly. The
- * Nuxt/project-detected concerns default off here since there's no Nuxt project
- * to detect; enable them explicitly if you want them. Used to dogfood `@nustackjs/lint`
- * on its own (non-Nuxt) source.
+ * so a plain TypeScript/Vue repo can consume the nustack preset directly. Defaults
+ * `target` to `'vue-app'` and resolves the project context via `detectStandaloneContext()`
+ * unless an explicit `context` is supplied.
  */
 export function nustack(
   options: NustackLintOptions = {},
   ...userConfigs: NustackUserConfig[]
 ): FlatConfigComposer {
   return applyNustackConfig(composer(), {
-    nuxt: false,
-    nuxtEcosystem: false,
-    vite: false,
-    vueUse: false,
     ...options,
-    context: options.context ?? EMPTY_CONTEXT,
+    target: options.target ?? 'vue-app',
+    context: options.context ?? detectStandaloneContext(),
   }, ...userConfigs)
 }
 

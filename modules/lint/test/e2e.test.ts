@@ -86,23 +86,20 @@ describe('e2e: composed config lints real code', () => {
   })
 })
 
-describe('e2e: variant and depth change behaviour', () => {
-  it('minimal variant does NOT flag process.env, recommended does', async () => {
-    const minimal = await lint(`const x = process.env.FOO`, 'app/composables/x.ts', { variant: 'minimal' })
-    const recommended = await lint(`const x = process.env.FOO`, 'app/composables/x.ts', { variant: 'recommended' })
-    expect(ruleIds(minimal)).not.toContain('@nustack/nuxt/no-process-env')
-    expect(ruleIds(recommended)).toContain('@nustack/nuxt/no-process-env')
+describe('e2e: enforce and depth change behaviour', () => {
+  it('correctness rules (e.g. no-process-env) are always on — nustack is opinionated', async () => {
+    const messages = await lint(`const x = process.env.FOO`, 'app/composables/x.ts')
+    expect(ruleIds(messages)).toContain('@nustack/nuxt/no-process-env')
   })
 
-  it('only enables Tailwind line wrapping in pedantic variant', async () => {
-    const recommended = await applyNustackConfig(composer() as any, { context: CONTEXT, variant: 'recommended' }).toConfigs()
-    const pedantic = await applyNustackConfig(composer() as any, { context: CONTEXT, variant: 'pedantic' }).toConfigs()
-
-    const tailwindRules = (configs: any[]) =>
-      configs.find(c => c.name === 'nustack/tailwind')?.rules ?? {}
-
-    expect(tailwindRules(recommended)).not.toHaveProperty('better-tailwindcss/enforce-consistent-line-wrapping')
-    expect(tailwindRules(pedantic)).toHaveProperty('better-tailwindcss/enforce-consistent-line-wrapping', 'warn')
+  it('enforce.complexity is off by default and opt-in flags an over-complex function', async () => {
+    const overComplex = `export function f(n: number) {\n${
+      Array.from({ length: 25 }, (_, i) => `  if (n === ${i}) return ${i}`).join('\n')
+    }\n  return -1\n}`
+    const off = await lint(overComplex, 'app/utils/complex.ts')
+    const on = await lint(overComplex, 'app/utils/complex.ts', { enforce: { complexity: true } })
+    expect(ruleIds(off)).not.toContain('complexity')
+    expect(ruleIds(on)).toContain('complexity')
   })
 
   it('full depth turns on the type-aware projectService layer; quick does not', async () => {
