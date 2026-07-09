@@ -1,7 +1,7 @@
 {
   "name": "@nustackjs/lint",
   "type": "module",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Zero-config, project-aware ESLint (oxlint-ready) for Nuxt — plug it in and catch Nuxt bugs, not just style.",
   "author": "Norbiros <me@norbiros.dev>",
   "license": "MIT",
