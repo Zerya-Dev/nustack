@@ -1,7 +1,7 @@
 {
   "name": "@nustackjs/lint-plugin-vite",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "ESLint and Oxlint rules for Vite asset/env safety. Used by @nustackjs/lint, usable standalone.",
   "author": "Norbiros <me@norbiros.dev>",
   "license": "MIT",
