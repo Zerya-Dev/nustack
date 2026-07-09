@@ -1,60 +1,62 @@
-# RFC 01: Nustack Lint
+# RFC 01: NuStack Lint
 
-**Status:** Draft
+Status: Draft
+*The module is in progress, because we are waiting for Oxlint plugin support.*
 
-NuStack treats linting as an ecosystem problem, not just a Vue or TypeScript problem.
-Nuxt projects combine Nuxt core, Vite, modules, VueUse, Tailwind, runtime config,
-auto-imports, and deployment conventions. Generic linting catches only part of that
-surface, so `@nustackjs/lint` composes project-aware checks for the stack a project
-actually uses.
+## Reasoning
 
-Linting was always worth it. In the era of AI-generated code it's load-bearing: every
-inconsistency an agent produces is something a human flags in review or has to pre-empt
-in `agents.md`. So the nustack linter (`@nustackjs/lint`) doesn't try to be "correct" —
-it picks **one explicit way per decision and enforces it**, so people and agents stop
-re-litigating style. You can disagree with any specific pick and override it; the value
-is the consistency, not the choice.
+Almost every project has some kind of code policy: rules that are enforced only
+during code review. For Nuxt this problem grows. New Nuxt modules, and Nuxt
+itself, often have best practices that are only described in the documentation.
+As the ecosystem evolves those practices change, and you frequently end up with
+multiple ways to achieve the same thing. Some ways are slightly better, some
+people simply prefer one over another. Whatever the choice is, it should be
+enforced, and enforcing it has real benefits: faster reviews, more consistency,
+easier onboarding, and less to keep in your head.
 
-Rules should be grounded in official docs, conventions, and recommendations for the
-tool they target. The goal is not arbitrary preference; it is moving known production
-failure modes and recurring review comments into automated checks.
+The problem grows even more with the introduction of AI agents. Vue and Nuxt are
+fairly new, so agents often don't know how to write them well. A very common
+example is auto imports: LLMs oftern import things manually that should be
+auto-imported, or reach for three different ways of defining props with defaults
+in Vue.
 
-## Module and plugin split
+We aim to standardize the Nuxt ecosystem, and linting is a big part of that. We
+want to provide a module, as well as a set of linting packages for Nuxt and the
+Nuxt ecosystem, that catch the rules which today only live in the docs.
 
-The Nuxt module is the default path because it can detect project context, generate the
-right config, and keep the base config, `@nuxt/eslint`, and NuStack rule packages upgraded
-together.
+## Solution
 
-The rules also ship as standalone ESLint/Oxlint-ready plugins with no Nuxt dependency.
-That lets projects adopt one slice, such as runtime config or VueUse rules, without
-taking the full opinionated module.
+To achieve that, the rules need to be:
 
-## Engine: ESLint now, oxlint later
+- **Extensive**
 
-We ship on **ESLint** today because it's the only engine that can lint Vue SFCs properly
-(templates, the `:ui` prop, SFC structure) and has the plugin ecosystem we compose
-(antfu, eslint-plugin-vue, better-tailwindcss).
+  We aim to cover all the popular cases, including:
 
-But ESLint is a stepping stone. **v1.0's goal is a full migration to oxlint** for speed.
-The whole public API (`variant`, `depth`, per-concern options, detected context) is kept
-engine-agnostic on purpose so the swap is internal, not breaking. The blocker is oxlint's
-Vue SFC support — until that lands upstream, we stay on ESLint.
+  - nuxt — `@nustackjs/lint-plugin-nuxt`
+  - vite — `@nustackjs/lint-plugin-vite`
+  - nuxt-ecosystem — popular Nuxt modules — `@nustackjs/lint-plugin-nuxt-ecosystem`
+  - vueuse — `@nustackjs/lint-plugin-vueuse`
 
-## Two knobs, not audience tiers
+  We also reuse existing plugins where they are the best fit, for example
+  `eslint-plugin-better-tailwindcss` for linting the `:ui` and `class` properties 
+  when using `@nuxt/ui`.
 
-Strictness and cost are different axes and live in different places:
+- **Fast**
 
-- **`variant`** (`minimal` / `recommended` / `pedantic`) — how opinionated. Static, set
-  once in `eslint.config.ts`.
-- **`depth`** (`quick` / `full`) — how expensive. Per-run, via `NUSTACK_LINT_DEPTH`. You
-  run quick locally and full in CI; type-aware checks live in `full`.
+  Linting should not slow you down. If a check is slow, it gets skipped, moved to
+  CI only, or disabled altogether, and then it stops catching anything. For that
+  reason we plan to use [Oxlint](https://oxc.rs) as the base engine.
 
-Tiers are not about who you are — every project uses both knobs at different moments.
+  Until the rules we need are available as Oxlint plugins, the module runs on
+  ESLint and is ready to move over to Oxlint as support lands.
 
-## Config lives in `eslint.config.ts`, not `nuxt.config`
+- **Zero-config and project-aware**
 
-The Nuxt module only detects context and codegens. No `nustack` key polluting
-`nuxt.config`. `@nuxt/eslint` is bundled as a dependency (nothing magical — no
-auto-install, wiring stays explicit) so consumers install one package.
+  Rules should apply themselves. The module detects what a project actually uses
+  (Nuxt, `@nuxt/ui`, VueUse, and so on) and enables the matching rules
+  automatically, instead of asking every project to wire up the same config by
+  hand. Standardizing the setup is what stops each team from re-deriving it from
+  scratch.
 
-See `modules/lint/DEVELOPMENT.md` for the full design contract.
+  Projects can still override or opt out when they need to, but the default should
+  work out of the box.
