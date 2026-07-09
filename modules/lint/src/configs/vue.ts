@@ -96,10 +96,6 @@ export function vueConfig(
         // Prevents Vue from reusing/mismatching DOM state across conditionally
         // rendered branches that look structurally similar.
         'vue/v-if-else-key': 'warn',
-        // The rule's own default: a bare method reference when the handler needs
-        // nothing extra, an explicit arrow when it needs a call-site argument -
-        // together they cover every case without a throwaway wrapper method.
-        'vue/v-on-handler-style': ['warn', ['method', 'inline-function']],
         ...rules,
       },
     },
