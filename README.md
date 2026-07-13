@@ -51,6 +51,7 @@ Things we want NuStack conventions to promote in end applications.
   [vueuse](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vueuse),
   [vite](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vite),
   [nuxt-ecosystem](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt-ecosystem).
+  [Try it in the online playground](https://stackblitz.com/github/Zerya-Dev/nustack/tree/master/modules/lint/playground?file=app%2Fapp.vue).
 
 ## 🤝 Community
 

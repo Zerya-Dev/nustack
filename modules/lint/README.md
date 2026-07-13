@@ -19,6 +19,8 @@ Nuxt, Vite, Nuxt UI, VueUse, Tailwind, and more. Part of [NuStack](https://githu
 > breaking rule changes before reaching stable `v1`. Feel free to track the roadmap in
 > [issue #7](https://github.com/Zerya-Dev/nustack/issues/7).
 
+- [👾 Open the playground in StackBlitz](https://stackblitz.com/github/Zerya-Dev/nustack/tree/master/modules/lint/playground?file=app%2Fapp.vue)
+
 ## What it does for you
 
 - **Deep, ecosystem-aware rules.** Detect the Nuxt modules and tools your project uses, then auto-enable rules built from each tool's best practices.

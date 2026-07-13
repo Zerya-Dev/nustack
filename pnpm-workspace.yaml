@@ -2,6 +2,17 @@ packages:
   - 'packages/*'
   - 'modules/*'
   - 'modules/*/playground'
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  sqlite3: true
+  unrs-resolver: true
+  vue-demi: true
+overrides:
+  '@nustackjs/lint-plugin-nuxt': workspace:*
+  '@nustackjs/lint-plugin-nuxt-ecosystem': workspace:*
+  '@nustackjs/lint-plugin-vite': workspace:*
+  '@nustackjs/lint-plugin-vueuse': workspace:*
 catalogs:
   build:
     '@nuxt/module-builder': ^1.0.2
@@ -24,12 +35,10 @@ catalogs:
     mdclint: ^0.1.2
     vue-eslint-parser: ^10.4.1
   nuxt:
-    '@nuxt/content': ^3.15.0
     '@nuxt/devtools': ^3.2.4
     '@nuxt/kit': ^4.4.8
     '@nuxt/schema': ^4.4.8
     '@nuxt/test-utils': ^4.0.3
-    '@nuxt/ui': ^4.9.0
     defu: ^6.1.7
     exsolve: ^1.1.0
     nuxt: ^4.4.8
@@ -43,10 +52,4 @@ catalogs:
     typescript: ~6.0.3
     vue-tsc: ^3.3.6
   vue:
-    '@vueuse/core': ^14.3.0
     tailwindcss: ^4.3.2
-allowBuilds:
-  '@parcel/watcher': true
-  esbuild: true
-  unrs-resolver: true
-  vue-demi: true

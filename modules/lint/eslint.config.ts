@@ -5,6 +5,6 @@ import nustack from './src/config'
 export default nustack({
   target: 'nuxt-module',
   base: {
-    ignores: ['dist'],
+    ignores: ['dist', 'test/fixtures/**'],
   },
 })

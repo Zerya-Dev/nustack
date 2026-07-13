@@ -3,20 +3,26 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "prepare": "pnpm --filter '@nustackjs/lint-plugin-*' --if-present build && nuxt prepare",
     "dev": "nuxt dev",
     "build": "nuxt build",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "lint": "nuxt prepare && eslint ."
   },
   "dependencies": {
-    "@nustackjs/lint": "workspace:*",
-    "@nuxt/content": "catalog:nuxt",
-    "@nuxt/eslint": "catalog:eslint",
-    "@nuxt/ui": "catalog:nuxt",
-    "@vueuse/core": "catalog:vue",
-    "nuxt": "catalog:nuxt"
+    "@nustackjs/lint": "latest",
+    "@nuxt/content": "^3.15.0",
+    "@nuxt/eslint": "^1.16.0",
+    "@nuxt/ui": "^4.9.0",
+    "@vueuse/core": "^14.3.0",
+    "nuxt": "^4.4.8",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
-    "eslint": "catalog:eslint",
-    "tailwindcss": "catalog:vue"
+    "eslint": "^10.6.0",
+    "tailwindcss": "^4.3.2"
+  },
+  "allowScripts": {
+    "sqlite3@5.1.7": true
   }
 }

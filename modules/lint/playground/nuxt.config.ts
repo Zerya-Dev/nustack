@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   // not listed here.
   modules: ['@nustackjs/lint', '@nuxt/ui', '@nuxt/content'],
   css: ['~/assets/css/main.css'],
-  content: { experimental: { sqliteConnector: 'native' } },
+  content: { experimental: { sqliteConnector: 'sqlite3' } },
   devtools: { enabled: true },
   compatibilityDate: 'latest',
 })

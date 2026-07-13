@@ -14,5 +14,11 @@
   "devDependencies": {
     "@antfu/eslint-config": "catalog:eslint",
     "eslint": "catalog:eslint"
+  },
+  "resolutions": {
+    "@nustackjs/lint-plugin-nuxt": "workspace:*",
+    "@nustackjs/lint-plugin-nuxt-ecosystem": "workspace:*",
+    "@nustackjs/lint-plugin-vite": "workspace:*",
+    "@nustackjs/lint-plugin-vueuse": "workspace:*"
   }
 }

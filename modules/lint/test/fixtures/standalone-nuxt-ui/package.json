@@ -2,6 +2,6 @@
   "name": "fixture-standalone-nuxt-ui",
   "private": true,
   "dependencies": {
-    "@nuxt/ui": "catalog:nuxt"
+    "@nuxt/ui": "^4.9.0"
   }
 }
