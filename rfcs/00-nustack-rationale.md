@@ -71,7 +71,7 @@ This applies to the things that matter most. NuStack is still just Nuxt, so a
 project can always diverge and do what it wants. But there should be one
 recommended path that is tested, documented, and improved over time.
 
-### Stability, but not legacy
+### Stability, not outdated
 
 NuStack should not chase every new library or pattern. The stack should prefer
 stable, well-tested tools, but at the same time it should not stay on old,
@@ -80,7 +80,7 @@ legacy tooling when clearly better alternatives exist.
 Dependency upgrades should be tested as part of the stack before being
 recommended.
 
-### Comprehensive testability
+### Everything should be testable
 
 Conventions should be enforceable by automated tests. There should be no rules
 that live only in the documentation. Mandatory linting, tests, and type checks

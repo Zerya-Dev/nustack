@@ -3,15 +3,16 @@
 Opinionated tooling shaped by real projects for the entire Nuxt ecosystem.
 
 > [!NOTE]
-> The full stack is **heavily Work in Progress** - the vision is big and still taking shape.\
-> But some pieces are already solid and used daily. If you're here now, you're probably looking for
+> NuStack is still **work in progress**. Some parts are plans rather than published packages, but\
+> other are used daily in real applications. If you're here now, you're probably looking for
 > [`@nustackjs/lint`](modules/lint) - zero-config, project-aware ESLint (Oxlint-ready) for the Nuxt ecosystem.
 
-## ❓ Why?
+## Why does this exist?
 
-Nuxt is a great framework, but building big, production apps with it still involves **too much
-ecosystem work**: choosing tools, fixing incompatibilities, switching between 5 different libraries
-that should do the same thing, and fixing random issues that should not be part of building a product.
+In a large Nuxt application, a surprising amount of time is not spent on writing code:
+choosing libraries, keeping their configurations compatible, and repeating the same setup in every
+repository. We have run into these problems in production projects and want to maintain the solutions
+in one place.
 
 NuStack's goal is a stable, opinionated ecosystem for Nuxt. That means looking at the
 whole picture: core framework usage, popular modules, linting, testing, starters,
@@ -22,7 +23,7 @@ you can focus on building your product (*and we start today with [linting](https
 
 For the longer rationale, see [RFC 00: NuStack rationale](rfcs/00-nustack-rationale.md).
 
-## 🎯 Goals
+## Goals
 
 Our long-term goals for NuStack (for shipped pieces, see [Packages](#-packages)):
 
@@ -31,19 +32,18 @@ Our long-term goals for NuStack (for shipped pieces, see [Packages](#-packages))
 - **Layers** and **Modules**: move common code, setup and logic out of your app code.
 - **Ecosystem Contributions**: upstream improvements across the entire ecosystem.
 
-**The goal is to make the Nuxt experience significantly better - not just for simple websites,
-but for real-world projects that we and other Nuxters want to build.**
-
-## 🧭 Principles
+## Principles
 
 Things we want NuStack conventions to promote in end applications.
 
-- **Best practices over endless choice**: we select the best tools for the job and standardize on them to reduce fragmentation.
-- **Stability, but not legacy**: we prefer stable, well-tested tools, but don't stay on legacy tooling when clearly better alternatives exist.
-- **Comprehensive testability**: all conventions/implementations need to be enforceable by automated tests.
-- **Community first**: built with the community (RFCs etc.), contributing upstream improvements.
+- **Best practices over endless choice**: we choose the right tools for the job and standardize on them to avoid unnecessary fragmentation.
+- **Stable, not outdated**: we prefer stable, well-tested tools, but don't stay on legacy tooling when a clearly better option becomes available.
+- **Everything should be testable**: conventions and implementations must be enforceable through automated tests, so they are actually enforced.
+- **Community first**: decisions are made openly through RFCs and community feedback, with upstream contributions whenever possible.
 
-## 📦 Packages
+For more information read the [initial RFC](rfcs/00-nustack-rationale.md).
+
+## Packages
 
 - [`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint) — zero-config, project-aware ESLint (Oxlint-ready)
   for Nuxt. Built on top of standalone ESLint/Oxlint plugins:
@@ -53,11 +53,20 @@ Things we want NuStack conventions to promote in end applications.
   [nuxt-ecosystem](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt-ecosystem).
   [Try it in the online playground](https://stackblitz.com/github/Zerya-Dev/nustack/tree/master/modules/lint/playground?file=app%2Fapp.vue).
 
-## 🤝 Community
+## Community
 
-NuStack is meant to be **a community effort**. We want feedback from people building real
-Nuxt apps: what breaks, what is the way that you are solving problems, what tooling is missing, and what should
-be pushed upstream. **Open an issue, start a discussion, or contribute directly.**
+NuStack is a **community effort**. If you have any feedback about NuStack or Nuxt ecosystem
+in general (what breaks, what is the way that you are solving problems, what tooling is missing)
+please **ppen an issue, start a discussion, or contribute directly.**
+
+### AI-assisted development and contributions
+
+AI tools have been used during the development of NuStack. They may also be used when contributing,
+but the contributor remains responsible for every change and every word they submit. Please follow
+[Nuxt's AI-assisted contribution guidelines](https://nuxt.com/docs/4.x/community/contribution#ai-assisted-contributions):
+
+- **Never let an LLM speak for you**: Write issues, comments and pull request descriptions in your own voice.
+- **Never let an LLM think for you**: Only submit work that you understand, have checked and can explain.
 
 ## License
 
