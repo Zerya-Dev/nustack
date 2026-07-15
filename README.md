@@ -2,6 +2,9 @@
 
 [![GitHub License](https://img.shields.io/github/license/Zerya-Dev/nustack)](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE)
 [![GitHub contributors](https://img.shields.io/github/contributors/Zerya-Dev/nustack)](https://github.com/Zerya-Dev/nustack/graphs/contributors)
+[![GitHub issues](https://img.shields.io/github/issues/Zerya-Dev/nustack)](https://github.com/Zerya-Dev/nustack/issues)
+[![GitHub stars](https://img.shields.io/github/stars/Zerya-Dev/nustack)](https://github.com/Zerya-Dev/nustack/stargazers)
+[![GitHub last commit](https://img.shields.io/github/last-commit/Zerya-Dev/nustack)](https://github.com/Zerya-Dev/nustack/commits/master)
 
 NuStack is an opinionated tooling ecosystem for Nuxt. It focuses on standardizing configurations, reducing boilerplate, and providing stable tools for large Nuxt applications.
 
@@ -56,6 +59,12 @@ Standalone ESLint plugins used under the hood:
 NuStack relies on community feedback. If you find bugs or have ideas for new tools, please open an issue or start a discussion on GitHub.
 
 When contributing with AI, please follow [Nuxt's AI-assisted contribution guidelines](https://nuxt.com/docs/4.x/community/contribution#ai-assisted-contributions). Write issues in your own voice and only submit work you fully understand.
+
+### 🏆 Top Contributors
+
+<a href="https://github.com/Zerya-Dev/nustack/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Zerya-Dev/nustack" alt="Contributors Image">
+</a>
 
 ---
 
