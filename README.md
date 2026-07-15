@@ -21,12 +21,20 @@ In large Nuxt applications, too much time is spent choosing libraries, aligning 
 
 For the full rationale, see [RFC 00: NuStack rationale](rfcs/00-nustack-rationale.md).
 
+---
+
 ## Key Features
 
-- **End-to-end testing**: Tests across all of the libraries treated as part of the stack.
-- **Opinionated starters**: Maintained Nuxt starters based on our selected tooling.
-- **Layers and Modules**: Common code, setup, and logic moved out of your app code.
-- **Ecosystem Contributions**: Upstream improvements across the entire ecosystem.
+- **End-to-end testing**
+  - Tests across all of the libraries treated as part of the stack.
+- **Opinionated starters**
+  - Maintained Nuxt starters based on our selected tooling.
+- **Layers and Modules**
+  - Common code, setup, and logic moved out of your app code.
+- **Ecosystem Contributions**
+  - Upstream improvements across the entire ecosystem.
+
+---
 
 ## Packages
 
@@ -41,14 +49,21 @@ Standalone ESLint plugins used under the hood:
 - [`@nustackjs/lint-plugin-vite`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vite)
 - [`@nustackjs/lint-plugin-nuxt-ecosystem`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt-ecosystem)
 
+---
+
 ## Community
 
 NuStack relies on community feedback. If you find bugs or have ideas for new tools, please open an issue or start a discussion on GitHub.
 
 When contributing with AI, please follow [Nuxt's AI-assisted contribution guidelines](https://nuxt.com/docs/4.x/community/contribution#ai-assisted-contributions). Write issues in your own voice and only submit work you fully understand.
 
+---
+
 ## License
 
 NuStack is licensed under the [MIT License](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE).
 
-Developed by [Zerya](https://zerya.dev).
+---
+
+**Developed and used daily by [💫 Zerya](https://zerya.dev)** — want to build amazing things with us?
+Feel free to [get in touch](https://zerya.dev).
