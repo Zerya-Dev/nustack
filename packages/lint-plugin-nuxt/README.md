@@ -1,13 +1,13 @@
 # @nustackjs/lint-plugin-nuxt
 
-ESLint and [Oxlint](https://oxc.rs) rules for [Nuxt](https://nuxt.com) conventions - 
-`runtimeConfig` safety, auto-imports, keeping `process.env` out of app
-code, and `nuxt.config` `modules` correctness (registration order, deprecated modules).
+[![npm version](https://img.shields.io/npm/v/@nustackjs/lint-plugin-nuxt)](https://www.npmjs.com/package/@nustackjs/lint-plugin-nuxt)
+[![GitHub License](https://img.shields.io/github/license/Zerya-Dev/nustack)](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-nuxt/LICENSE)
 
-Every rule is grounded in Nuxt's official docs, conventions, and recommendations, so
-they're enforced in your project, not just documented.
+ESLint and [Oxlint](https://oxc.rs) rules for [Nuxt](https://nuxt.com) conventions. This plugin enforces `runtimeConfig` safety, correct auto-imports usage, prevents `process.env` leaks in app code, and validates `nuxt.config` module settings like registration order and deprecated modules.
 
-Used by [`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint), but works standalone in any flat ESLint config.
+Every rule is based on Nuxt's official documentation and recommendations.
+
+This package is used by [`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint) but can also be used standalone in any flat ESLint configuration.
 
 ## Install
 
@@ -17,18 +17,17 @@ pnpm add -D @nustackjs/lint-plugin-nuxt
 
 ## Usage
 
-The plugin registers under the scoped name `@nustack/nuxt`, so every rule id reads
-`@nustack/nuxt/<rule>`.
+The plugin registers under the scoped name `@nustack/nuxt`. Every rule ID starts with `@nustack/nuxt/<rule>`.
 
 ```js
 // eslint.config.js
 import nuxt from '@nustackjs/lint-plugin-nuxt'
 
 export default [
-  // turn on the curated set...
+  // turn on the curated set
   nuxt.configs.recommended,
 
-  // ...or wire rules yourself
+  // or configure rules manually
   {
     plugins: { '@nustack/nuxt': nuxt },
     rules: { '@nustack/nuxt/no-process-env': 'warn' },
@@ -36,7 +35,7 @@ export default [
 ]
 ```
 
-The same applies for OXLint, but some rules may not work due to limited Vue support.
+These rules are compatible with Oxlint, although some may not work perfectly due to limited Vue support in Oxlint.
 
 ## Rules
 

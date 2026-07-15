@@ -1,13 +1,13 @@
 # @nustackjs/lint-plugin-vite
 
-ESLint and [Oxlint](https://oxc.rs) rules for [Vite](https://vite.dev) asset and environment safety -
-catching `public/` imports and secret-looking `VITE_*` variables that leak 
-into the client bundle.
+[![npm version](https://img.shields.io/npm/v/@nustackjs/lint-plugin-vite)](https://www.npmjs.com/package/@nustackjs/lint-plugin-vite)
+[![GitHub License](https://img.shields.io/github/license/Zerya-Dev/nustack)](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-vite/LICENSE)
 
-Every rule is grounded in Vite's official docs, conventions, and recommendations, so
-they're enforced in your project, not just documented.
+ESLint and [Oxlint](https://oxc.rs) rules for [Vite](https://vite.dev) asset and environment safety. This plugin catches `public/` imports and secret-looking `VITE_*` variables that could leak into the client bundle.
 
-Used by [`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint), but works standalone in any flat ESLint config.
+Every rule is based on Vite's official documentation and recommendations.
+
+This package is used by [`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint) but can also be used standalone in any flat ESLint configuration.
 
 ## Install
 
@@ -17,18 +17,17 @@ pnpm add -D @nustackjs/lint-plugin-vite
 
 ## Usage
 
-The plugin registers under the scoped name `@nustack/vite`, so every rule id reads
-`@nustack/vite/<rule>`.
+The plugin registers under the scoped name `@nustack/vite`. Every rule ID starts with `@nustack/vite/<rule>`.
 
 ```js
 // eslint.config.js
 import vite from '@nustackjs/lint-plugin-vite'
 
 export default [
-  // turn on the curated set...
+  // turn on the curated set
   vite.configs.recommended,
 
-  // ...or wire rules yourself
+  // or configure rules manually
   {
     plugins: { '@nustack/vite': vite },
     rules: { '@nustack/vite/no-client-secret-pattern': 'error' },
@@ -36,7 +35,7 @@ export default [
 ]
 ```
 
-The same applies for OXLint — these rules are plain JS/TS, so they run there too.
+These rules are written in plain JS/TS and are fully compatible with Oxlint.
 
 ## Rules
 
