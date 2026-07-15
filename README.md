@@ -15,7 +15,7 @@ Useful links:
 > other are used daily in real applications. If you're here now, you're probably looking for
 > [`@nustackjs/lint`](modules/lint) - zero-config, project-aware ESLint (Oxlint-ready) for the Nuxt ecosystem.
 
-## Why does this exist?
+## 🤔 Why does this exist?
 
 In large Nuxt applications, too much time is spent choosing libraries, aligning configurations, and duplicating setups across repositories. NuStack solves this by providing a stable, opinionated ecosystem for Nuxt. We consolidate core framework usage, modules, linting, and testing in one place so you can focus on building your product.
 
@@ -23,7 +23,7 @@ For the full rationale, see [RFC 00: NuStack rationale](rfcs/00-nustack-rational
 
 ---
 
-## Key Features
+## ✨ Key Features
 
 - **End-to-end testing**
   - Tests across all of the libraries treated as part of the stack.
@@ -36,9 +36,9 @@ For the full rationale, see [RFC 00: NuStack rationale](rfcs/00-nustack-rational
 
 ---
 
-## Packages
+## 📦 Packages
 
-### Linting
+### 🧹 Linting
 
 - [`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint): Zero-config, project-aware ESLint (Oxlint-ready) for Nuxt.
 
@@ -51,7 +51,7 @@ Standalone ESLint plugins used under the hood:
 
 ---
 
-## Community
+## 🤝 Community
 
 NuStack relies on community feedback. If you find bugs or have ideas for new tools, please open an issue or start a discussion on GitHub.
 
@@ -59,7 +59,7 @@ When contributing with AI, please follow [Nuxt's AI-assisted contribution guidel
 
 ---
 
-## License
+## 📜 License
 
 NuStack is licensed under the [MIT License](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE).
 
