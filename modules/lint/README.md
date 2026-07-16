@@ -1,5 +1,8 @@
 # 🧹 NuStack Lint
 
+[![npm version](https://img.shields.io/npm/v/@nustackjs/lint.svg)](https://npmjs.com/package/@nustackjs/lint)
+[![npm downloads](https://img.shields.io/npm/dm/@nustackjs/lint.svg)](https://npmjs.com/package/@nustackjs/lint)
+[![License](https://img.shields.io/npm/l/@nustackjs/lint.svg)](https://github.com/Zerya-Dev/nustack/blob/master/modules/lint/LICENSE)
 [![Nuxt][nuxt-src]][nuxt-href]
 
 Zero-config linting for Nuxt: one project-aware module that catches real bugs and validates conventions that usually live only in documentation across the ecosystem: Nuxt, Vite, Nuxt UI, VueUse, Tailwind, and more. Part of [NuStack](https://github.com/Zerya-Dev/nustack).
@@ -32,36 +35,21 @@ For the longer design rationale, see the [RFC 01: NuStack Lint](../../rfcs/01-nu
 
 The preset composes these layers and gates each on what your project actually uses:
 
-- **Antfu base**
-  - Style, TypeScript, imports, and JS hygiene via [`@antfu/eslint-config`](https://github.com/antfu/eslint-config).
-- **Nuxt core**
-  - Auto-imports, `runtimeConfig`, module order, and `process.env` via [`@nuxt/eslint`](https://eslint.nuxt.com) and [`@nustackjs/lint-plugin-nuxt`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt).
-- **VueUse**
-  - Prefer lifecycle-aware composables via [`@nustackjs/lint-plugin-vueuse`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vueuse).
-- **Vite**
-  - Asset and env safety via [`@nustackjs/lint-plugin-vite`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vite).
-- **Nuxt ecosystem**
-  - Conventions for individual Nuxt modules via [`@nustackjs/lint-plugin-nuxt-ecosystem`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt-ecosystem).
-- **Tailwind**
-  - Class order and correctness via [better-tailwindcss](https://github.com/schoero/eslint-plugin-better-tailwindcss).
-- **Vue SFC**
-  - Conventions from `eslint-plugin-vue` (e.g. `lang="ts"` blocks).
+| Layer | What it checks | Plugin |
+| --- | --- | --- |
+| **Antfu base** | Style, TypeScript, imports, and JS hygiene | [`@antfu/eslint-config`](https://github.com/antfu/eslint-config) |
+| **Nuxt core** | Auto-imports, `runtimeConfig`, module order, and `process.env` | [`@nuxt/eslint`](https://eslint.nuxt.com), [`nuxt`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt) |
+| **VueUse** | Prefer lifecycle-aware composables | [`vueuse`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vueuse) |
+| **Vite** | Asset and env safety | [`vite`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vite) |
+| **Nuxt ecosystem** | Conventions for individual Nuxt modules | [`nuxt-ecosystem`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt-ecosystem) |
+| **Tailwind** | Class order and correctness | [`better-tailwindcss`](https://github.com/schoero/eslint-plugin-better-tailwindcss) |
+| **Vue SFC** | Conventions from `eslint-plugin-vue` (e.g. `lang="ts"` blocks) | Built-in |
 
 **Want a rule added, or a plugin integrated?** [Open an issue](https://github.com/Zerya-Dev/nustack/issues) as the ruleset is meant to grow with what the community uses.
 
-## ⚙️ Environments
+## 🚀 Quick Start
 
-A `target` option pre-fills the preset for the project you're actually in, such as a normal Nuxt app, a non-Nuxt Vue SPA, or a Nuxt module/library:
-
-```ts
-nustack({ target: 'nuxt-app' })    // default for the generated Nuxt-path config
-nustack({ target: 'vue-app' })     // non-Nuxt Vue SPA (no `nuxt prepare` needed)
-nustack({ target: 'nuxt-module' }) // authoring a Nuxt module; `playground/**` lints itself
-```
-
-See [Configuration](docs/configuration.md) for what each target pre-fills.
-
-## 🚀 Setup
+### 1. Install Module
 
 ```bash
 npx nuxi module add @nustackjs/lint
@@ -76,12 +64,16 @@ export default defineNuxtConfig({
 })
 ```
 
+### 2. Add ESLint Config
+
 Then point `eslint.config.ts` at the generated config:
 
 ```ts
 // eslint.config.ts
 export { default } from './.nuxt/nustack-eslint.mjs'
 ```
+
+### 3. Run Checks
 
 ```bash
 eslint .                            # quick checks (fast)
@@ -90,13 +82,22 @@ NUSTACK_LINT_DEPTH=full eslint .    # + type-aware checks (CI), not recommended 
 
 See [Installation](docs/installation.md), [Configuration](docs/configuration.md), and [Migration](docs/migration.md) for full setup, options, and overrides.
 
-## 🔍 Config inspector
+> [!TIP]
+> **Environments**  
+> A `target` option pre-fills the preset for the project you're actually in, such as a normal Nuxt app, a non-Nuxt Vue SPA, or a Nuxt module/library:
+> ```ts
+> nustack({ target: 'nuxt-app' })    // default for the generated Nuxt-path config
+> nustack({ target: 'vue-app' })     // non-Nuxt Vue SPA (no `nuxt prepare` needed)
+> nustack({ target: 'nuxt-module' }) // authoring a Nuxt module; `playground/**` lints itself
+> ```
+> See [Configuration](docs/configuration.md) for what each target pre-fills.
 
-The preset returns a `FlatConfigComposer`, so the exact resolved config is inspectable:
-
-```bash
-npx @eslint/config-inspector --config eslint.config.ts
-```
+> [!TIP]
+> **Config inspector**  
+> The preset returns a `FlatConfigComposer`, so the exact resolved config is inspectable:
+> ```bash
+> npx @eslint/config-inspector --config eslint.config.ts
+> ```
 
 ## 🤝 Contributing
 
