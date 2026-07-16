@@ -8,10 +8,6 @@
 
 NuStack is an opinionated tooling ecosystem for Nuxt. It focuses on standardizing configurations, reducing boilerplate, and providing stable tools for large Nuxt applications.
 
-Useful links:
-
-- [Playground](https://stackblitz.com/github/Zerya-Dev/nustack/tree/master/modules/lint/playground?file=app%2Fapp.vue)
-- [Initial RFC](rfcs/00-nustack-rationale.md)
 
 > [!NOTE]
 > NuStack is still **work in progress**. Some parts are plans rather than published packages, but
@@ -24,20 +20,18 @@ In large Nuxt applications, too much time is spent choosing libraries, aligning 
 
 For the full rationale, see [RFC 00: NuStack rationale](rfcs/00-nustack-rationale.md).
 
----
+## 🎯 Goals
 
-## ✨ Key Features
+Our long-term goals for NuStack (for shipped pieces, see [Packages](#📦-packages)):
 
-- **End-to-end testing**
-  - Tests across all of the libraries treated as part of the stack.
+- **Tests**
+  - End-to-end tests across all of the libraries treated as part of the stack.
 - **Opinionated starters**
   - Maintained Nuxt starters based on our selected tooling.
 - **Layers and Modules**
-  - Common code, setup, and logic moved out of your app code.
+  - Move common code, setup and logic out of your app code.
 - **Ecosystem Contributions**
   - Upstream improvements across the entire ecosystem.
-
----
 
 ## 📦 Packages
 
@@ -52,21 +46,11 @@ Standalone ESLint plugins used under the hood:
 - [`@nustackjs/lint-plugin-vite`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vite)
 - [`@nustackjs/lint-plugin-nuxt-ecosystem`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt-ecosystem)
 
----
-
 ## 🤝 Community
 
-NuStack relies on community feedback. If you find bugs or have ideas for new tools, please open an issue or start a discussion on GitHub.
+NuStack is a **community effort**. If you have any feedback about NuStack or Nuxt ecosystem in general (what breaks, what is the way that you are solving problems, what tooling is missing) please open an issue, start a discussion, or contribute directly.
 
 When contributing with AI, please follow [Nuxt's AI-assisted contribution guidelines](https://nuxt.com/docs/4.x/community/contribution#ai-assisted-contributions). Write issues in your own voice and only submit work you fully understand.
-
-### 🏆 Top Contributors
-
-<a href="https://github.com/Zerya-Dev/nustack/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Zerya-Dev/nustack" alt="Contributors Image">
-</a>
-
----
 
 ## 📜 License
 
