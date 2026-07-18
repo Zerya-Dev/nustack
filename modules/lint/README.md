@@ -43,7 +43,7 @@ The preset composes these layers and gates each on what your project actually us
 | **Vite** | Asset and env safety | [`vite`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vite) |
 | **Nuxt ecosystem** | Conventions for individual Nuxt modules | [`nuxt-ecosystem`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt-ecosystem) |
 | **Tailwind** | Class order and correctness | [`better-tailwindcss`](https://github.com/schoero/eslint-plugin-better-tailwindcss) |
-| **Vue SFC** | Conventions from `eslint-plugin-vue` (e.g. `lang="ts"` blocks) | Built-in |
+| **Vue SFC** | Conventions from `eslint-plugin-vue` (e.g. `lang="ts"` blocks) | `eslint-plugin-vue` |
 
 **Want a rule added, or a plugin integrated?** [Open an issue](https://github.com/Zerya-Dev/nustack/issues) as the ruleset is meant to grow with what the community uses.
 
