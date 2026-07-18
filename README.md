@@ -22,7 +22,7 @@ For the full rationale, see [RFC 00: NuStack rationale](rfcs/00-nustack-rational
 
 ## 🎯 Goals
 
-Our long-term goals for NuStack (for shipped pieces, see [Packages](#📦-packages)):
+Our long-term goals for NuStack (for shipped pieces, see [Packages](#packages)):
 
 - **Tests**
   - End-to-end tests across all of the libraries treated as part of the stack.
