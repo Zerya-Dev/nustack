@@ -35,15 +35,15 @@ For the longer design rationale, see the [RFC 01: NuStack Lint](../../rfcs/01-nu
 
 The preset composes these layers and gates each on what your project actually uses:
 
-| Layer | What it checks | Plugin |
-| --- | --- | --- |
-| **Antfu base** | Style, TypeScript, imports, and JS hygiene | [`@antfu/eslint-config`](https://github.com/antfu/eslint-config) |
-| **Nuxt core** | Auto-imports, `runtimeConfig`, module order, and `process.env` | [`@nuxt/eslint`](https://eslint.nuxt.com), [`nuxt`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt) |
-| **VueUse** | Conventions and best practices for VueUse | [`vueuse`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vueuse) |
-| **Vite** | Vite-specific rules and configurations | [`vite`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vite) |
-| **Nuxt ecosystem** | Conventions for popular Nuxt modules | [`nuxt-ecosystem`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt-ecosystem) |
-| **Tailwind** | Class order and correctness | [`better-tailwindcss`](https://github.com/schoero/eslint-plugin-better-tailwindcss) |
-| **Vue SFC** | Conventions from `eslint-plugin-vue` (e.g. `lang="ts"` blocks) | `eslint-plugin-vue` |
+| Layer              | What it checks                                                 | Plugin                                                                                                                          |
+| ------------------ | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| **Antfu base**     | Style, TypeScript, imports, and JS hygiene                     | [`@antfu/eslint-config`](https://github.com/antfu/eslint-config)                                                                |
+| **Nuxt core**      | Auto-imports, `runtimeConfig`, module order, and `process.env` | [`@nuxt/eslint`](https://eslint.nuxt.com), [`nuxt`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt) |
+| **VueUse**         | Conventions and best practices for VueUse                      | [`vueuse`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vueuse)                                        |
+| **Vite**           | Vite-specific rules and configurations                         | [`vite`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vite)                                            |
+| **Nuxt ecosystem** | Conventions for popular Nuxt modules                           | [`nuxt-ecosystem`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt-ecosystem)                        |
+| **Tailwind**       | Class order and correctness                                    | [`better-tailwindcss`](https://github.com/schoero/eslint-plugin-better-tailwindcss)                                             |
+| **Vue SFC**        | Conventions from `eslint-plugin-vue` (e.g. `lang="ts"` blocks) | `eslint-plugin-vue`                                                                                                             |
 
 **Want a rule added, or a plugin integrated?** [Open an issue](https://github.com/Zerya-Dev/nustack/issues) as the ruleset is meant to grow with what the community uses.
 
@@ -83,18 +83,21 @@ NUSTACK_LINT_DEPTH=full eslint .    # + type-aware checks (CI), not recommended 
 See [Installation](docs/installation.md), [Configuration](docs/configuration.md), and [Migration](docs/migration.md) for full setup, options, and overrides.
 
 > [!TIP]
-> **Environments**  
+> **Environments**
 > A `target` option pre-fills the preset for the project you're actually in, such as a normal Nuxt app, a non-Nuxt Vue SPA, or a Nuxt module/library:
+>
 > ```ts
 > nustack({ target: 'nuxt-app' })    // default for the generated Nuxt-path config
 > nustack({ target: 'vue-app' })     // non-Nuxt Vue SPA (no `nuxt prepare` needed)
 > nustack({ target: 'nuxt-module' }) // authoring a Nuxt module; `playground/**` lints itself
 > ```
+>
 > See [Configuration](docs/configuration.md) for what each target pre-fills.
 
 > [!TIP]
-> **Config inspector**  
+> **Config inspector**
 > The preset returns a `FlatConfigComposer`, so the exact resolved config is inspectable:
+>
 > ```bash
 > npx @eslint/config-inspector --config eslint.config.ts
 > ```
