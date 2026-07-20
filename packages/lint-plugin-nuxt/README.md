@@ -1,7 +1,7 @@
 # @nustackjs/lint-plugin-nuxt
 
 [![npm version](https://img.shields.io/npm/v/@nustackjs/lint-plugin-nuxt)](https://www.npmjs.com/package/@nustackjs/lint-plugin-nuxt)
-[![GitHub License](https://img.shields.io/github/license/Zerya-Dev/nustack)](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-nuxt/LICENSE)
+[![GitHub License](https://img.shields.io/github/license/Zerya-Dev/nustack)](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE)
 
 ESLint and [Oxlint](https://oxc.rs) rules for [Nuxt](https://nuxt.com) conventions. This plugin enforces `runtimeConfig` safety, correct auto-imports usage, prevents `process.env` leaks in app code, and validates `nuxt.config` module settings like registration order and deprecated modules.
 
@@ -49,4 +49,4 @@ These rules are compatible with Oxlint, although some may not work perfectly due
 
 ## License
 
-[MIT](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-nuxt/LICENSE) © Zerya and contributors
+[MIT](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE) © Zerya and contributors

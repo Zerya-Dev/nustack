@@ -1,7 +1,7 @@
 # @nustackjs/lint-plugin-vueuse
 
 [![npm version](https://img.shields.io/npm/v/@nustackjs/lint-plugin-vueuse)](https://www.npmjs.com/package/@nustackjs/lint-plugin-vueuse)
-[![GitHub License](https://img.shields.io/github/license/Zerya-Dev/nustack)](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-vueuse/LICENSE)
+[![GitHub License](https://img.shields.io/github/license/Zerya-Dev/nustack)](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE)
 
 ESLint and [Oxlint](https://oxc.rs) rules for [VueUse](https://vueuse.org). This plugin encourages the use of VueUse composables over raw browser APIs.
 
@@ -52,4 +52,4 @@ These rules are compatible with Oxlint, although some may not work perfectly due
 
 ## License
 
-[MIT](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-vueuse/LICENSE) © Zerya
+[MIT](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE) © Zerya

@@ -10,8 +10,8 @@ NuStack is an opinionated tooling ecosystem for Nuxt. It focuses on standardizin
 
 
 > [!NOTE]
-> NuStack is still **work in progress**. Some parts are plans rather than published packages, but
-> other are used daily in real applications. If you're here now, you're probably looking for
+> NuStack is still **a work in progress**. Some parts are plans rather than published packages, but
+> others are used daily in real applications. If you're here now, you're probably looking for
 > [`@nustackjs/lint`](modules/lint) - zero-config, project-aware ESLint (Oxlint-ready) for the Nuxt ecosystem.
 
 ## 🤔 Why does this exist?
@@ -22,7 +22,7 @@ For the full rationale, see [RFC 00: NuStack rationale](rfcs/00-nustack-rational
 
 ## 🎯 Goals
 
-Our long-term goals for NuStack (for shipped pieces, see [Packages](#packages)):
+Our long-term goals for NuStack (for shipped pieces, see [Packages](#-packages)):
 
 - **Tests**
   - End-to-end tests across all of the libraries treated as part of the stack.

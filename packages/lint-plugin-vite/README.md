@@ -1,7 +1,7 @@
 # @nustackjs/lint-plugin-vite
 
 [![npm version](https://img.shields.io/npm/v/@nustackjs/lint-plugin-vite)](https://www.npmjs.com/package/@nustackjs/lint-plugin-vite)
-[![GitHub License](https://img.shields.io/github/license/Zerya-Dev/nustack)](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-vite/LICENSE)
+[![GitHub License](https://img.shields.io/github/license/Zerya-Dev/nustack)](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE)
 
 ESLint and [Oxlint](https://oxc.rs) rules for [Vite](https://vite.dev) asset and environment safety. This plugin catches `public/` imports and secret-looking `VITE_*` variables that could leak into the client bundle.
 
@@ -48,4 +48,4 @@ These rules are written in plain JS/TS and are fully compatible with Oxlint.
 
 ## License
 
-[MIT](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-vite/LICENSE) © Zerya and contributors
+[MIT](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE) © Zerya and contributors

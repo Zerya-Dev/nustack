@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/@nustackjs/lint.svg)](https://npmjs.com/package/@nustackjs/lint)
 [![npm downloads](https://img.shields.io/npm/dm/@nustackjs/lint.svg)](https://npmjs.com/package/@nustackjs/lint)
-[![License](https://img.shields.io/npm/l/@nustackjs/lint.svg)](https://github.com/Zerya-Dev/nustack/blob/master/modules/lint/LICENSE)
+[![License](https://img.shields.io/npm/l/@nustackjs/lint.svg)](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE)
 [![Nuxt][nuxt-src]][nuxt-href]
 
 Zero-config linting for Nuxt: one project-aware module that catches real bugs and validates conventions that usually live only in documentation across the ecosystem: Nuxt, Vite, Nuxt UI, VueUse, Tailwind, and more. Part of [NuStack](https://github.com/Zerya-Dev/nustack).
@@ -39,9 +39,9 @@ The preset composes these layers and gates each on what your project actually us
 | --- | --- | --- |
 | **Antfu base** | Style, TypeScript, imports, and JS hygiene | [`@antfu/eslint-config`](https://github.com/antfu/eslint-config) |
 | **Nuxt core** | Auto-imports, `runtimeConfig`, module order, and `process.env` | [`@nuxt/eslint`](https://eslint.nuxt.com), [`nuxt`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt) |
-| **VueUse** | Prefer lifecycle-aware composables | [`vueuse`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vueuse) |
-| **Vite** | Asset and env safety | [`vite`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vite) |
-| **Nuxt ecosystem** | Conventions for individual Nuxt modules | [`nuxt-ecosystem`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt-ecosystem) |
+| **VueUse** | Conventions and best practices for VueUse | [`vueuse`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vueuse) |
+| **Vite** | Vite-specific rules and configurations | [`vite`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-vite) |
+| **Nuxt ecosystem** | Conventions for popular Nuxt modules | [`nuxt-ecosystem`](https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt-ecosystem) |
 | **Tailwind** | Class order and correctness | [`better-tailwindcss`](https://github.com/schoero/eslint-plugin-better-tailwindcss) |
 | **Vue SFC** | Conventions from `eslint-plugin-vue` (e.g. `lang="ts"` blocks) | `eslint-plugin-vue` |
 
@@ -109,7 +109,7 @@ See [DEVELOPMENT.md](https://github.com/Zerya-Dev/nustack/blob/master/modules/li
 
 ## 📜 License
 
-[MIT](https://github.com/Zerya-Dev/nustack/blob/master/modules/lint/LICENSE) © Zerya and contributors
+[MIT](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE) © Zerya and contributors
 
 <!-- Badges -->
 
