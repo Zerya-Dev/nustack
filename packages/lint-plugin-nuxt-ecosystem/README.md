@@ -1,14 +1,15 @@
 # @nustackjs/lint-plugin-nuxt-ecosystem
 
-ESLint and [Oxlint](https://oxc.rs) rules for the [Nuxt module ecosystem](https://nuxt.com/modules).
-Currently supports `@nuxt/ui`, but the list will grow fast.
+[![npm version](https://img.shields.io/npm/v/@nustackjs/lint-plugin-nuxt-ecosystem)](https://www.npmjs.com/package/@nustackjs/lint-plugin-nuxt-ecosystem)
+[![GitHub License](https://img.shields.io/github/license/Zerya-Dev/nustack)](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE)
 
-Every rule is grounded in each module's official docs, conventions, and recommendations,
-so they're enforced in your project, not just documented.
+ESLint and [Oxlint](https://oxc.rs) rules for the [Nuxt module ecosystem](https://nuxt.com/modules). The plugin currently supports `@nuxt/ui` with plans to expand.
 
-If you are a developer of a fairly popular module, please reach out; we'd love to add it!
+Every rule is based on the respective module's official documentation and recommendations.
 
-Used by [`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint), but works standalone in any flat ESLint config.
+If you are a developer of a popular module and want to add rules for it, please reach out.
+
+This package is used by [`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint) but can also be used standalone in any flat ESLint configuration.
 
 ## Install
 
@@ -18,18 +19,17 @@ pnpm add -D @nustackjs/lint-plugin-nuxt-ecosystem
 
 ## Usage
 
-Rule ids read `@nustack/nuxt-ui/<rule>`. Use `configs.ui` for just the Nuxt UI pack, or
-`configs.recommended` for the union of every ecosystem pack in this package.
+Rule IDs start with `@nustack/nuxt-ui/<rule>`. You can use `configs.ui` to load only the Nuxt UI pack, or `configs.recommended` for all ecosystem packs included in this package.
 
 ```js
 // eslint.config.js
 import nuxtEcosystem from '@nustackjs/lint-plugin-nuxt-ecosystem'
 
 export default [
-  // just the Nuxt UI pack...
+  // load just the Nuxt UI pack
   nuxtEcosystem.configs.ui,
 
-  // ...or wire rules yourself
+  // or configure rules manually
   {
     plugins: { '@nustack/nuxt-ui': nuxtEcosystem },
     rules: { '@nustack/nuxt-ui/prefer-u-button': 'warn' },
@@ -37,7 +37,7 @@ export default [
 ]
 ```
 
-The same applies for OXLint, but some rules may not work due to limited Vue support.
+These rules are compatible with Oxlint, although some may not work perfectly due to limited Vue support.
 
 ## Rules
 
@@ -54,4 +54,4 @@ The same applies for OXLint, but some rules may not work due to limited Vue supp
 
 ## License
 
-[MIT](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-nuxt-ecosystem/LICENSE) © Zerya and contributors
+[MIT](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE) © Zerya and contributors

@@ -1,12 +1,13 @@
 # @nustackjs/lint-plugin-vueuse
 
-ESLint and [Oxlint](https://oxc.rs) rules for [VueUse](https://vueuse.org) — nudging you
-toward the composables and away from the raw browser APIs they wrap.
+[![npm version](https://img.shields.io/npm/v/@nustackjs/lint-plugin-vueuse)](https://www.npmjs.com/package/@nustackjs/lint-plugin-vueuse)
+[![GitHub License](https://img.shields.io/github/license/Zerya-Dev/nustack)](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE)
 
-Every rule is grounded in VueUse's official docs, conventions, and recommendations, so
-they're enforced in your project, not just documented.
+ESLint and [Oxlint](https://oxc.rs) rules for [VueUse](https://vueuse.org). This plugin encourages the use of VueUse composables over raw browser APIs.
 
-Used by [`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint), but works standalone in any flat ESLint config.
+Every rule is based on VueUse's official documentation and recommendations.
+
+This package is used by [`@nustackjs/lint`](https://github.com/Zerya-Dev/nustack/tree/master/modules/lint) but can also be used standalone in any flat ESLint configuration.
 
 ## Install
 
@@ -16,18 +17,17 @@ pnpm add -D @nustackjs/lint-plugin-vueuse
 
 ## Usage
 
-The plugin registers under the scoped name `@nustack/vueuse`, so every rule id reads
-`@nustack/vueuse/<rule>`.
+The plugin registers under the scoped name `@nustack/vueuse`. Every rule ID starts with `@nustack/vueuse/<rule>`.
 
 ```js
 // eslint.config.js
 import vueuse from '@nustackjs/lint-plugin-vueuse'
 
 export default [
-  // turn on the curated set...
+  // turn on the curated set
   vueuse.configs.recommended,
 
-  // ...or wire rules yourself
+  // or configure rules manually
   {
     plugins: { '@nustack/vueuse': vueuse },
     rules: { '@nustack/vueuse/no-namespace-import': 'error' },
@@ -35,7 +35,7 @@ export default [
 ]
 ```
 
-The same applies for OXLint, but some rules may not work due to limited Vue support.
+These rules are compatible with Oxlint, although some may not work perfectly due to limited Vue support.
 
 ## Rules
 
@@ -52,4 +52,4 @@ The same applies for OXLint, but some rules may not work due to limited Vue supp
 
 ## License
 
-[MIT](https://github.com/Zerya-Dev/nustack/blob/master/packages/lint-plugin-vueuse/LICENSE) © Zerya
+[MIT](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE) © Zerya
