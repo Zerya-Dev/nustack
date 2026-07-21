@@ -1,8 +1,8 @@
 import { preferUComponent } from '../prefer-u-component.js'
 
-export const preferUDialog = preferUComponent({
+export const preferUModal = preferUComponent({
   nativeTag: 'dialog',
   component: 'UModal',
-  ruleName: 'prefer-u-dialog',
-  messageId: 'preferUDialog',
+  ruleName: 'prefer-u-modal',
+  messageId: 'preferUModal',
 })

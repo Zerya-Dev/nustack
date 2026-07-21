@@ -30,3 +30,8 @@ Nuxt UI v4 (both convert empty/blank values to `null`; v4 also adds `.optional` 
   components: ['uinput', 'utextarea'], // lowercased components to check (replaces the default list)
 }]
 ```
+
+## Further reading
+
+- [Migrating to Nuxt UI v4](https://ui.nuxt.com/docs/getting-started/migration/v4)
+- [Nuxt UI Input](https://ui.nuxt.com/docs/components/input)

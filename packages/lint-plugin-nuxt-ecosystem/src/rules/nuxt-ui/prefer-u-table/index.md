@@ -27,3 +27,7 @@ whenever a bespoke static table genuinely reads better as markup.
 ```
 
 Use `data-raw` as a local escape hatch when a raw native table is intentional.
+
+## Further reading
+
+- [Nuxt UI Table](https://ui.nuxt.com/docs/components/table)

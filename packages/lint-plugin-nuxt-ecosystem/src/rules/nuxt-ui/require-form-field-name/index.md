@@ -5,9 +5,22 @@ schema/custom-validation errors to the correct field. Standalone display-only fo
 are ignored.
 
 ```vue
+<!-- Incorrect: validation errors cannot be matched to this field -->
+<UForm :schema="schema" :state="state">
+  <UFormField label="Email">
+    <UInput v-model="state.email" />
+  </UFormField>
+</UForm>
+
+<!-- Correct -->
 <UForm :schema="schema" :state="state">
   <UFormField name="email" label="Email">
     <UInput v-model="state.email" />
   </UFormField>
 </UForm>
 ```
+
+## Further reading
+
+- [Nuxt UI Form](https://ui.nuxt.com/docs/components/form)
+- [Nuxt UI FormField](https://ui.nuxt.com/docs/components/form-field)

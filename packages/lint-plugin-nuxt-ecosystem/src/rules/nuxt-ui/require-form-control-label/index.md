@@ -2,7 +2,7 @@
 
 Require an accessible name for Nuxt UI form controls. A label may be provided by
 `label`, `legend`, `aria-label`, `aria-labelledby`, the matching slot, or an enclosing
-`UFormField`.
+`UFormField` that has a `label` prop or `#label` slot.
 
 ```vue
 <!-- Incorrect -->
@@ -18,3 +18,8 @@ Require an accessible name for Nuxt UI form controls. A label may be provided by
 
 Dynamic bindings are accepted because their runtime value cannot be proven statically.
 Use `data-raw` for an intentional low-level exception.
+
+## Further reading
+
+- [Nuxt UI FormField](https://ui.nuxt.com/docs/components/form-field)
+- [Nuxt UI CheckboxGroup](https://ui.nuxt.com/docs/components/checkbox-group)

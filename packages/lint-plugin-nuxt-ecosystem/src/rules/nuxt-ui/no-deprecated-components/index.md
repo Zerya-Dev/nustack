@@ -43,3 +43,7 @@ Register team-specific renames (proper-cased keys), merged onto the built-in tab
   components: { UOldWidget: 'UNewWidget' },
 }]
 ```
+
+## Further reading
+
+- [Migrating to Nuxt UI v4](https://ui.nuxt.com/docs/getting-started/migration/v4)

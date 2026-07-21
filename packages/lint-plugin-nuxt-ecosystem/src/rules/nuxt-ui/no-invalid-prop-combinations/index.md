@@ -11,3 +11,20 @@ Currently covered:
 
 Dynamic values are ignored when the relationship cannot be proven at lint time.
 Use `data-raw` for an intentional low-level exception.
+
+```vue
+<!-- Incorrect -->
+<UFileUpload variant="button" multiple />
+<UFileUpload variant="area" position="outside" />
+<UAccordion type="multiple" collapsible :items="items" />
+
+<!-- Correct -->
+<UFileUpload variant="button" />
+<UFileUpload variant="area" layout="list" position="outside" />
+<UAccordion type="single" collapsible :items="items" />
+```
+
+## Further reading
+
+- [Nuxt UI FileUpload](https://ui.nuxt.com/docs/components/file-upload)
+- [Nuxt UI Accordion](https://ui.nuxt.com/docs/components/accordion)

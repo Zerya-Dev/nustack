@@ -5,6 +5,12 @@ configuration, reading direction, body-lock behavior, toasts, tooltips, and prog
 modals/slideovers.
 
 ```vue
+<!-- Incorrect: app.vue without the Nuxt UI provider -->
+<template>
+  <NuxtPage />
+</template>
+
+<!-- Correct -->
 <template>
   <UApp>
     <NuxtPage />
@@ -13,3 +19,7 @@ modals/slideovers.
 ```
 
 Files under `components`, `pages`, and `layouts` are ignored even if named `App.vue`.
+
+## Further reading
+
+- [Nuxt UI App](https://ui.nuxt.com/docs/components/app)

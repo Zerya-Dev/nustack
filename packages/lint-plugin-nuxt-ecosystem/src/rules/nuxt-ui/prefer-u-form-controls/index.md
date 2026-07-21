@@ -53,3 +53,9 @@ Both maps are extensible (entries are merged onto the built-ins):
   types: { email: 'UEmailInput' },     // extra input-type → component
 }]
 ```
+
+## Further reading
+
+- [Nuxt UI components](https://ui.nuxt.com/docs/components)
+- [Nuxt UI Input](https://ui.nuxt.com/docs/components/input)
+- [Nuxt UI Form](https://ui.nuxt.com/docs/components/form)

@@ -14,3 +14,8 @@ APIs document `default-*` for cases where the caller does not control state.
 <!-- Correct: uncontrolled -->
 <UModal default-open />
 ```
+
+## Further reading
+
+- [Nuxt UI Modal](https://ui.nuxt.com/docs/components/modal)
+- [Nuxt UI Checkbox](https://ui.nuxt.com/docs/components/checkbox)

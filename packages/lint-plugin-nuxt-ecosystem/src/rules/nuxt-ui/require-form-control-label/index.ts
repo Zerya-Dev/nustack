@@ -1,6 +1,6 @@
 import type { Rule } from '@oxlint/plugins'
 import { docsUrl } from '../../../utils/docs-url.js'
-import { componentName, defineTemplateVisitor, hasAncestor, hasNonEmptyAttribute, hasRawOptOut, hasSlot } from '../utils.js'
+import { componentName, defineTemplateVisitor, hasNonEmptyAttribute, hasRawOptOut, hasSlot } from '../utils.js'
 
 const FORM_CONTROLS = new Set([
   'ucheckbox',
@@ -24,6 +24,18 @@ const FORM_CONTROLS = new Set([
   'utextarea',
 ])
 
+function hasLabeledFormFieldAncestor(node: any): boolean {
+  let parent = node.parent
+  while (parent) {
+    if (parent.type === 'VElement' && parent.name === 'uformfield') {
+      return hasNonEmptyAttribute(parent, 'label')
+        || hasSlot(parent, 'label')
+    }
+    parent = parent.parent
+  }
+  return false
+}
+
 function hasAccessibleLabel(node: any): boolean {
   return hasNonEmptyAttribute(node, 'label')
     || hasNonEmptyAttribute(node, 'legend')
@@ -31,7 +43,7 @@ function hasAccessibleLabel(node: any): boolean {
     || hasNonEmptyAttribute(node, 'aria-labelledby')
     || hasSlot(node, 'label')
     || hasSlot(node, 'legend')
-    || hasAncestor(node, 'uformfield')
+    || hasLabeledFormFieldAncestor(node)
 }
 
 export const requireFormControlLabel: Rule = {
@@ -43,7 +55,7 @@ export const requireFormControlLabel: Rule = {
     },
     schema: [],
     messages: {
-      missingLabel: 'Add `label`, `legend`, `aria-label`, `aria-labelledby`, or wrap `<{{ component }}>` in `<UFormField>`.',
+      missingLabel: 'Add `label`, `legend`, `aria-label`, `aria-labelledby`, or wrap `<{{ component }}>` in a `<UFormField>` with `label` or a `#label` slot.',
     },
   },
   create(context: any) {
