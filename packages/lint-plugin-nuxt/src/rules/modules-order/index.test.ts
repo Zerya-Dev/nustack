@@ -16,7 +16,7 @@ describe('modules-order', () => {
         { code: 'export default defineNuxtConfig({ modules: ["@nuxtjs/i18n", "@nuxtjs/seo", "@nuxt/content"] })' },
         // Array form with options is still resolvable.
         { code: 'export default defineNuxtConfig({ modules: [["@nuxt/ui", {}], ["@nuxt/content", {}]] })' },
-        // Only one of the pair present — nothing to order.
+        // Only one of the pair present, nothing to order.
         { code: 'export default defineNuxtConfig({ modules: ["@nuxt/content"] })' },
         // i18n before site-config.
         { code: 'export default defineNuxtConfig({ modules: ["@nuxtjs/i18n", "nuxt-site-config"] })' },
@@ -39,7 +39,7 @@ describe('modules-order', () => {
           errors: [{ messageId: 'wrongOrder' }],
         },
         {
-          // ui after content AND seo after i18n missing — two distinct violations.
+          // ui after content AND seo after i18n missing, two distinct violations.
           code: 'export default defineNuxtConfig({ modules: ["@nuxt/content", "@nuxt/ui", "@nuxtjs/seo", "@nuxtjs/i18n"] })',
           errors: [{ messageId: 'wrongOrder' }, { messageId: 'wrongOrder' }, { messageId: 'wrongOrder' }],
         },

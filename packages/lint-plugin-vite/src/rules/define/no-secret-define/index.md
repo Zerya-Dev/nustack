@@ -2,7 +2,7 @@
 
 Disallow secret-looking values in Vite `define` config.
 
-Vite's `define` option does compile-time text substitution — any secret placed there gets inlined into every bundle it touches (client and server alike), where it's readable in plain text. This flags `define` keys with secret-shaped names (`SECRET`, `TOKEN`, `PASSWORD`, `PRIVATE`, or an unqualified `KEY`), and `define` values that read a secret-shaped `process.env` variable regardless of the key name.
+Vite's `define` option does compile-time text substitution, any secret placed there gets inlined into every bundle it touches (client and server alike), where it's readable in plain text. This flags `define` keys with secret-shaped names (`SECRET`, `TOKEN`, `PASSWORD`, `PRIVATE`, or an unqualified `KEY`), and `define` values that read a secret-shaped `process.env` variable regardless of the key name.
 
 ## Incorrect
 

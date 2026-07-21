@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest'
 import { applyNustackConfig } from '../src/config'
 
 const FULL_CONTEXT: NustackContext = {
-  modules: { nuxtUi: true, pinia: false, nuxtImage: false, nuxtContent: false, mdc: false },
+  modules: { nuxtUi: true, mdc: false },
   tailwind: { detected: true, entryPoint: 'app/assets/css/main.css' },
   autoImports: ['ref'],
   components: ['UButton'],
@@ -16,7 +16,7 @@ async function resolve(options: NustackLintOptions): Promise<Linter.Config[]> {
   return await applyNustackConfig(composer() as any, { context: FULL_CONTEXT, ...options }).toConfigs() as any
 }
 
-/** The effective value of a rule id — the LAST config that sets it wins. */
+/** The effective value of a rule id, the LAST config that sets it wins. */
 function lastRuleValue(configs: Linter.Config[], ruleId: string): Linter.RuleEntry | undefined {
   let value: Linter.RuleEntry | undefined
   for (const c of configs) {

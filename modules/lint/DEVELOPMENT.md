@@ -1,6 +1,6 @@
 # `@nustackjs/lint` Development
 
-This module **only composes and configures** — it never defines rules. It wires the antfu
+This module **only composes and configures**; it never defines rules. It wires the antfu
 base, `@nuxt/eslint`, better-tailwindcss, and the `@nustackjs/lint-plugin-*` packages into
 one zero-config Nuxt preset.
 
@@ -13,16 +13,16 @@ one zero-config Nuxt preset.
 
 Run from this directory (`modules/lint`).
 
-| Script               | What it does                                                                                                                                                |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm dev`           | Build the module and run the playground in dev (`nuxt dev playground`).                                                                                     |
-| `pnpm dev:prepare`   | Build the plugins + module + prepare the playground. Run once after a fresh clone or when plugin/module output is stale.                                    |
-| `pnpm dev:inspector` | Open [`@eslint/config-inspector`](https://github.com/eslint/config-inspector) against `eslint.config.ts` — the fastest way to see the resolved flat config. |
-| `pnpm build`         | Full module build (what `prepack`/CI runs).                                                                                                                 |
-| `pnpm lint`          | Lint this package with its own config (dogfooding).                                                                                                         |
-| `pnpm test`          | Build the plugins, then run the Vitest suite.                                                                                                               |
-| `pnpm test:watch`    | Vitest in watch mode (assumes plugins are already built).                                                                                                   |
-| `pnpm test:types`    | Type-check the module and the playground with `vue-tsc`.                                                                                                    |
+| Script               | What it does                                                                                                                                               |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`           | Build the module and run the playground in dev (`nuxt dev playground`).                                                                                    |
+| `pnpm dev:prepare`   | Build the plugins + module + prepare the playground. Run once after a fresh clone or when plugin/module output is stale.                                   |
+| `pnpm dev:inspector` | Open [`@eslint/config-inspector`](https://github.com/eslint/config-inspector) against `eslint.config.ts`, the fastest way to see the resolved flat config. |
+| `pnpm build`         | Full module build (what `prepack`/CI runs).                                                                                                                |
+| `pnpm lint`          | Lint this package with its own config (dogfooding).                                                                                                        |
+| `pnpm test`          | Build the plugins, then run the Vitest suite.                                                                                                              |
+| `pnpm test:watch`    | Vitest in watch mode (assumes plugins are already built).                                                                                                  |
+| `pnpm test:types`    | Type-check the module and the playground with `vue-tsc`.                                                                                                   |
 
 Because tests and the playground consume the plugins' **built** output, rebuild them
 (`pnpm dev:prepare`, or `pnpm test` which does it for you) whenever you change a plugin.

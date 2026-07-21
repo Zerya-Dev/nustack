@@ -1,5 +1,5 @@
 /**
- * `@nustackjs/lint/config` — the ESLint side of the package (no Nuxt runtime).
+ * `@nustackjs/lint/config`, the ESLint side of the package (no Nuxt runtime).
  * Consumed by the generated `.nuxt/nustack-eslint.mjs` and by advanced users who
  * want to pass context/options manually.
  */

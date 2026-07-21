@@ -10,7 +10,7 @@ import { resolveTarget } from '../src/target'
 // A context where every detectable feature is present, so concern gating is driven
 // purely by the target/options under test rather than by missing detection.
 const FULL_CONTEXT: NustackContext = {
-  modules: { nuxtUi: true, pinia: false, nuxtImage: false, nuxtContent: false, mdc: false },
+  modules: { nuxtUi: true, mdc: false },
   tailwind: { detected: true, entryPoint: 'app/assets/css/main.css' },
   autoImports: ['ref'],
   components: ['UButton'],
@@ -33,7 +33,7 @@ function ruleIds(configs: Linter.Config[]): Set<string> {
   return ids
 }
 
-/** The effective value of a rule id — the LAST config that sets it wins, mirroring how flat config resolves overlapping global (no-`files`) entries. */
+/** The effective value of a rule id, the LAST config that sets it wins, mirroring how flat config resolves overlapping global (no-`files`) entries. */
 function lastRuleValue(configs: Linter.Config[], ruleId: string): Linter.RuleEntry | undefined {
   let value: Linter.RuleEntry | undefined
   for (const c of configs) {
@@ -88,7 +88,7 @@ describe('target: vue-app', () => {
 
   it('drops tailwind/nuxtEcosystem when standalone detection finds nothing', async () => {
     const EMPTY: NustackContext = {
-      modules: { nuxtUi: false, pinia: false, nuxtImage: false, nuxtContent: false, mdc: false },
+      modules: { nuxtUi: false, mdc: false },
       tailwind: { detected: false, entryPoint: null },
       autoImports: [],
       components: [],
