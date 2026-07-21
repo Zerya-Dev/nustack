@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.6.0](https://github.com/Zerya-Dev/nustack/compare/lint-v0.5.0...lint-v0.6.0) (2026-07-21)
+
+
+### Features
+
+* create playground ([5632f26](https://github.com/Zerya-Dev/nustack/commit/5632f26766372cb862c72260d98dd540268c07d9))
+
+
+### Bug Fixes
+
+* **lint:** do not restrict `v-on-handler-style` ([5725013](https://github.com/Zerya-Dev/nustack/commit/5725013d4d79f3ae33f8309373800394243ba547))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @nustackjs/lint-plugin-vueuse bumped to 0.5.0
+
 ## [0.5.0](https://github.com/Zerya-Dev/nustack/compare/lint-v0.4.1...lint-v0.5.0) (2026-07-09)
 
 
