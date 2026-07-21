@@ -50,7 +50,8 @@ Standalone ESLint plugins used under the hood:
 
 NuStack is a **community effort**. If you have any feedback about NuStack or Nuxt ecosystem in general (what breaks, what is the way that you are solving problems, what tooling is missing) please open an issue, start a discussion, or contribute directly.
 
-When contributing with AI, please follow [Nuxt's AI-assisted contribution guidelines](https://nuxt.com/docs/4.x/community/contribution#ai-assisted-contributions). Write issues in your own voice and only submit work you fully understand.
+AI tools have been used during the development of NuStack. They may also be used when contributing,
+as long as you follow [Nuxt's AI-assisted contribution guidelines](https://nuxt.com/docs/4.x/community/contribution#ai-assisted-contributions). Please, write issues in your own voice and only submit work you fully understand.
 
 ## 📜 License
 
