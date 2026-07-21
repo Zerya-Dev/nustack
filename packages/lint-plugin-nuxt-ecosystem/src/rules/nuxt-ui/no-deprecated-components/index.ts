@@ -8,7 +8,7 @@ interface DeprecatedComponent {
   replacement: string
 }
 
-/** Verified 2026-06-30 against ui.nuxt.com (v4); re-verify on the next Nuxt UI major. */
+/** Verified 2026-07-21 against the ui.nuxt.com v4 migration guide; re-verify on the next major. */
 const DEPRECATED_COMPONENTS: Record<string, DeprecatedComponent> = {
   ubuttongroup: { name: 'UButtonGroup', replacement: 'UFieldGroup' },
   upagemarquee: { name: 'UPageMarquee', replacement: 'UMarquee' },

@@ -22,3 +22,7 @@ drop-in for an anchor.
 
 Use `data-raw` as a local escape hatch when a raw native anchor is intentional (e.g. a
 `mailto:` or external download link you don't want routed).
+
+## Further reading
+
+- [Nuxt UI Link](https://ui.nuxt.com/docs/components/link)

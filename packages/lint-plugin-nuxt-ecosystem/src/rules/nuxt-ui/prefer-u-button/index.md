@@ -19,3 +19,7 @@ Prefer Nuxt UI's `<UButton>` over raw `<button>` elements when `@nuxt/ui` is ava
 ```
 
 Use `data-raw` as a local escape hatch when a raw native button is intentional.
+
+## Further reading
+
+- [Nuxt UI Button](https://ui.nuxt.com/docs/components/button)
