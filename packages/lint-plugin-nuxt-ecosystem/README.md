@@ -6,8 +6,6 @@
 ESLint and [Oxlint](https://oxc.rs) rules for the [Nuxt module ecosystem](https://nuxt.com/modules). The plugin currently supports `@nuxt/ui` with plans to expand.
 
 Every rule is based on the respective module's official documentation and recommendations.
-The Nuxt UI source review, enforceable conventions, and false-positive policy are recorded
-in [`NUXT_UI_RESEARCH.md`](./NUXT_UI_RESEARCH.md).
 
 If you are a developer of a popular module and want to add rules for it, please reach out.
 
