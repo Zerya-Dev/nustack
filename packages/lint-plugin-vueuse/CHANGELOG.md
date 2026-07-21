@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/Zerya-Dev/nustack/compare/lint-plugin-vueuse-v0.4.0...lint-plugin-vueuse-v0.5.0) (2026-07-21)
+
+
+### Features
+
+* **lint-plugin-vueuse:** rename prefer-use* rules to hyphenated ids ([6943448](https://github.com/Zerya-Dev/nustack/commit/6943448cedc7a5e5b18a57987bf6215706ef0799))
+
 ## [0.4.0](https://github.com/Zerya-Dev/nustack/compare/lint-plugin-vueuse-v0.3.1...lint-plugin-vueuse-v0.4.0) (2026-07-09)
 
 
