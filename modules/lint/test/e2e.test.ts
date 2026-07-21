@@ -7,11 +7,11 @@ import { describe, expect, it } from 'vitest'
 import { applyNustackConfig } from '../src/config'
 
 // A real Tailwind v4 entry point (`@import "tailwindcss"`) so better-tailwindcss can
-// actually resolve the class registry — without it the plugin self-disables.
+// actually resolve the class registry, without it the plugin self-disables.
 const TAILWIND_ENTRY = fileURLToPath(new URL('./fixtures/tailwind.css', import.meta.url))
 
 const CONTEXT: NustackContext = {
-  modules: { nuxtUi: true, pinia: false, nuxtImage: false, nuxtContent: false, mdc: false },
+  modules: { nuxtUi: true, mdc: false },
   tailwind: { detected: true, entryPoint: TAILWIND_ENTRY },
   autoImports: ['ref', 'useRuntimeConfig'],
   components: ['UButton'],
@@ -87,7 +87,7 @@ describe('e2e: composed config lints real code', () => {
 })
 
 describe('e2e: enforce and depth change behaviour', () => {
-  it('correctness rules (e.g. no-process-env) are always on — nustack is opinionated', async () => {
+  it('correctness rules (e.g. no-process-env) are always on; nustack is opinionated', async () => {
     const messages = await lint(`const x = process.env.FOO`, 'app/composables/x.ts')
     expect(ruleIds(messages)).toContain('@nustack/nuxt/no-process-env')
   })

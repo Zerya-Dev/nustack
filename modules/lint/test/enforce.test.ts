@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest'
 import { applyNustackConfig } from '../src/config'
 
 const FULL_CONTEXT: NustackContext = {
-  modules: { nuxtUi: true, pinia: false, nuxtImage: false, nuxtContent: false, mdc: false },
+  modules: { nuxtUi: true, mdc: false },
   tailwind: { detected: true, entryPoint: 'app/assets/css/main.css' },
   autoImports: ['ref'],
   components: ['UButton'],
@@ -37,7 +37,7 @@ describe('correctness is always on (opinionated by design)', () => {
 })
 
 describe('enforce.complexity (opt-in on/off)', () => {
-  it('off by default — ships no budget rules', async () => {
+  it('off by default, ships no budget rules', async () => {
     const configs = await resolve({})
     expect(configs.find(c => c.name === 'nustack/complexity')).toBeUndefined()
     expect(configs.find(c => c.name === 'nustack/complexity/vue')).toBeUndefined()
@@ -57,7 +57,7 @@ describe('enforce.complexity (opt-in on/off)', () => {
   })
 })
 
-describe('tailwind.lineWrapping (opt-in — the old pedantic rule)', () => {
+describe('tailwind.lineWrapping (opt-in, the old pedantic rule)', () => {
   it('off by default', async () => {
     const ids = await ruleIds({})
     expect(ids).not.toContain('better-tailwindcss/enforce-consistent-line-wrapping')

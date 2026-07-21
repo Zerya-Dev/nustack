@@ -5,7 +5,7 @@ _removing_ the pieces you wired by hand and pointing your config at the factory.
 
 ## From `@nuxt/eslint`
 
-1. Install the module — `@nuxt/eslint` is bundled, so you can drop it as a direct
+1. Install the module; `@nuxt/eslint` is bundled, so you can drop it as a direct
    dependency.
 
    ```bash
@@ -48,7 +48,7 @@ export default nustack({
 
 ## Keeping your own rules
 
-Existing rule overrides don't need to be thrown away — fold them in:
+Existing rule overrides don't need to be thrown away; fold them in:
 
 ```ts
 nustack(

@@ -4,7 +4,7 @@ Enforce a correct registration order for interdependent Nuxt modules.
 
 Several Nuxt ecosystem modules read configuration or register components from one
 another at setup time, so the order they appear in the `modules` array is significant.
-When the order is wrong the failure is usually **silent** — the build succeeds but a
+When the order is wrong the failure is usually **silent**, the build succeeds but a
 feature quietly does nothing.
 
 This rule only reports when both modules of a pair are present; modules it doesn't know

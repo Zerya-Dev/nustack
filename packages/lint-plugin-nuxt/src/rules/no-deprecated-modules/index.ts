@@ -10,7 +10,7 @@ interface DeprecatedModule {
 const DEPRECATED_MODULES: Record<string, DeprecatedModule> = {
   '@nuxtjs/mdc': {
     replacement: '`@comark/nuxt`',
-    reason: 'MDC has been superseded by Comark — it is faster, AI-friendly and framework-agnostic. Your existing markdown files stay compatible; only the JS API changes (`parseMarkdown()` → `parse()`, `<MDCRenderer>` → `<ComarkRenderer>`, `<MDC>` → `<Comark>`).',
+    reason: 'MDC has been superseded by Comark, it is faster, AI-friendly and framework-agnostic. Your existing markdown files stay compatible; only the JS API changes (`parseMarkdown()` → `parse()`, `<MDCRenderer>` → `<ComarkRenderer>`, `<MDC>` → `<Comark>`).',
     docs: 'https://comark.dev/kb/migration-from-mdc',
   },
   '@nuxtjs/axios': {
@@ -56,7 +56,7 @@ export const noDeprecatedModules: Rule = {
     },
     schema: [],
     messages: {
-      deprecated: '`{{ name }}` is deprecated — use {{ replacement }} instead. {{ reason }} Migration guide: {{ docs }}.',
+      deprecated: '`{{ name }}` is deprecated, use {{ replacement }} instead. {{ reason }} Migration guide: {{ docs }}.',
     },
   },
   createOnce(context: any) {

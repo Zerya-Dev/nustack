@@ -3,7 +3,7 @@
 Prefer Nuxt UI form controls over raw native form elements when `@nuxt/ui` is available.
 
 The rule is also `type`-aware: when an input `type` has a dedicated Nuxt UI component, it
-points you at that component — both for a raw `<input type="number">` and for a generic
+points you at that component, both for a raw `<input type="number">` and for a generic
 `<UInput type="number">`.
 
 | `type` | Component |
@@ -40,7 +40,7 @@ points you at that component — both for a raw `<input type="number">` and for 
 </template>
 ```
 
-Dynamic types (`<UInput :type="kind" />`) are ignored — only a statically-written `type`
+Dynamic types (`<UInput :type="kind" />`) are ignored; only a statically-written `type`
 is checked. Use `data-raw` as a local escape hatch when a native control is intentional.
 
 ## Options

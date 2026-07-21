@@ -42,7 +42,7 @@ export const noSecretDefine: Rule = {
     },
     schema: [],
     messages: {
-      noSecretDefineKey: '`{{ name }}` looks like a secret. Vite `define` inlines its value into every bundle (client and server) — keep secrets out of `define`.',
+      noSecretDefineKey: '`{{ name }}` looks like a secret. Vite `define` inlines its value into every bundle (client and server), keep secrets out of `define`.',
       noSecretDefineValue: 'This reads `process.env.{{ name }}`, a secret-looking variable, into Vite `define`, which inlines it into every bundle. Keep secrets out of `define`.',
     },
   },

@@ -35,7 +35,7 @@ const ORDER_CONSTRAINTS: OrderConstraint[] = [
   {
     before: '@nuxtjs/seo',
     after: '@nuxt/content',
-    reason: 'With @nuxt/content v3 the wrong order causes silent failures — SEO appears to work but Content frontmatter is not processed correctly.',
+    reason: 'With @nuxt/content v3 the wrong order causes silent failures, SEO appears to work but Content frontmatter is not processed correctly.',
     docs: 'https://nuxtseo.com/docs/nuxt-seo/guides/using-the-modules',
   },
 ]

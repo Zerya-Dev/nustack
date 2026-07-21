@@ -1,12 +1,7 @@
 # @nustackjs/lint-plugin-vueuse
 
-<<<<<<< HEAD
 [![npm version](https://img.shields.io/npm/v/@nustackjs/lint-plugin-vueuse)](https://www.npmjs.com/package/@nustackjs/lint-plugin-vueuse)
 [![GitHub License](https://img.shields.io/github/license/Zerya-Dev/nustack)](https://github.com/Zerya-Dev/nustack/blob/master/LICENSE)
-=======
-ESLint and [Oxlint](https://oxc.rs) rules for [VueUse](https://vueuse.org), nudging you
-toward the composables and away from the raw browser APIs they wrap.
->>>>>>> df441c8 (feat(lint-plugin-vueuse): rename prefer-use* rules to hyphenated ids)
 
 ESLint and [Oxlint](https://oxc.rs) rules for [VueUse](https://vueuse.org). This plugin encourages the use of VueUse composables over raw browser APIs.
 
