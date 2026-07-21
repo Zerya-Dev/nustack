@@ -26,12 +26,12 @@ import { vueUseConfig } from './configs/vueuse'
 import { EMPTY_CONTEXT } from './context'
 import { detectStandaloneContext } from './context/detect'
 import { resolveTarget } from './target'
-import { isEnabled, subOptions } from './utils'
+import { isEnabled, resolveConcernRules, subOptions } from './utils'
 
 export type { Target, TargetKind } from './target'
 export type { Depth, Rules } from './utils'
 
-/** Opt-in opinionated checks that not every team wants. Plain on/off — not tiers. */
+/** Opt-in opinionated checks that not every team wants. Plain on/off, not tiers. */
 export interface EnforceOptions {
   /** Cyclomatic-complexity + size-limit budget. Off by default (noisy on existing code). @default false */
   complexity?: boolean
@@ -44,7 +44,7 @@ export type NustackUserConfig = Awaitable<NustackFlatConfig>
 /**
  * Options for the public nustack ESLint factory. Mirrors `@antfu/eslint-config`'s
  * shape: one options object, then optional flat config objects appended last.
- * `depth` is intentionally absent — it is read per-run from `NUSTACK_LINT_DEPTH`.
+ * `depth` is intentionally absent; it is read per-run from `NUSTACK_LINT_DEPTH`.
  */
 export interface NustackLintOptions {
   /**
@@ -103,19 +103,7 @@ function mergeContext(context: NustackContext | undefined): NustackContext {
   return defu(context, EMPTY_CONTEXT)
 }
 
-function resolveRules(options: Pick<NustackLintOptions, 'rules' | 'overrides'>): Rules {
-  return {
-    ...options.overrides,
-    ...options.rules,
-  }
-}
-
-/**
- * Wraps a `withNuxt()` composer with the full nustack config: the style base is
- * prepended, then each enabled, context-gated concern is appended, then global rules and
- * user flat configs. `target` (default `'nuxt-app'`) is `defu`-merged under the explicit
- * `options`, so it only fills gaps. Returns the same composer for chaining.
- */
+/** Applies the resolved nustack config to a Nuxt flat-config composer. */
 export function applyNustackConfig(
   base: FlatConfigComposer,
   options: NustackLintOptions = {},
@@ -129,9 +117,9 @@ export function applyNustackConfig(
     merged.base = false
 
   const depth = resolveDepth()
-  const ctx = mergeContext(merged.context)
+  const context = mergeContext(merged.context)
 
-  // Prepended so it's foundational — concerns win on conflicts.
+  // Prepended so it's foundational; concerns win on conflicts.
   const antfu = antfuBase(merged.base, depth)
   if (antfu)
     base.prepend(antfu)
@@ -139,28 +127,28 @@ export function applyNustackConfig(
   const configs: Linter.Config[] = []
 
   if (isEnabled(merged.nuxt, true))
-    configs.push(...nuxtConfig(ctx, subOptions(merged.nuxt)))
+    configs.push(...nuxtConfig(context, subOptions(merged.nuxt)))
   if (isEnabled(merged.vue, true))
-    configs.push(...vueConfig(ctx, subOptions(merged.vue)))
+    configs.push(...vueConfig(context, subOptions(merged.vue)))
   if (isEnabled(merged.vueUse, true))
     configs.push(...vueUseConfig(subOptions(merged.vueUse)))
   if (isEnabled(merged.vite, true))
     configs.push(...viteConfig(subOptions(merged.vite)))
-  if (isEnabled(merged.tailwind, ctx.tailwind.detected))
-    configs.push(...tailwindConfig(ctx, subOptions(merged.tailwind)))
+  if (isEnabled(merged.tailwind, context.tailwind.detected))
+    configs.push(...tailwindConfig(context, subOptions(merged.tailwind)))
   if (isEnabled(merged.markdown, true))
-    configs.push(...markdownConfig(ctx, subOptions(merged.markdown)))
+    configs.push(...markdownConfig(context, subOptions(merged.markdown)))
   // The ecosystem concern owns its per-module gating; the umbrella toggle only honours
   // an explicit `false`.
   if (merged.nuxtEcosystem !== false)
-    configs.push(...nuxtEcosystemConfig(ctx, subOptions(merged.nuxtEcosystem)))
+    configs.push(...nuxtEcosystemConfig(context, subOptions(merged.nuxtEcosystem)))
 
   configs.push(...complexityConfig(merged.enforce?.complexity ?? false))
 
   if (depth === 'full')
     configs.push(...typeAwareConfig())
 
-  const rules = resolveRules(merged)
+  const rules = resolveConcernRules(merged)
   if (Object.keys(rules).length) {
     configs.push({
       name: 'nustack/rules',
@@ -171,12 +159,7 @@ export function applyNustackConfig(
   return base.append(...configs, ...userConfigs as any)
 }
 
-/**
- * Public standalone (non-Nuxt) entry. Builds a composer from scratch — no `withNuxt()` —
- * so a plain TypeScript/Vue repo can consume the nustack preset directly. Defaults
- * `target` to `'vue-app'` and resolves the project context via `detectStandaloneContext()`
- * unless an explicit `context` is supplied.
- */
+/** Creates a standalone config; defaults to the `vue-app` target. */
 export function nustack(
   options: NustackLintOptions = {},
   ...userConfigs: NustackUserConfig[]

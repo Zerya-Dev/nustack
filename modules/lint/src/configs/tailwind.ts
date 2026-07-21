@@ -12,28 +12,23 @@ const GLOB_CODE = ['**/*.vue', '**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}']
 export interface TailwindConcernOptions extends ConcernOptions {
   /** Override the auto-detected Tailwind entry point (`@import "tailwindcss"`). */
   entryPoint?: string
-  /** Enable `enforce-consistent-line-wrapping` — opt-in, higher-false-positive. @default false */
+  /** Enable `enforce-consistent-line-wrapping`, opt-in, higher-false-positive. @default false */
   lineWrapping?: boolean
   /**
-   * Extra `better-tailwindcss` shared settings, merged over the defaults — e.g.
+   * Extra `better-tailwindcss` shared settings, merged over the defaults, e.g.
    * `selectors`, `tailwindConfig`. Rule options (printWidth etc.) go
    * through `rules`, not here.
    */
   settings?: Record<string, unknown>
 }
 
-/**
- * Tailwind v4 class sorting/correctness via better-tailwindcss, gated on a detected entry
- * point. When `@nuxt/ui` is present, the `:ui` object prop is added so class strings
- * inside `:ui="{ base: 'px-2' }"` are sorted and validated too. Rule severities are the
- * only nustack opinion; everything else is tunable via `rules` and `settings`.
- */
+/** Configures better-tailwindcss for the detected entry point and Nuxt UI selectors. */
 export function tailwindConfig(
-  ctx: NustackContext,
-  opts: TailwindConcernOptions = {},
+  context: NustackContext,
+  options: TailwindConcernOptions = {},
 ): Linter.Config[] {
-  const rules = resolveConcernRules(opts)
-  const uiSelectors = ctx.modules.nuxtUi
+  const rules = resolveConcernRules(options)
+  const uiSelectors = context.modules.nuxtUi
     ? [
         {
           kind: SelectorKind.Attribute,
@@ -43,7 +38,7 @@ export function tailwindConfig(
       ]
     : []
 
-  const entryPoint = opts.entryPoint ?? ctx.tailwind.entryPoint
+  const entryPoint = options.entryPoint ?? context.tailwind.entryPoint
 
   return [
     {
@@ -51,14 +46,14 @@ export function tailwindConfig(
       files: GLOB_CODE,
       plugins: { 'better-tailwindcss': betterTailwind },
       settings: {
-        'better-tailwindcss': defu(opts.settings, {
+        'better-tailwindcss': defu(options.settings, {
           ...(entryPoint ? { entryPoint } : {}),
           selectors: [...getDefaultSelectors(), ...uiSelectors],
         }),
       },
       rules: {
         'better-tailwindcss/enforce-consistent-class-order': 'warn',
-        ...(opts.lineWrapping ? { 'better-tailwindcss/enforce-consistent-line-wrapping': 'warn' } : {}),
+        ...(options.lineWrapping ? { 'better-tailwindcss/enforce-consistent-line-wrapping': 'warn' } : {}),
         'better-tailwindcss/no-unknown-classes': 'warn',
         'better-tailwindcss/no-conflicting-classes': 'error',
         'better-tailwindcss/no-duplicate-classes': 'error',

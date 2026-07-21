@@ -3,18 +3,13 @@ import type { ConcernOptions } from '../utils'
 import { vueUseConfigs } from '@nustackjs/lint-plugin-vueuse'
 import { resolveConcernRules } from '../utils'
 
-export interface VueUseConcernOptions extends ConcernOptions {}
+export type VueUseConcernOptions = ConcernOptions
 
-/**
- * VueUse conventions.
- *
- * @see @nustackjs/lint-plugin-vueuse
- */
 export function vueUseConfig(
-  opts: VueUseConcernOptions = {},
+  options: VueUseConcernOptions = {},
 ): Linter.Config[] {
   return vueUseConfigs({
     variant: 'recommended',
-    rules: resolveConcernRules(opts),
+    rules: resolveConcernRules(options),
   })
 }

@@ -17,10 +17,10 @@ export interface MarkdownConcernOptions extends ConcernOptions {
 }
 
 export function resolveMarkdownPreset(
-  ctx: NustackContext,
+  context: NustackContext,
   options: Pick<MarkdownConcernOptions, 'preset'> = {},
 ): MarkdownPreset {
-  return options.preset ?? (ctx.modules.mdc ? 'mdc' : 'markdown')
+  return options.preset ?? (context.modules.mdc ? 'mdc' : 'markdown')
 }
 
 /**
@@ -29,11 +29,11 @@ export function resolveMarkdownPreset(
  * `preset: 'mdc'`.
  */
 export function markdownConfig(
-  ctx: NustackContext,
+  context: NustackContext,
   options: MarkdownConcernOptions = {},
 ): Linter.Config[] {
   const files = options.files ?? GLOB_MARKDOWN
-  const preset = resolveMarkdownPreset(ctx, options)
+  const preset = resolveMarkdownPreset(context, options)
   const rules = resolveConcernRules(options)
 
   return [

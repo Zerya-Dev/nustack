@@ -3,7 +3,6 @@ import type { Linter } from 'eslint'
 const GLOB_CODE = ['**/*.vue', '**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}']
 const GLOB_VUE = ['**/*.vue']
 
-/** Generous thresholds that only flag genuine outliers; tighten per-project via `rules`. */
 const BUDGET = {
   complexity: 20,
   maxLinesPerFunction: 200,
@@ -13,11 +12,7 @@ const BUDGET = {
   vueMaxLinesPerBlock: 300,
 }
 
-/**
- * Cyclomatic-complexity and size-limit budgets — the opt-in `enforce.complexity` check.
- * Ships nothing unless enabled. Folds size limits and the Vue-specific equivalents into
- * one budget switch rather than several unrelated rule toggles.
- */
+/** Returns complexity and size limits when enabled. */
 export function complexityConfig(enabled: boolean): Linter.Config[] {
   if (!enabled)
     return []

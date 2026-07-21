@@ -1,5 +1,6 @@
 import type { Rule } from '@oxlint/plugins'
 import { docsUrl } from '../../../utils/docs-url.js'
+import { defineTemplateVisitor, hasRawOptOut } from '../utils.js'
 
 const CONTROL_MAP: Record<string, string> = {
   input: 'UInput',
@@ -7,11 +8,7 @@ const CONTROL_MAP: Record<string, string> = {
   textarea: 'UTextarea',
 }
 
-/**
- * Input `type` values that Nuxt UI v4 ships a dedicated component for. A raw
- * `<input type="number">` (or a generic `<UInput type="number">`) is better served
- * by the specialized control. Verified 2026-06-30 against ui.nuxt.com/docs/components.
- */
+/** Verified 2026-06-30 against ui.nuxt.com/docs/components; re-verify on the next Nuxt UI major. */
 const TYPE_MAP: Record<string, string> = {
   number: 'UInputNumber',
   file: 'UFileUpload',
@@ -23,13 +20,7 @@ const TYPE_MAP: Record<string, string> = {
   radio: 'URadioGroup',
 }
 
-function hasEscapeHatch(node: any): boolean {
-  return node.startTag.attributes.some(
-    (attribute: any) => !attribute.directive && attribute.key.name === 'data-raw',
-  )
-}
-
-/** The statically-known `type="..."` value, or `null` for dynamic (`:type`) / absent types. */
+/** The static `type="..."` value; `null` for dynamic (`:type`) or absent types. */
 function staticType(node: any): string | null {
   const attribute = node.startTag.attributes.find(
     (attribute: any) => !attribute.directive && attribute.key.name === 'type' && attribute.value,
@@ -55,28 +46,23 @@ export const preferUFormControls: Rule = {
       additionalProperties: false,
     }],
     messages: {
-      preferUFormControl: 'NuStack standardizes on Nuxt UI form controls for consistent styling and a11y. Use `<{{ replacement }}>` instead of a raw `<{{ tag }}>` (add `data-raw` to opt out).',
-      preferSpecificControl: 'Nuxt UI ships a dedicated component for this input type. Use `<{{ replacement }}>` instead of `<UInput type="{{ type }}">` (add `data-raw` to opt out).',
+      preferUFormControl: 'Use `<{{ replacement }}>` instead of `<{{ tag }}>`; add `data-raw` to allow the native element.',
+      preferSpecificControl: 'Use `<{{ replacement }}>` instead of `<UInput type="{{ type }}">`; add `data-raw` to allow the native element.',
     },
   },
   create(context: any) {
-    const services = context.sourceCode.parserServices
-    if (typeof services?.defineTemplateBodyVisitor !== 'function')
-      return {}
-
     const options = context.options[0] ?? {}
     const controlMap: Record<string, string> = { ...CONTROL_MAP, ...options.controls }
     const typeMap: Record<string, string> = { ...TYPE_MAP, ...options.types }
 
-    return services.defineTemplateBodyVisitor({
+    return defineTemplateVisitor(context, {
       VElement(node: any) {
-        if (hasEscapeHatch(node))
+        if (hasRawOptOut(node))
           return
 
         const type = staticType(node)
 
-        // `<UInput type="number">` — already Nuxt UI, but a dedicated component fits better.
-        // (vue-eslint-parser lowercases element names, so `UInput` is `uinput` here.)
+        // `<UInput type="number">`, already Nuxt UI, but a dedicated component fits better.
         if (node.name === 'uinput') {
           const replacement = type ? typeMap[type] : null
           if (replacement) {
@@ -89,12 +75,10 @@ export const preferUFormControls: Rule = {
           return
         }
 
-        // Raw native form elements.
         const base = controlMap[node.name]
         if (!base)
           return
 
-        // A raw `<input type="number">` is best replaced by the specialized component.
         const replacement = node.name === 'input' && type && typeMap[type]
           ? typeMap[type]
           : base

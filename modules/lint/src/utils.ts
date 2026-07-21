@@ -2,15 +2,8 @@ import type { Linter } from 'eslint'
 
 export type Rules = Record<string, Linter.RuleEntry>
 
-/** Analysis depth — per-run, from `NUSTACK_LINT_DEPTH`. Cumulative. */
+/** Analysis depth from `NUSTACK_LINT_DEPTH`. */
 export type Depth = 'quick' | 'full'
-
-const DEPTH_ORDER: Record<Depth, number> = { quick: 0, full: 1 }
-
-/** True when `depth` is at least `min` in the cumulative ladder. */
-export function depthAtLeast(depth: Depth, min: Depth): boolean {
-  return DEPTH_ORDER[depth] >= DEPTH_ORDER[min]
-}
 
 /** Base options shared by every per-concern option object. */
 export interface ConcernOptions {

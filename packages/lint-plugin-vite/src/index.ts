@@ -1,19 +1,19 @@
 import type { ESLint, Linter, Rule } from 'eslint'
 import { eslintCompatPlugin } from '@oxlint/plugins'
-import { noDynamicNewUrl as rawNoDynamicNewUrl } from './rules/assets/no-dynamic-new-url/index.js'
-import { noPublicSrcImport as rawNoPublicSrcImport } from './rules/assets/no-public-src-import/index.js'
-import { noSecretDefine as rawNoSecretDefine } from './rules/define/no-secret-define/index.js'
-import { noClientSecretPattern as rawNoClientSecretPattern } from './rules/env/no-client-secret-pattern/index.js'
+import { noDynamicNewUrl as noDynamicNewUrlRule } from './rules/assets/no-dynamic-new-url/index.js'
+import { noPublicSrcImport as noPublicSrcImportRule } from './rules/assets/no-public-src-import/index.js'
+import { noSecretDefine as noSecretDefineRule } from './rules/define/no-secret-define/index.js'
+import { noClientSecretPattern as noClientSecretPatternRule } from './rules/env/no-client-secret-pattern/index.js'
 
 const plugin = eslintCompatPlugin({
   meta: {
     name: '@nustack/vite',
   },
   rules: {
-    'no-public-src-import': rawNoPublicSrcImport,
-    'no-dynamic-new-url': rawNoDynamicNewUrl,
-    'no-client-secret-pattern': rawNoClientSecretPattern,
-    'no-secret-define': rawNoSecretDefine,
+    'no-public-src-import': noPublicSrcImportRule,
+    'no-dynamic-new-url': noDynamicNewUrlRule,
+    'no-client-secret-pattern': noClientSecretPatternRule,
+    'no-secret-define': noSecretDefineRule,
   },
 }) as unknown as ESLint.Plugin & {
   configs: {
@@ -24,12 +24,6 @@ const plugin = eslintCompatPlugin({
 
 const pluginRef = { '@nustack/vite': plugin }
 
-/**
- * File globs the rules are scoped to. The plugin owns the scoping so consumers
- * spread {@link viteConfigs} (or `configs.recommended`) without re-declaring where
- * the rules apply. These are client/build concerns, so server/tooling paths are
- * excluded.
- */
 export const APP_GLOB = ['**/*.vue', '**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}']
 export const APP_IGNORES = [
   '**/server/**',
@@ -40,12 +34,11 @@ export const APP_IGNORES = [
 ]
 
 /**
- * Vite config files — the inverse scope of {@link APP_GLOB}, for rules that only
+ * Vite config files, the inverse scope of {@link APP_GLOB}, for rules that only
  * make sense inside `vite.config.*` (e.g. inspecting the `define` option).
  */
 export const CONFIG_GLOB = ['**/vite.config.*']
 
-/** Options for {@link viteConfigs}. */
 export interface ViteConfigsOptions {
   /** Cumulative variant; `minimal` ships nothing, `recommended` (default) the rule set. */
   variant?: 'minimal' | 'recommended'
@@ -53,11 +46,7 @@ export interface ViteConfigsOptions {
   rules?: Linter.RulesRecord
 }
 
-/**
- * The single source of truth for *where* these rules run: file-scoped flat-config
- * objects on app source only. Consumers pass extra `rules` here instead of
- * re-declaring any globs themselves.
- */
+/** Returns app- and Vite-config-scoped flat configs. */
 export function viteConfigs(options: ViteConfigsOptions = {}): Linter.Config[] {
   const { variant = 'recommended', rules } = options
   const configs: Linter.Config[] = []

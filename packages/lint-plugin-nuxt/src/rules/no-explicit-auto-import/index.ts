@@ -33,7 +33,7 @@ export const noExplicitAutoImport: Rule = {
       additionalProperties: false,
     }],
     messages: {
-      noExplicitAutoImport: '`{{ name }}` is auto-imported by Nuxt. NuStack standardizes on the auto-import for consistency; remove this explicit import.',
+      noExplicitAutoImport: '`{{ name }}` is auto-imported by Nuxt; remove this explicit import.',
     },
   },
   create(context: any) {

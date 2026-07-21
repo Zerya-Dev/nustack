@@ -1,19 +1,14 @@
 import type { ESLint, Linter, Rule } from 'eslint'
 import { eslintCompatPlugin } from '@oxlint/plugins'
-import { modulesOrder as rawModulesOrder } from './rules/modules-order/index.js'
-import { noDeprecatedModules as rawNoDeprecatedModules } from './rules/no-deprecated-modules/index.js'
-import { noExplicitAutoImport as rawNoExplicitAutoImport } from './rules/no-explicit-auto-import/index.js'
-import { noProcessEnv as rawNoProcessEnv } from './rules/no-process-env/index.js'
-import { noSecretInPublicRuntimeConfig as rawNoSecretInPublicRuntimeConfig } from './rules/no-secret-in-public-runtimeconfig/index.js'
+import { modulesOrder as modulesOrderRule } from './rules/modules-order/index.js'
+import { noDeprecatedModules as noDeprecatedModulesRule } from './rules/no-deprecated-modules/index.js'
+import { noExplicitAutoImport as noExplicitAutoImportRule } from './rules/no-explicit-auto-import/index.js'
+import { noProcessEnv as noProcessEnvRule } from './rules/no-process-env/index.js'
+import { noSecretInPublicRuntimeConfig as noSecretInPublicRuntimeConfigRule } from './rules/no-secret-in-public-runtimeconfig/index.js'
 
-/**
- * File globs the rules are scoped to. The plugin owns every scoping decision so
- * consumers (including `@nustackjs/lint`) never re-declare — and drift from — these
- * patterns: they call {@link nuxtConfigs} and get fully file-scoped configs back.
- */
 /** Where `modules` / `runtimeConfig` rules apply. */
 export const NUXT_CONFIG_GLOB = ['**/nuxt.config.{ts,js,mjs,mts,cjs,cts}']
-/** App source — where auto-import / `process.env` rules apply. */
+/** App source, where auto-import / `process.env` rules apply. */
 export const APP_GLOB = ['**/*.vue', '**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}']
 /** Non-app paths excluded from app-source rules (build/server/tooling). */
 export const APP_IGNORES = [
@@ -29,15 +24,15 @@ const plugin = eslintCompatPlugin({
     name: '@nustack/nuxt',
   },
   rules: {
-    'modules-order': rawModulesOrder,
-    'no-deprecated-modules': rawNoDeprecatedModules,
-    'no-explicit-auto-import': rawNoExplicitAutoImport,
-    'no-process-env': rawNoProcessEnv,
-    'no-secret-in-public-runtimeconfig': rawNoSecretInPublicRuntimeConfig,
+    'modules-order': modulesOrderRule,
+    'no-deprecated-modules': noDeprecatedModulesRule,
+    'no-explicit-auto-import': noExplicitAutoImportRule,
+    'no-process-env': noProcessEnvRule,
+    'no-secret-in-public-runtimeconfig': noSecretInPublicRuntimeConfigRule,
   },
 }) as unknown as ESLint.Plugin & {
   configs: {
-    /** Security floor only — safe to drop into any project. */
+    /** Security floor only, safe to drop into any project. */
     minimal: Linter.Config[]
     /** Full opinionated set, each rule scoped to where it makes sense. */
     recommended: Linter.Config[]
@@ -46,7 +41,6 @@ const plugin = eslintCompatPlugin({
 
 const pluginRef = { '@nustack/nuxt': plugin }
 
-/** Options for {@link nuxtConfigs}. */
 export interface NuxtConfigsOptions {
   /**
    * Cumulative opinion variant (defaults to `'recommended'`):
@@ -54,28 +48,21 @@ export interface NuxtConfigsOptions {
    * - `recommended`: adds `modules` correctness + app-source hygiene.
    */
   variant?: 'minimal' | 'recommended'
-  /** Auto-imported identifiers — tunes `no-explicit-auto-import`. */
+  /** Auto-imported identifiers, tunes `no-explicit-auto-import`. */
   autoImports?: string[]
-  /** Auto-imported components — tunes `no-explicit-auto-import`. */
+  /** Auto-imported components, tunes `no-explicit-auto-import`. */
   components?: string[]
   /** Extra rule overrides, merged onto the app-source scope. */
   rules?: Linter.RulesRecord
 }
 
-/**
- * The single source of truth for *where* each rule runs. Returns an array of
- * file-scoped flat-config objects (not one bag of rules), so a rule never lints a
- * file it wasn't meant for: `modules`/`runtimeConfig` rules only touch
- * `nuxt.config.*`, app rules only touch app source. Consumers pass their project
- * context (auto-imports/components) and extra `rules` here instead of re-declaring
- * any globs themselves.
- */
+/** Returns file-scoped Nuxt flat configs. */
 export function nuxtConfigs(options: NuxtConfigsOptions = {}): Linter.Config[] {
   const { variant = 'recommended', autoImports, components, rules } = options
 
   const configs: Linter.Config[] = [
     {
-      // Secret leakage is a correctness/security floor — on at every variant.
+      // Secret leakage is a correctness/security floor, on at every variant.
       name: 'nustack/nuxt/runtime-config',
       files: NUXT_CONFIG_GLOB,
       plugins: pluginRef,
@@ -97,7 +84,7 @@ export function nuxtConfigs(options: NuxtConfigsOptions = {}): Linter.Config[] {
 
     configs.push(
       {
-        // `modules` array correctness — registration order and deprecated modules.
+        // `modules` array correctness, registration order and deprecated modules.
         name: 'nustack/nuxt/modules',
         files: NUXT_CONFIG_GLOB,
         plugins: pluginRef,

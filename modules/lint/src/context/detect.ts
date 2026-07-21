@@ -21,7 +21,7 @@ const CSS_ENTRY_CANDIDATES = [
 /**
  * Whether `id` is resolvable from the project. Uses node resolution rather than reading
  * the root `package.json`, so a dependency pulled in through a workspace sub-package or a
- * hoisted `node_modules` still counts — what matters is that the module is reachable.
+ * hoisted `node_modules` still counts; what matters is that the module is reachable.
  */
 function isResolvable(id: string, cwd: string): boolean {
   return resolveModulePath(id, { try: true, from: join(cwd, 'package.json') }) !== undefined
@@ -37,11 +37,11 @@ function detectTailwind(cwd: string, resolvable: (id: string) => boolean): Nusta
       if (TAILWIND_IMPORT_RE.test(source))
         return { detected: true, entryPoint: entry }
     } catch {
-      // unreadable css entry — ignore and keep scanning
+      // unreadable css entry, ignore and keep scanning
     }
   }
   // No importing entry found; fall back to a bare resolvability check so the concern
-  // still gates on (with `entryPoint` unknown — needs an explicit override then).
+  // still gates on (with `entryPoint` unknown, needs an explicit override then).
   if (resolvable('tailwindcss'))
     return { detected: true, entryPoint: null }
   return { detected: false, entryPoint: null }
@@ -50,7 +50,7 @@ function detectTailwind(cwd: string, resolvable: (id: string) => boolean): Nusta
 /**
  * Lightweight, non-Nuxt context detection for standalone targets (`vue-app`, and
  * `nuxt-module`'s `src/**`). There's no `nuxt prepare` here, so it deliberately doesn't
- * fake Nuxt's auto-import/component registries — `autoImports`/`components` stay empty.
+ * fake Nuxt's auto-import/component registries, `autoImports`/`components` stay empty.
  * Pass an explicit `context` (`createContext`) to add them.
  */
 export function detectStandaloneContext(cwd: string = process.cwd()): NustackContext {
@@ -68,7 +68,7 @@ export function detectStandaloneContext(cwd: string = process.cwd()): NustackCon
 /**
  * Builds a full `NustackContext` from a partial one, filling any gaps from
  * `EMPTY_CONTEXT`. The manual escape hatch for projects where auto-detection isn't
- * enough — e.g. supplying `autoImports`/`components` outside Nuxt.
+ * enough, e.g. supplying `autoImports`/`components` outside Nuxt.
  */
 export type PartialContext = Partial<Omit<NustackContext, 'modules' | 'tailwind'>> & {
   modules?: Partial<NustackContext['modules']>

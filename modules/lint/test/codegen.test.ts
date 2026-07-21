@@ -37,7 +37,6 @@ describe('playground integration', () => {
   it('detected @nuxt/ui, tailwind, auto-imports and components', async () => {
     const { nustackContext } = await import(file)
     expect(nustackContext.modules.nuxtUi).toBe(true)
-    expect(nustackContext.modules.nuxtContent).toBe(true)
     expect(nustackContext.modules.mdc).toBe(true)
     expect(nustackContext.tailwind.detected).toBe(true)
     expect(nustackContext.tailwind.entryPoint).toBeTruthy()

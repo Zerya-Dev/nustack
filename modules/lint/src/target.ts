@@ -3,7 +3,6 @@ import type { Rules } from './utils'
 import { existsSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 
-/** The three environments nustack knows how to pre-fill defaults for. */
 export type TargetKind = 'nuxt-app' | 'vue-app' | 'nuxt-module'
 export type Target = TargetKind
 
@@ -14,17 +13,16 @@ const NITRO_BASE_RULES: Rules = {
 
 const CONFIG_EXTENSIONS = ['ts', 'js', 'mjs']
 
-/** Every direct subdirectory that is its own Nuxt app (has a `nuxt.config.*`). */
-function detectNestedNuxtApps(cwd: string): string[] {
-  let dirs: string[]
+function detectNestedNuxtApps(projectRoot: string): string[] {
+  let directories: string[]
   try {
-    dirs = readdirSync(cwd, { withFileTypes: true })
-      .filter(e => e.isDirectory() && e.name !== 'node_modules')
-      .map(e => e.name)
+    directories = readdirSync(projectRoot, { withFileTypes: true })
+      .filter(entry => entry.isDirectory() && entry.name !== 'node_modules')
+      .map(entry => entry.name)
   } catch {
     return []
   }
-  return dirs.filter(dir => CONFIG_EXTENSIONS.some(ext => existsSync(join(cwd, dir, `nuxt.config.${ext}`))))
+  return directories.filter(directory => CONFIG_EXTENSIONS.some(extension => existsSync(join(projectRoot, directory, `nuxt.config.${extension}`))))
 }
 
 /**

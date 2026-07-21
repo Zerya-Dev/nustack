@@ -1,27 +1,27 @@
 import type { ESLint, Linter, Rule } from 'eslint'
 import { eslintCompatPlugin } from '@oxlint/plugins'
-import { noDeprecatedComponents as rawNoDeprecatedComponents } from './rules/nuxt-ui/no-deprecated-components/index.js'
-import { noDeprecatedModelModifiers as rawNoDeprecatedModelModifiers } from './rules/nuxt-ui/no-deprecated-model-modifiers/index.js'
-import { preferUButton as rawPreferUButton } from './rules/nuxt-ui/prefer-u-button/index.js'
-import { preferUFormControls as rawPreferUFormControls } from './rules/nuxt-ui/prefer-u-form-controls/index.js'
-import { preferULink as rawPreferULink } from './rules/nuxt-ui/prefer-u-link/index.js'
-import { preferUTable as rawPreferUTable } from './rules/nuxt-ui/prefer-u-table/index.js'
+import { noDeprecatedComponents as noDeprecatedComponentsRule } from './rules/nuxt-ui/no-deprecated-components/index.js'
+import { noDeprecatedModelModifiers as noDeprecatedModelModifiersRule } from './rules/nuxt-ui/no-deprecated-model-modifiers/index.js'
+import { preferUButton as preferUButtonRule } from './rules/nuxt-ui/prefer-u-button/index.js'
+import { preferUFormControls as preferUFormControlsRule } from './rules/nuxt-ui/prefer-u-form-controls/index.js'
+import { preferULink as preferULinkRule } from './rules/nuxt-ui/prefer-u-link/index.js'
+import { preferUTable as preferUTableRule } from './rules/nuxt-ui/prefer-u-table/index.js'
 
 const plugin = eslintCompatPlugin({
   meta: {
     name: '@nustack/nuxt-ui',
   },
   rules: {
-    'prefer-u-button': rawPreferUButton,
-    'prefer-u-form-controls': rawPreferUFormControls,
-    'prefer-u-link': rawPreferULink,
-    'prefer-u-table': rawPreferUTable,
-    'no-deprecated-components': rawNoDeprecatedComponents,
-    'no-deprecated-model-modifiers': rawNoDeprecatedModelModifiers,
+    'prefer-u-button': preferUButtonRule,
+    'prefer-u-form-controls': preferUFormControlsRule,
+    'prefer-u-link': preferULinkRule,
+    'prefer-u-table': preferUTableRule,
+    'no-deprecated-components': noDeprecatedComponentsRule,
+    'no-deprecated-model-modifiers': noDeprecatedModelModifiersRule,
   },
 }) as unknown as ESLint.Plugin & {
   configs: {
-    /** The Nuxt UI pack — Vue-SFC-scoped, ready to spread into a flat config. */
+    /** The Nuxt UI pack, Vue-SFC-scoped, ready to spread into a flat config. */
     ui: Linter.Config[]
     /** Union of every ecosystem sub-pack shipped here (today: just Nuxt UI). */
     recommended: Linter.Config[]
@@ -30,15 +30,8 @@ const plugin = eslintCompatPlugin({
 
 const pluginRef = { '@nustack/nuxt-ui': plugin }
 
-/**
- * Files the Nuxt UI rules apply to. These are component-preference rules that read
- * Vue SFC templates, so the scoping lives here in the plugin — consumers (including
- * `@nustackjs/lint`) spread {@link nuxtUiConfigs} (or `configs.ui`) and never
- * re-declare, or drift from, where the rules run.
- */
 export const NUXT_UI_GLOB = ['**/*.vue']
 
-/** Options for {@link nuxtUiConfigs}. */
 export interface NuxtUiConfigsOptions {
   /** Cumulative variant; `minimal` ships nothing, `recommended` (default) the rule set. */
   variant?: 'minimal' | 'recommended'
@@ -46,16 +39,7 @@ export interface NuxtUiConfigsOptions {
   rules?: Linter.RulesRecord
 }
 
-/**
- * The single source of truth for *where* the Nuxt UI rules run: file-scoped flat
- * configs on Vue SFCs only.
- *
- * Nuxt UI is the first pack in the Nuxt-module *ecosystem* this package hosts.
- * Future packs (Pinia, Content, ...) ship their own `<module>Configs` factory and
- * `@nustack/<module>` plugin domain alongside this one — each detected, gated, and
- * file-scoped independently — rather than being merged into a single
- * ecosystem-wide rule bag, since no two modules share the same files or detection.
- */
+/** Returns Vue-SFC-scoped Nuxt UI configs. */
 export function nuxtUiConfigs(options: NuxtUiConfigsOptions = {}): Linter.Config[] {
   const { variant = 'recommended', rules } = options
   const configs: Linter.Config[] = []

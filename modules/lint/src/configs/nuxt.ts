@@ -4,21 +4,16 @@ import type { ConcernOptions } from '../utils'
 import { nuxtConfigs } from '@nustackjs/lint-plugin-nuxt'
 import { resolveConcernRules } from '../utils'
 
-export interface NuxtConcernOptions extends ConcernOptions {}
+export type NuxtConcernOptions = ConcernOptions
 
-/**
- * Core Nuxt conventions.
- *
- * @see @nustackjs/lint-plugin-nuxt
- */
 export function nuxtConfig(
-  ctx: NustackContext,
-  opts: NuxtConcernOptions = {},
+  context: NustackContext,
+  options: NuxtConcernOptions = {},
 ): Linter.Config[] {
   return nuxtConfigs({
     variant: 'recommended',
-    autoImports: ctx.autoImports,
-    components: ctx.components,
-    rules: resolveConcernRules(opts),
+    autoImports: context.autoImports,
+    components: context.components,
+    rules: resolveConcernRules(options),
   })
 }

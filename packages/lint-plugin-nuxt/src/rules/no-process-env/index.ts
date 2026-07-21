@@ -10,7 +10,7 @@ export const noProcessEnv: Rule = {
     },
     schema: [],
     messages: {
-      noProcessEnv: 'NuStack standardizes app config access on `useRuntimeConfig()` for consistency across server/client. Expose the value via `runtimeConfig` and read it with `useRuntimeConfig()` instead of `process.env`.',
+      noProcessEnv: 'Use `runtimeConfig` and `useRuntimeConfig()` instead of `process.env`.',
     },
   },
   createOnce(context: any) {

@@ -1,15 +1,14 @@
 import type { Rule } from '@oxlint/plugins'
 import { docsUrl } from '../../../utils/docs-url.js'
+import { defineTemplateVisitor } from '../utils.js'
 
-/** Renamed `v-model` modifiers: old → new. Verified 2026-06-30 against ui.nuxt.com (v4). */
+/** Verified 2026-06-30 against ui.nuxt.com (v4); re-verify on the next Nuxt UI major. */
 const DEPRECATED_MODIFIERS: Record<string, string> = {
   nullify: 'nullable',
 }
 
-/** Components whose `v-model` carried the renamed modifier (lowercased for the parser). */
 const TARGET_COMPONENTS = ['uinput', 'uinputnumber', 'utextarea']
 
-/** Returns the `v-model` directive on a start tag, or `null`. */
 function vModel(node: any): any {
   return node.startTag.attributes.find(
     (attribute: any) => attribute.directive && attribute.key.name?.name === 'model',
@@ -34,19 +33,15 @@ export const noDeprecatedModelModifiers: Rule = {
       additionalProperties: false,
     }],
     messages: {
-      preferNullable: 'The `v-model.{{ old }}` modifier was renamed in Nuxt UI v4 — use `v-model.{{ replacement }}` instead.',
+      preferNullable: 'The `v-model.{{ old }}` modifier was renamed in Nuxt UI v4, use `v-model.{{ replacement }}` instead.',
     },
   },
   create(context: any) {
-    const services = context.sourceCode.parserServices
-    if (typeof services?.defineTemplateBodyVisitor !== 'function')
-      return {}
-
     const options = context.options[0] ?? {}
     const modifiers: Record<string, string> = { ...DEPRECATED_MODIFIERS, ...options.modifiers }
     const targets = new Set<string>(options.components ?? TARGET_COMPONENTS)
 
-    return services.defineTemplateBodyVisitor({
+    return defineTemplateVisitor(context, {
       VElement(node: any) {
         if (!targets.has(node.name))
           return

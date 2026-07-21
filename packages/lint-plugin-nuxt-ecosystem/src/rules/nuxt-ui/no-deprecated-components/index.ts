@@ -1,5 +1,6 @@
 import type { Rule } from '@oxlint/plugins'
 import { docsUrl } from '../../../utils/docs-url.js'
+import { defineTemplateVisitor } from '../utils.js'
 
 interface DeprecatedComponent {
   /** Canonical (proper-cased) name, for the message. */
@@ -7,11 +8,7 @@ interface DeprecatedComponent {
   replacement: string
 }
 
-/**
- * Nuxt UI v4 component renames. `vue-eslint-parser` lowercases element names, so the
- * lookup is keyed by the lowercased tag. Each entry verified 2026-06-30 against
- * ui.nuxt.com (v4 migration guide + the live component pages).
- */
+/** Verified 2026-06-30 against ui.nuxt.com (v4); re-verify on the next Nuxt UI major. */
 const DEPRECATED_COMPONENTS: Record<string, DeprecatedComponent> = {
   ubuttongroup: { name: 'UButtonGroup', replacement: 'UFieldGroup' },
   upagemarquee: { name: 'UPageMarquee', replacement: 'UMarquee' },
@@ -34,22 +31,17 @@ export const noDeprecatedComponents: Rule = {
       additionalProperties: false,
     }],
     messages: {
-      deprecated: '`<{{ name }}>` was renamed in Nuxt UI v4 — use `<{{ replacement }}>` instead.',
+      deprecated: '`<{{ name }}>` was renamed in Nuxt UI v4, use `<{{ replacement }}>` instead.',
     },
   },
   create(context: any) {
-    const services = context.sourceCode.parserServices
-    if (typeof services?.defineTemplateBodyVisitor !== 'function')
-      return {}
-
-    // User entries are written proper-cased (`{ UOld: 'UNew' }`) but matched lowercased,
-    // since vue-eslint-parser lowercases element names.
+    // User entries are written proper-cased (`{ UOld: 'UNew' }`) but matched lowercased.
     const table: Record<string, DeprecatedComponent> = { ...DEPRECATED_COMPONENTS }
     const extra = context.options[0]?.components ?? {}
     for (const [name, replacement] of Object.entries(extra) as [string, string][])
       table[name.toLowerCase()] = { name, replacement }
 
-    return services.defineTemplateBodyVisitor({
+    return defineTemplateVisitor(context, {
       VElement(node: any) {
         const deprecated = table[node.name]
         if (deprecated) {

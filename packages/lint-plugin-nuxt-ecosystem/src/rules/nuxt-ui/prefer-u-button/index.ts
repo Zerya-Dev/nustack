@@ -1,34 +1,8 @@
-import type { Rule } from '@oxlint/plugins'
-import { docsUrl } from '../../../utils/docs-url.js'
+import { preferUComponent } from '../prefer-u-component.js'
 
-function hasEscapeHatch(node: any): boolean {
-  return node.startTag.attributes.some(
-    (attribute: any) => !attribute.directive && attribute.key.name === 'data-raw',
-  )
-}
-
-export const preferUButton: Rule = {
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Prefer `<UButton>` over raw `<button>` when Nuxt UI is available.',
-      url: docsUrl('nuxt-ui/prefer-u-button'),
-    },
-    schema: [],
-    messages: {
-      preferUButton: 'NuStack standardizes on Nuxt UI components for consistent styling and a11y. Use `<UButton>` instead of a raw `<button>` (add `data-raw` to opt out).',
-    },
-  },
-  create(context: any) {
-    const services = context.sourceCode.parserServices
-    if (typeof services?.defineTemplateBodyVisitor !== 'function')
-      return {}
-
-    return services.defineTemplateBodyVisitor({
-      VElement(node: any) {
-        if (node.name === 'button' && !hasEscapeHatch(node))
-          context.report({ loc: node.startTag.loc, messageId: 'preferUButton' })
-      },
-    })
-  },
-}
+export const preferUButton = preferUComponent({
+  nativeTag: 'button',
+  component: 'UButton',
+  ruleName: 'prefer-u-button',
+  messageId: 'preferUButton',
+})
