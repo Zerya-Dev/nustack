@@ -5,7 +5,7 @@ import { isStaticMemberOf } from '../helpers.js'
 export const preferUseWindowSize: Rule = {
   meta: {
     type: 'suggestion',
-    docs: { description: 'Prefer `useWindowSize()` over direct window size reads.', url: docsUrl('prefer-usewindow-size') },
+    docs: { description: 'Prefer `useWindowSize()` over direct window size reads.', url: docsUrl('prefer-use-window-size') },
     schema: [],
     messages: {
       preferUseWindowSize: 'Prefer `useWindowSize()` from VueUse over direct `window.innerWidth`/`window.innerHeight` reads.',

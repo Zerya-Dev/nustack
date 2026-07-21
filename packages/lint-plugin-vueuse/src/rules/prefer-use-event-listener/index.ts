@@ -5,7 +5,7 @@ import { isMemberCall } from '../helpers.js'
 export const preferUseEventListener: Rule = {
   meta: {
     type: 'suggestion',
-    docs: { description: 'Prefer `useEventListener()` over raw DOM event listener APIs.', url: docsUrl('prefer-useevent-listener') },
+    docs: { description: 'Prefer `useEventListener()` over raw DOM event listener APIs.', url: docsUrl('prefer-use-event-listener') },
     schema: [],
     messages: {
       preferUseEventListener: 'Prefer `useEventListener()` from VueUse so listeners are cleaned up with the component scope.',

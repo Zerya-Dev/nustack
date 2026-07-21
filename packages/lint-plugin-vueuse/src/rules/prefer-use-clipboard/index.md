@@ -1,4 +1,4 @@
-# `@nustack/vueuse/prefer-useclipboard`
+# `@nustack/vueuse/prefer-use-clipboard`
 
 Prefer `useClipboard()` from VueUse over `navigator.clipboard`. The composable gives Vue-friendly state like `copied`, `isSupported`, and a scoped `copy()` function.
 

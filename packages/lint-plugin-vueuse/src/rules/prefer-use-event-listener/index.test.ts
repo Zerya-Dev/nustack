@@ -2,13 +2,13 @@ import { RuleTester } from 'eslint'
 import { describe, it } from 'vitest'
 import plugin from '../../index.js'
 
-const rule = plugin.rules?.['prefer-useevent-listener']
+const rule = plugin.rules?.['prefer-use-event-listener']
 
-describe('prefer-useevent-listener', () => {
+describe('prefer-use-event-listener', () => {
   it('reports global event listener APIs', () => {
     const tester = new RuleTester({ languageOptions: { ecmaVersion: 'latest', sourceType: 'module' } })
 
-    tester.run('prefer-useevent-listener', rule as never, {
+    tester.run('prefer-use-event-listener', rule as never, {
       valid: [
         { code: 'useEventListener(window, \'resize\', onResize)' },
         { code: 'el.addEventListener(\'click\', onClick)' },

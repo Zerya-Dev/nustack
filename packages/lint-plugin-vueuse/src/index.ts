@@ -1,27 +1,27 @@
 import type { ESLint, Linter, Rule } from 'eslint'
 import { eslintCompatPlugin } from '@oxlint/plugins'
-import { noNamespaceImport as rawNoNamespaceImport } from './rules/no-namespace-import/index.js'
-import { noNuxtAutoImportCollision as rawNoNuxtAutoImportCollision } from './rules/no-nuxt-auto-import-collision/index.js'
-import { preferUseObservers as rawPreferUseObservers } from './rules/prefer-use-observers/index.js'
-import { preferUseStorage as rawPreferUseStorage } from './rules/prefer-use-storage/index.js'
-import { preferUseTimers as rawPreferUseTimers } from './rules/prefer-use-timers/index.js'
-import { preferUseClipboard as rawPreferUseClipboard } from './rules/prefer-useclipboard/index.js'
-import { preferUseEventListener as rawPreferUseEventListener } from './rules/prefer-useevent-listener/index.js'
-import { preferUseWindowSize as rawPreferUseWindowSize } from './rules/prefer-usewindow-size/index.js'
+import { noNamespaceImport as noNamespaceImportRule } from './rules/no-namespace-import/index.js'
+import { noNuxtAutoImportCollision as noNuxtAutoImportCollisionRule } from './rules/no-nuxt-auto-import-collision/index.js'
+import { preferUseClipboard as preferUseClipboardRule } from './rules/prefer-use-clipboard/index.js'
+import { preferUseEventListener as preferUseEventListenerRule } from './rules/prefer-use-event-listener/index.js'
+import { preferUseObservers as preferUseObserversRule } from './rules/prefer-use-observers/index.js'
+import { preferUseStorage as preferUseStorageRule } from './rules/prefer-use-storage/index.js'
+import { preferUseTimers as preferUseTimersRule } from './rules/prefer-use-timers/index.js'
+import { preferUseWindowSize as preferUseWindowSizeRule } from './rules/prefer-use-window-size/index.js'
 
 const plugin = eslintCompatPlugin({
   meta: {
     name: '@nustack/vueuse',
   },
   rules: {
-    'no-nuxt-auto-import-collision': rawNoNuxtAutoImportCollision,
-    'no-namespace-import': rawNoNamespaceImport,
-    'prefer-use-observers': rawPreferUseObservers,
-    'prefer-use-storage': rawPreferUseStorage,
-    'prefer-use-timers': rawPreferUseTimers,
-    'prefer-useclipboard': rawPreferUseClipboard,
-    'prefer-useevent-listener': rawPreferUseEventListener,
-    'prefer-usewindow-size': rawPreferUseWindowSize,
+    'no-namespace-import': noNamespaceImportRule,
+    'no-nuxt-auto-import-collision': noNuxtAutoImportCollisionRule,
+    'prefer-use-clipboard': preferUseClipboardRule,
+    'prefer-use-event-listener': preferUseEventListenerRule,
+    'prefer-use-observers': preferUseObserversRule,
+    'prefer-use-storage': preferUseStorageRule,
+    'prefer-use-timers': preferUseTimersRule,
+    'prefer-use-window-size': preferUseWindowSizeRule,
   },
 }) as unknown as ESLint.Plugin & {
   configs: {
@@ -32,12 +32,6 @@ const plugin = eslintCompatPlugin({
 
 const pluginRef = { '@nustack/vueuse': plugin }
 
-/**
- * File globs the rules are scoped to. The plugin owns the scoping so consumers
- * spread {@link vueUseConfigs} (or `configs.recommended`) without re-declaring
- * where the rules apply. VueUse is client-side, so server/tooling paths are
- * excluded.
- */
 export const APP_GLOB = ['**/*.vue', '**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}']
 export const APP_IGNORES = [
   '**/server/**',
@@ -47,7 +41,6 @@ export const APP_IGNORES = [
   '**/*.d.ts',
 ]
 
-/** Options for {@link vueUseConfigs}. */
 export interface VueUseConfigsOptions {
   /** Cumulative variant; `minimal` ships nothing, `recommended` (default) the rule set. */
   variant?: 'minimal' | 'recommended'
@@ -55,11 +48,7 @@ export interface VueUseConfigsOptions {
   rules?: Linter.RulesRecord
 }
 
-/**
- * The single source of truth for *where* these rules run: file-scoped flat-config
- * objects on app source only. Consumers pass extra `rules` here instead of
- * re-declaring any globs themselves.
- */
+/** Returns app-source-scoped VueUse flat configs. */
 export function vueUseConfigs(options: VueUseConfigsOptions = {}): Linter.Config[] {
   const { variant = 'recommended', rules } = options
   const configs: Linter.Config[] = []
@@ -76,9 +65,9 @@ export function vueUseConfigs(options: VueUseConfigsOptions = {}): Linter.Config
         '@nustack/vueuse/prefer-use-observers': 'warn',
         '@nustack/vueuse/prefer-use-storage': 'warn',
         '@nustack/vueuse/prefer-use-timers': 'warn',
-        '@nustack/vueuse/prefer-useclipboard': 'warn',
-        '@nustack/vueuse/prefer-useevent-listener': 'warn',
-        '@nustack/vueuse/prefer-usewindow-size': 'warn',
+        '@nustack/vueuse/prefer-use-clipboard': 'warn',
+        '@nustack/vueuse/prefer-use-event-listener': 'warn',
+        '@nustack/vueuse/prefer-use-window-size': 'warn',
       },
     })
   }
@@ -102,10 +91,10 @@ plugin.configs = {
 
 export const noNuxtAutoImportCollision: Rule.RuleModule = plugin.rules!['no-nuxt-auto-import-collision'] as Rule.RuleModule
 export const noNamespaceImport: Rule.RuleModule = plugin.rules!['no-namespace-import'] as Rule.RuleModule
-export const preferUseClipboard: Rule.RuleModule = plugin.rules!['prefer-useclipboard'] as Rule.RuleModule
-export const preferUseEventListener: Rule.RuleModule = plugin.rules!['prefer-useevent-listener'] as Rule.RuleModule
+export const preferUseClipboard: Rule.RuleModule = plugin.rules!['prefer-use-clipboard'] as Rule.RuleModule
+export const preferUseEventListener: Rule.RuleModule = plugin.rules!['prefer-use-event-listener'] as Rule.RuleModule
 export const preferUseObservers: Rule.RuleModule = plugin.rules!['prefer-use-observers'] as Rule.RuleModule
 export const preferUseStorage: Rule.RuleModule = plugin.rules!['prefer-use-storage'] as Rule.RuleModule
 export const preferUseTimers: Rule.RuleModule = plugin.rules!['prefer-use-timers'] as Rule.RuleModule
-export const preferUseWindowSize: Rule.RuleModule = plugin.rules!['prefer-usewindow-size'] as Rule.RuleModule
+export const preferUseWindowSize: Rule.RuleModule = plugin.rules!['prefer-use-window-size'] as Rule.RuleModule
 export default plugin
