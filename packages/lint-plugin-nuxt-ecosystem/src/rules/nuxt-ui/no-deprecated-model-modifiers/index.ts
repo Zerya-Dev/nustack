@@ -2,7 +2,7 @@ import type { Rule } from '@oxlint/plugins'
 import { docsUrl } from '../../../utils/docs-url.js'
 import { defineTemplateVisitor } from '../utils.js'
 
-/** Verified 2026-06-30 against ui.nuxt.com (v4); re-verify on the next Nuxt UI major. */
+/** Verified 2026-07-21 against the ui.nuxt.com v4 migration guide; re-verify on the next major. */
 const DEPRECATED_MODIFIERS: Record<string, string> = {
   nullify: 'nullable',
 }
@@ -13,6 +13,18 @@ function vModel(node: any): any {
   return node.startTag.attributes.find(
     (attribute: any) => attribute.directive && attribute.key.name?.name === 'model',
   ) ?? null
+}
+
+function modelModifiersObject(node: any): any | null {
+  const attribute = node.startTag.attributes.find((candidate: any) => {
+    if (!candidate.directive || candidate.key.name?.name !== 'bind')
+      return false
+    const argument = candidate.key.argument
+    return argument?.type === 'VIdentifier' && argument.name === 'model-modifiers'
+  })
+  return attribute?.value?.expression?.type === 'ObjectExpression'
+    ? attribute.value.expression
+    : null
 }
 
 export const noDeprecatedModelModifiers: Rule = {
@@ -54,6 +66,20 @@ export const noDeprecatedModelModifiers: Rule = {
               loc: modifier.loc ?? model.key.loc,
               messageId: 'preferNullable',
               data: { old: modifier.name, replacement },
+            })
+          }
+        }
+
+        for (const property of modelModifiersObject(node)?.properties ?? []) {
+          if (property.type !== 'Property' || property.computed)
+            continue
+          const name = property.key.name ?? property.key.value
+          const replacement = modifiers[name]
+          if (replacement) {
+            context.report({
+              loc: property.key.loc ?? property.loc,
+              messageId: 'preferNullable',
+              data: { old: name, replacement },
             })
           }
         }

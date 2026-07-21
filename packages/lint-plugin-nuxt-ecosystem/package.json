@@ -33,6 +33,7 @@
   "files": [
     "LICENSE",
     "README.md",
+    "NUXT_UI_RESEARCH.md",
     "dist",
     "src/**/*.md"
   ],

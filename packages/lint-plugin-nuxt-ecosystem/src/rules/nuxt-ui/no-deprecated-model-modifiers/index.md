@@ -9,6 +9,7 @@ Nuxt UI v4 (both convert empty/blank values to `null`; v4 also adds `.optional` 
 ```vue
 <template>
   <UInput v-model.nullify="value" />
+  <UTextarea v-model="value" :model-modifiers="{ nullify: true }" />
 </template>
 ```
 
@@ -17,6 +18,7 @@ Nuxt UI v4 (both convert empty/blank values to `null`; v4 also adds `.optional` 
 ```vue
 <template>
   <UInput v-model.nullable="value" />
+  <UTextarea v-model="value" :model-modifiers="{ nullable: true }" />
 </template>
 ```
 
