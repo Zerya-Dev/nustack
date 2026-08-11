@@ -1,4 +1,4 @@
-import type { Rule } from '@oxlint/plugins'
+import type { Context, ESTree, Fix, Fixer, Rule, Visitor } from '@oxlint/plugins'
 import { docsUrl } from '../../utils/docs-url.js'
 
 interface Options {
@@ -36,13 +36,13 @@ export const noExplicitAutoImport: Rule = {
       noExplicitAutoImport: '`{{ name }}` is auto-imported by Nuxt; remove this explicit import.',
     },
   },
-  create(context: any) {
+  create(context: Context): Visitor {
     const options = (context.options?.[0] ?? {}) as Options
     const importSet = new Set(options.imports ?? [])
     const componentSet = new Set(options.components ?? [])
     const sourceCode = context.sourceCode
 
-    function removeSpecifier(fixer: any, specifier: any) {
+    function removeSpecifier(fixer: Fixer, specifier: ESTree.ImportDeclarationSpecifier): Fix {
       const after = sourceCode.getTokenAfter(specifier)
       const before = sourceCode.getTokenBefore(specifier)
       if (after?.value === ',') {
@@ -55,7 +55,7 @@ export const noExplicitAutoImport: Rule = {
     }
 
     return {
-      ImportDeclaration(node: any) {
+      ImportDeclaration(node: ESTree.ImportDeclaration): void {
         if (node.importKind === 'type')
           return
 
@@ -68,7 +68,7 @@ export const noExplicitAutoImport: Rule = {
         if (!isNuxtAutoImportSource && !isVueSource && !isVueRouterSource && !isComposablePath && !isComponentPath)
           return
 
-        const flagged: { node: any, name: string }[] = []
+        const flagged: { node: ESTree.ImportDeclarationSpecifier, name: string }[] = []
         for (const specifier of node.specifiers) {
           if (specifier.type === 'ImportDefaultSpecifier' || specifier.type === 'ImportNamespaceSpecifier') {
             if (isNuxtAutoImportSource)
@@ -102,7 +102,7 @@ export const noExplicitAutoImport: Rule = {
             node,
             messageId: 'noExplicitAutoImport',
             data: { name: flagged.map(f => f.name).join(', ') },
-            fix: (fixer: any) => fixer.remove(node),
+            fix: (fixer: Fixer): Fix => fixer.remove(node),
           })
           return
         }
@@ -112,7 +112,7 @@ export const noExplicitAutoImport: Rule = {
             node: specifier,
             messageId: 'noExplicitAutoImport',
             data: { name },
-            fix: (fixer: any) => removeSpecifier(fixer, specifier),
+            fix: (fixer: Fixer): Fix => removeSpecifier(fixer, specifier),
           })
         }
       },

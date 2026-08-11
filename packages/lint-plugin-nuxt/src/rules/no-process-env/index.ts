@@ -1,4 +1,4 @@
-import type { Rule } from '@oxlint/plugins'
+import type { Context, ESTree, Rule, Visitor } from '@oxlint/plugins'
 import { docsUrl } from '../../utils/docs-url.js'
 
 export const noProcessEnv: Rule = {
@@ -13,9 +13,9 @@ export const noProcessEnv: Rule = {
       noProcessEnv: 'Use `runtimeConfig` and `useRuntimeConfig()` instead of `process.env`.',
     },
   },
-  createOnce(context: any) {
+  createOnce(context: Context): Visitor {
     return {
-      MemberExpression(node: any) {
+      MemberExpression(node: ESTree.MemberExpression): void {
         if (
           node.object?.type === 'Identifier'
           && node.object.name === 'process'

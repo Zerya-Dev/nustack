@@ -1,5 +1,7 @@
-import type { Rule } from '@oxlint/plugins'
+import type { Context, ESTree, Rule, Visitor } from '@oxlint/plugins'
+import { staticKeyName } from '../../utils/ast.js'
 import { docsUrl } from '../../utils/docs-url.js'
+import { nuxtModuleEntry } from '../../utils/nuxt-modules.js'
 
 /**
  * Ordering constraints between Nuxt ecosystem modules. Each entry means "`before`
@@ -40,28 +42,6 @@ const ORDER_CONSTRAINTS: OrderConstraint[] = [
   },
 ]
 
-function staticKeyName(key: any): string | null {
-  if (key.type === 'Identifier')
-    return key.name
-  if (key.type === 'Literal' && typeof key.value === 'string')
-    return key.value
-  return null
-}
-
-/** A `modules` entry is either `'mod'` or `['mod', { ...options }]`. */
-function moduleName(element: any): string | null {
-  if (!element)
-    return null
-  if (element.type === 'Literal' && typeof element.value === 'string')
-    return element.value
-  if (element.type === 'ArrayExpression' && element.elements.length > 0) {
-    const first = element.elements[0]
-    if (first?.type === 'Literal' && typeof first.value === 'string')
-      return first.value
-  }
-  return null
-}
-
 export const modulesOrder: Rule = {
   meta: {
     type: 'problem',
@@ -74,21 +54,23 @@ export const modulesOrder: Rule = {
       wrongOrder: 'Register `{{ before }}` before `{{ after }}` in `modules`. {{ reason }} See {{ docs }}.',
     },
   },
-  createOnce(context: any) {
+  createOnce(context: Context): Visitor {
     return {
-      Property(node: any) {
+      Property(node: ESTree.ObjectProperty): void {
         if (staticKeyName(node.key) !== 'modules' || node.value.type !== 'ArrayExpression')
           return
 
         // First index + node for each statically resolvable module specifier.
         const index = new Map<string, number>()
-        const reportNode = new Map<string, any>()
-        node.value.elements.forEach((element: any, position: number) => {
-          const name = moduleName(element)
-          if (name === null || index.has(name))
+        const reportNode = new Map<string, ESTree.Node>()
+        node.value.elements.forEach((element: ESTree.ArrayExpressionElement, position: number) => {
+          if (!element)
             return
-          index.set(name, position)
-          reportNode.set(name, element)
+          const entry = nuxtModuleEntry(element)
+          if (!entry || index.has(entry.name))
+            return
+          index.set(entry.name, position)
+          reportNode.set(entry.name, element)
         })
 
         for (const constraint of ORDER_CONSTRAINTS) {
@@ -98,9 +80,12 @@ export const modulesOrder: Rule = {
             continue
           if (beforeIndex < afterIndex)
             continue
+          const target = reportNode.get(constraint.after)
+          if (!target)
+            continue
 
           context.report({
-            node: reportNode.get(constraint.after),
+            node: target,
             messageId: 'wrongOrder',
             data: {
               before: constraint.before,

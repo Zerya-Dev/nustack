@@ -8,7 +8,6 @@ import { resolveAlias } from '@nuxt/kit'
 import { resolveModuleFlags } from './context/module-flags'
 
 const TAILWIND_IMPORT_PATTERN = /@import\s+["']tailwindcss["']/
-
 interface NitroWithUnimport {
   unimport?: Unimport
 }
