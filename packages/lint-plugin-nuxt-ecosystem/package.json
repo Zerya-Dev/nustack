@@ -2,7 +2,7 @@
   "name": "@nustackjs/lint-plugin-nuxt-ecosystem",
   "type": "module",
   "version": "0.4.0",
-  "description": "ESLint and Oxlint rules for the Nuxt module ecosystem (Nuxt UI). Used by @nustackjs/lint, usable standalone.",
+  "description": "ESLint rules for the most popular Nuxt modules and tools. Used by @nustackjs/lint, usable standalone.",
   "author": "Norbiros <me@norbiros.dev>",
   "license": "MIT",
   "homepage": "https://github.com/Zerya-Dev/nustack/tree/master/packages/lint-plugin-nuxt-ecosystem#readme",
@@ -13,10 +13,8 @@
   },
   "keywords": [
     "eslint",
-    "oxlint",
     "eslint-plugin",
     "nuxt",
-    "nuxt-ui",
     "nustack",
     "lint"
   ],
@@ -28,7 +26,8 @@
       "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs",
       "default": "./dist/index.mjs"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "LICENSE",
@@ -38,6 +37,7 @@
   ],
   "scripts": {
     "build": "tsdown src/index.ts --dts --clean",
+    "prepack": "pnpm build",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
@@ -48,6 +48,7 @@
     "@oxlint/plugins": "catalog:eslint"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "catalog:eslint",
     "eslint": "catalog:eslint",
     "tsdown": "catalog:build",
     "typescript": "catalog:typescript",

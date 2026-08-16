@@ -1,31 +1,42 @@
-import type { Rule } from '@oxlint/plugins'
+import type { Context, Rule, Visitor } from '@oxlint/plugins'
+import type { AST as VueAST } from 'vue-eslint-parser'
+import { isNativeHtmlElement } from '../../../utils/component-matcher.js'
 import { docsUrl } from '../../../utils/docs-url.js'
-import { defineTemplateVisitor, hasRawOptOut } from '../utils.js'
+import { defineTemplateVisitor, getStaticAttribute } from '../../../utils/template.js'
+import { createNuxtUiMatcher } from '../components.js'
 
 const CONTROL_MAP: Record<string, string> = {
-  input: 'UInput',
-  select: 'USelect',
-  textarea: 'UTextarea',
+  input: 'Input',
+  select: 'Select',
+  textarea: 'Textarea',
 }
 
 /** Verified 2026-06-30 against ui.nuxt.com/docs/components; re-verify on the next Nuxt UI major. */
 const TYPE_MAP: Record<string, string> = {
-  number: 'UInputNumber',
-  file: 'UFileUpload',
-  color: 'UColorPicker',
-  date: 'UInputDate',
-  time: 'UInputTime',
-  range: 'USlider',
-  checkbox: 'UCheckbox',
-  radio: 'URadioGroup',
+  number: 'InputNumber',
+  file: 'FileUpload',
+  color: 'ColorPicker',
+  date: 'InputDate',
+  time: 'InputTime',
+  range: 'Slider',
+  checkbox: 'Checkbox',
+  radio: 'RadioGroup',
+  submit: 'Button',
+  reset: 'Button',
+  button: 'Button',
+  image: 'Button',
 }
 
-/** The static `type="..."` value; `null` for dynamic (`:type`) or absent types. */
-function staticType(node: any): string | null {
-  const attribute = node.startTag.attributes.find(
-    (attribute: any) => !attribute.directive && attribute.key.name === 'type' && attribute.value,
-  )
-  return attribute ? attribute.value.value : null
+/** `type="hidden"` carries data rather than input, so no Nuxt UI control replaces it. */
+const IGNORED_TYPE = 'hidden'
+
+function staticType(node: VueAST.VElement): string | null {
+  return getStaticAttribute(node, 'type')?.toLowerCase() ?? null
+}
+
+interface Options {
+  controls?: Record<string, string>
+  types?: Record<string, string>
 }
 
 export const preferUFormControls: Rule = {
@@ -38,42 +49,46 @@ export const preferUFormControls: Rule = {
     schema: [{
       type: 'object',
       properties: {
-        /** Extra `tag` → `Component` mappings, merged onto the built-in native-element map. */
         controls: { type: 'object', additionalProperties: { type: 'string' } },
-        /** Extra input-`type` → `Component` mappings, merged onto the built-in type map. */
         types: { type: 'object', additionalProperties: { type: 'string' } },
       },
       additionalProperties: false,
     }],
     messages: {
-      preferUFormControl: 'Use `<{{ replacement }}>` instead of `<{{ tag }}>`; add `data-raw` to allow the native element.',
-      preferSpecificControl: 'Use `<{{ replacement }}>` instead of `<UInput type="{{ type }}">`; add `data-raw` to allow the native element.',
+      preferUFormControl: 'Use `<{{ replacement }}>` instead of `<{{ tag }}>`.',
+      preferSpecificControl: 'Use `<{{ replacement }}>` instead of `<{{ component }} type="{{ type }}">`.',
     },
   },
-  create(context: any) {
-    const options = context.options[0] ?? {}
+  create(context: Context): Visitor {
+    const options = (context.options[0] ?? {}) as Options
     const controlMap: Record<string, string> = { ...CONTROL_MAP, ...options.controls }
     const typeMap: Record<string, string> = { ...TYPE_MAP, ...options.types }
+    const matcher = createNuxtUiMatcher(context)
 
     return defineTemplateVisitor(context, {
-      VElement(node: any) {
-        if (hasRawOptOut(node))
+      VElement(node: VueAST.VElement) {
+        const type = staticType(node)
+        if (type === IGNORED_TYPE)
           return
 
-        const type = staticType(node)
-
-        // `<UInput type="number">`, already Nuxt UI, but a dedicated component fits better.
-        if (node.name === 'uinput') {
-          const replacement = type ? typeMap[type] : null
-          if (replacement) {
+        if (matcher.is(node, 'Input')) {
+          const replacement = type === null ? undefined : typeMap[type]
+          if (type !== null && replacement) {
             context.report({
               loc: node.startTag.loc,
               messageId: 'preferSpecificControl',
-              data: { type, replacement },
+              data: {
+                type,
+                replacement: matcher.prefixed(replacement),
+                component: matcher.prefixed('Input'),
+              },
             })
           }
           return
         }
+
+        if (!isNativeHtmlElement(node))
+          return
 
         const base = controlMap[node.name]
         if (!base)
@@ -86,7 +101,7 @@ export const preferUFormControls: Rule = {
         context.report({
           loc: node.startTag.loc,
           messageId: 'preferUFormControl',
-          data: { tag: node.name, replacement },
+          data: { tag: node.name, replacement: matcher.prefixed(replacement) },
         })
       },
     })

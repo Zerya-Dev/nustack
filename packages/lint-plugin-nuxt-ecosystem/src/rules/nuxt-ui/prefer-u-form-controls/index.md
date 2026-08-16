@@ -16,6 +16,10 @@ points you at that component, both for a raw `<input type="number">` and for a g
 | `range` | `USlider` |
 | `checkbox` | `UCheckbox` |
 | `radio` | `URadioGroup` |
+| `submit`, `reset`, `button`, `image` | `UButton` |
+
+`type="hidden"` is skipped: it carries a value rather than user input, so no Nuxt UI
+control replaces it.
 
 ## Incorrect
 
@@ -41,15 +45,25 @@ points you at that component, both for a raw `<input type="number">` and for a g
 ```
 
 Dynamic types (`<UInput :type="kind" />`) are ignored; only a statically-written `type`
-is checked. Use `data-raw` as a local escape hatch when a native control is intentional.
+is checked. Only genuine native elements are reported: a component whose name merely
+lowercases to the tag (`<Input>`) is left alone. Suppress an intentional native control with
+`<!-- eslint-disable-next-line @nustack/nuxt-ui/prefer-u-form-controls -->`.
 
 ## Options
 
-Both maps are extensible (entries are merged onto the built-ins):
+Both maps are extensible (entries are merged onto the built-ins). Component names are
+written **unprefixed**, exactly like the built-in tables; the configured `ui.prefix` is
+applied when the message is built, so the same config works under any prefix:
 
 ```js
 '@nustack/nuxt-ui/prefer-u-form-controls': ['warn', {
-  controls: { progress: 'UProgress' }, // extra raw-element → component
-  types: { email: 'UEmailInput' },     // extra input-type → component
+  controls: { progress: 'Progress' }, // extra raw-element → component
+  types: { email: 'EmailInput' },     // extra input-type → component
 }]
 ```
+
+## Further reading
+
+- [Nuxt UI components](https://ui.nuxt.com/docs/components)
+- [Nuxt UI Input](https://ui.nuxt.com/docs/components/input)
+- [Nuxt UI Form](https://ui.nuxt.com/docs/components/form)

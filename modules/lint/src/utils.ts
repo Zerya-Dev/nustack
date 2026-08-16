@@ -9,16 +9,11 @@ export type Depth = 'quick' | 'full'
 export interface ConcernOptions {
   /** Per-concern rule changes, merged after the concern's defaults. */
   rules?: Rules
-  /** @deprecated Use `rules` instead. */
-  overrides?: Rules
 }
 
-/** Backward-compatible rule resolver while `rules` becomes the single public API. */
+/** Resolves an optional per-concern rule record. */
 export function resolveConcernRules(options: ConcernOptions): Rules {
-  return {
-    ...options.overrides,
-    ...options.rules,
-  }
+  return options.rules ?? {}
 }
 
 /** A per-concern toggle: `true`/`undefined` = default, `false` = off, object = tune. */

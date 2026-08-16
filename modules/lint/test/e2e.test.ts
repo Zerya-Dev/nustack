@@ -11,7 +11,8 @@ import { applyNustackConfig } from '../src/config'
 const TAILWIND_ENTRY = fileURLToPath(new URL('./fixtures/tailwind.css', import.meta.url))
 
 const CONTEXT: NustackContext = {
-  modules: { nuxtUi: true, mdc: false },
+  modules: { nuxtUi: true, nuxtImage: true, mdc: false },
+  nuxtUi: { prefix: 'U' },
   tailwind: { detected: true, entryPoint: TAILWIND_ENTRY },
   autoImports: ['ref', 'useRuntimeConfig'],
   components: ['UButton'],
@@ -45,6 +46,40 @@ describe('e2e: composed config lints real code', () => {
   it('flags a raw <button> when Nuxt UI is detected (nuxt-ui concern)', async () => {
     const messages = await lint(`<script setup lang="ts"></script><template><button>x</button></template>`, 'app/pages/x.vue')
     expect(ruleIds(messages)).toContain('@nustack/nuxt-ui/prefer-u-button')
+  })
+
+  it('flags an unlabelled <NuxtImg> when @nuxt/image is detected (nuxt-image concern)', async () => {
+    const messages = await lint(`<script setup lang="ts"></script><template><NuxtImg src="/hero.png" /></template>`, 'app/pages/x.vue')
+    expect(ruleIds(messages)).toContain('@nustack/nuxt-image/require-image-alt')
+  })
+
+  it('applies the nuxt-image rules to Nuxt UI wrappers around NuxtImg, at the project prefix', async () => {
+    const code = `<script setup lang="ts"></script><template><NuColorModeImage light="~/assets/l.png" dark="/d.png" alt="Logo" width="20" height="20" /></template>`
+    const messages = await lint(
+      code,
+      'app/pages/x.vue',
+      { context: { ...CONTEXT, nuxtUi: { prefix: 'Nu' } } },
+    )
+    expect(ruleIds(messages)).toContain('@nustack/nuxt-image/no-assets-src')
+  })
+
+  it('does not apply nuxt-image rules to UI wrappers when Nuxt UI is disabled', async () => {
+    const code = `<script setup lang="ts"></script><template><UColorModeImage light="~/assets/l.png" dark="/d.png" /></template>`
+    const messages = await lint(
+      code,
+      'app/pages/x.vue',
+      { context: { ...CONTEXT, modules: { ...CONTEXT.modules, nuxtUi: false } } },
+    )
+    expect(ruleIds(messages).some(id => id.startsWith('@nustack/nuxt-image/'))).toBe(false)
+  })
+
+  it('leaves the nuxt-image rules out when the module is not installed', async () => {
+    const messages = await lint(
+      `<script setup lang="ts"></script><template><NuxtImg src="/hero.png" /></template>`,
+      'app/pages/x.vue',
+      { context: { ...CONTEXT, modules: { ...CONTEXT.modules, nuxtImage: false } } },
+    )
+    expect(ruleIds(messages).some(id => id.startsWith('@nustack/nuxt-image/'))).toBe(false)
   })
 
   it('flags a redundant explicit auto-import (nuxt concern, fixable)', async () => {

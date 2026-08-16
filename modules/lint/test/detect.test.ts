@@ -4,13 +4,13 @@ import { createContext, detectStandaloneContext } from '../src/context/detect'
 
 // Detection now resolves modules through node resolution (exsolve) instead of
 // parsing package.json, so a fixture's declared deps aren't automatically installed.
-// Mock the resolver to make only `@nuxt/ui` (and only from the nuxt-ui fixture)
-// resolvable; the Tailwind entry point is still found by the real CSS scan.
+// Mock the resolver to make only `@nuxt/ui` and `@nuxt/image` (and only from the nuxt-ui
+// fixture) resolvable; the Tailwind entry point is still found by the real CSS scan.
 vi.mock('exsolve', () => ({
   resolveModulePath: (id: string, opts: { from?: string }) => {
     const from = String(opts?.from ?? '')
-    if (from.includes('standalone-nuxt-ui') && id === '@nuxt/ui')
-      return '/virtual/node_modules/@nuxt/ui/index.mjs'
+    if (from.includes('standalone-nuxt-ui') && (id === '@nuxt/ui' || id === '@nuxt/image'))
+      return `/virtual/node_modules/${id}/index.mjs`
     return undefined
   },
 }))
@@ -19,9 +19,10 @@ const NUXT_UI_FIXTURE = fileURLToPath(new URL('./fixtures/standalone-nuxt-ui', i
 const PLAIN_FIXTURE = fileURLToPath(new URL('./fixtures/standalone-plain', import.meta.url))
 
 describe('detectStandaloneContext', () => {
-  it('detects @nuxt/ui (node resolution) and a Tailwind CSS entry point (css scan)', () => {
+  it('detects @nuxt/ui and @nuxt/image (node resolution) and a Tailwind CSS entry point (css scan)', () => {
     const ctx = detectStandaloneContext(NUXT_UI_FIXTURE)
     expect(ctx.modules.nuxtUi).toBe(true)
+    expect(ctx.modules.nuxtImage).toBe(true)
     expect(ctx.tailwind.detected).toBe(true)
     expect(ctx.tailwind.entryPoint).toBe('assets/css/main.css')
   })
@@ -29,6 +30,7 @@ describe('detectStandaloneContext', () => {
   it('reports nothing detected for a plain project', () => {
     const ctx = detectStandaloneContext(PLAIN_FIXTURE)
     expect(ctx.modules.nuxtUi).toBe(false)
+    expect(ctx.modules.nuxtImage).toBe(false)
     expect(ctx.tailwind.detected).toBe(false)
     expect(ctx.tailwind.entryPoint).toBeNull()
   })

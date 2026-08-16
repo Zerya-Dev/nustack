@@ -20,5 +20,12 @@ drop-in for an anchor.
 </template>
 ```
 
-Use `data-raw` as a local escape hatch when a raw native anchor is intentional (e.g. a
-`mailto:` or external download link you don't want routed).
+Suppress an intentional raw native anchor (e.g. a `mailto:` or external download link you
+don't want routed) with `<!-- eslint-disable-next-line @nustack/nuxt-ui/prefer-u-link -->`.
+
+Only genuine native elements are reported: a component whose name merely lowercases to the
+tag (`<Link>`) is left alone, and so is SVG's own `<a>`.
+
+## Further reading
+
+- [Nuxt UI Link](https://ui.nuxt.com/docs/components/link)

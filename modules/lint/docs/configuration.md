@@ -124,9 +124,44 @@ but you can force or disable any of them:
 | `vue`           | SFC conventions (`vue/block-lang` → `lang="ts"`)                              | `.vue` files                                                                          |
 | `vueUse`        | VueUse/browser API conventions                                                | Nuxt app/client files, or `vue-app`                                                   |
 | `vite`          | Vite asset/env safety                                                         | Nuxt app/client files, or `vue-app`                                                   |
-| `nuxtEcosystem` | per-module Nuxt-ecosystem preferences (Nuxt UI today)                         | each module's own detection (`@nuxt/ui` etc.), never blanket-disabled by a target     |
+| `nuxtEcosystem` | per-module Nuxt-ecosystem preferences                                         | each module's own detection (`@nuxt/ui` etc.), never blanket-disabled by a target     |
 | `tailwind`      | class sorting/correctness via better-tailwindcss (incl. the `:ui` prop)       | a Tailwind entry point                                                                |
 | `markdown`      | Markdown/MDC linting via mdclint for `content/**/*.md`                        | always; MDC preset when `@nuxt/content`, `@comark/nuxt`, or `@nuxtjs/mdc` is detected |
+
+### Nuxt ecosystem integrations
+
+`@nustackjs/lint` detects installed modules and enables their integrations automatically. You can
+also enable, configure, or disable each integration explicitly. Every integration provides two presets:
+
+| Preset        | Contents                                                      | Severity         |
+| ------------- | ------------------------------------------------------------- | ---------------- |
+| `minimal`     | Invalid usage, accessibility defects, removed or renamed APIs | `error`          |
+| `recommended` | `minimal` plus design-system preferences (`prefer-*`)         | `error` / `warn` |
+
+`recommended` is the default.
+
+The Nuxt UI rules reuse the SFC parsing the Vue layer already sets up — the plugin ships no
+parsers of its own.
+
+```ts
+nustack({
+  nuxtEcosystem: {
+    // Force @nuxt/ui rules on even when package detection is unavailable.
+    nuxtUi: {
+      preset: 'minimal',
+      rules: { '@nustack/nuxt-ui/require-u-app': 'off' },
+    },
+  },
+})
+```
+
+Use `nuxtUi: true` to force the default preset on, or `nuxtUi: false` to disable the detected
+integration. The configured Nuxt UI component prefix is read from `nuxt.config.ts` automatically.
+
+The `prefer-*` rules have no attribute-level opt-out. Suppress a deliberate exception with
+`<!-- eslint-disable-next-line @nustack/nuxt-ui/prefer-u-button -->` in the template — this works
+because the composed config carries `eslint-plugin-vue`'s `vue/comment-directive` and `.vue`
+processor.
 
 ## Context detection outside Nuxt
 

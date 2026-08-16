@@ -6,7 +6,8 @@ import { describe, expect, it } from 'vitest'
 import { applyNustackConfig } from '../src/config'
 
 const FULL_CONTEXT: NustackContext = {
-  modules: { nuxtUi: true, mdc: false },
+  modules: { nuxtUi: true, nuxtImage: true, mdc: false },
+  nuxtUi: { prefix: 'U' },
   tailwind: { detected: true, entryPoint: 'app/assets/css/main.css' },
   autoImports: ['ref'],
   components: ['UButton'],

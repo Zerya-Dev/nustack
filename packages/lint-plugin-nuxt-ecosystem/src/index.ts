@@ -1,87 +1,35 @@
-import type { ESLint, Linter, Rule } from 'eslint'
-import { eslintCompatPlugin } from '@oxlint/plugins'
-import { noDeprecatedComponents as noDeprecatedComponentsRule } from './rules/nuxt-ui/no-deprecated-components/index.js'
-import { noDeprecatedModelModifiers as noDeprecatedModelModifiersRule } from './rules/nuxt-ui/no-deprecated-model-modifiers/index.js'
-import { preferUButton as preferUButtonRule } from './rules/nuxt-ui/prefer-u-button/index.js'
-import { preferUFormControls as preferUFormControlsRule } from './rules/nuxt-ui/prefer-u-form-controls/index.js'
-import { preferULink as preferULinkRule } from './rules/nuxt-ui/prefer-u-link/index.js'
-import { preferUTable as preferUTableRule } from './rules/nuxt-ui/prefer-u-table/index.js'
+import type { ESLint, Linter } from 'eslint'
+import type { NuxtImageConfigOptions } from './rules/nuxt-image/module.js'
+import type { NuxtUiConfigOptions } from './rules/nuxt-ui/module.js'
+import { nuxtImageConfig, nuxtImagePlugins } from './rules/nuxt-image/module.js'
+import { nuxtUiConfig, nuxtUiPlugins } from './rules/nuxt-ui/module.js'
 
-const plugin = eslintCompatPlugin({
-  meta: {
-    name: '@nustack/nuxt-ui',
-  },
-  rules: {
-    'prefer-u-button': preferUButtonRule,
-    'prefer-u-form-controls': preferUFormControlsRule,
-    'prefer-u-link': preferULinkRule,
-    'prefer-u-table': preferUTableRule,
-    'no-deprecated-components': noDeprecatedComponentsRule,
-    'no-deprecated-model-modifiers': noDeprecatedModelModifiersRule,
-  },
-}) as unknown as ESLint.Plugin & {
-  configs: {
-    /** The Nuxt UI pack, Vue-SFC-scoped, ready to spread into a flat config. */
-    ui: Linter.Config[]
-    /** Union of every ecosystem sub-pack shipped here (today: just Nuxt UI). */
-    recommended: Linter.Config[]
-  }
+export * from './rules/nuxt-image/module.js'
+export * from './rules/nuxt-ui/module.js'
+
+export interface NuxtEcosystemOptions {
+  /** Enable Nuxt UI with defaults (`true`) or module-specific options. */
+  nuxtUi?: NuxtUiConfigOptions | boolean
+  /** Enable Nuxt Image with defaults (`true`) or module-specific options. */
+  nuxtImage?: NuxtImageConfigOptions | boolean
 }
 
-const pluginRef = { '@nustack/nuxt-ui': plugin }
+/** Builds configs only for explicitly enabled modules. Dependency detection lives in `@nustackjs/lint`. */
+export function nuxtEcosystemConfigs(options: NuxtEcosystemOptions): Linter.Config[] {
+  if (!options)
+    throw new TypeError('nuxtEcosystemConfigs() requires an object listing the modules to enable')
 
-export const NUXT_UI_GLOB = ['**/*.vue']
-
-export interface NuxtUiConfigsOptions {
-  /** Cumulative variant; `minimal` ships nothing, `recommended` (default) the rule set. */
-  variant?: 'minimal' | 'recommended'
-  /** Extra rule overrides, merged onto the Vue-SFC scope. */
-  rules?: Linter.RulesRecord
-}
-
-/** Returns Vue-SFC-scoped Nuxt UI configs. */
-export function nuxtUiConfigs(options: NuxtUiConfigsOptions = {}): Linter.Config[] {
-  const { variant = 'recommended', rules } = options
   const configs: Linter.Config[] = []
 
-  if (variant !== 'minimal') {
-    configs.push({
-      name: 'nustack/nuxt-ui',
-      files: NUXT_UI_GLOB,
-      plugins: pluginRef,
-      rules: {
-        '@nustack/nuxt-ui/prefer-u-button': 'warn',
-        '@nustack/nuxt-ui/prefer-u-form-controls': 'warn',
-        '@nustack/nuxt-ui/prefer-u-link': 'warn',
-        '@nustack/nuxt-ui/prefer-u-table': 'warn',
-        '@nustack/nuxt-ui/no-deprecated-components': 'warn',
-        '@nustack/nuxt-ui/no-deprecated-model-modifiers': 'warn',
-      },
-    })
-  }
-
-  if (rules && Object.keys(rules).length) {
-    configs.push({
-      name: 'nustack/nuxt-ui/rules',
-      files: NUXT_UI_GLOB,
-      plugins: pluginRef,
-      rules,
-    })
-  }
+  if (options.nuxtUi)
+    configs.push(nuxtUiConfig(options.nuxtUi === true ? {} : options.nuxtUi))
+  if (options.nuxtImage)
+    configs.push(nuxtImageConfig(options.nuxtImage === true ? {} : options.nuxtImage))
 
   return configs
 }
 
-plugin.configs = {
-  ui: nuxtUiConfigs(),
-  // Union preset for every ecosystem sub-pack shipped by this package.
-  recommended: nuxtUiConfigs(),
+export const nuxtEcosystemPlugins: Record<string, ESLint.Plugin> = {
+  ...nuxtUiPlugins,
+  ...nuxtImagePlugins,
 }
-
-export const preferUButton: Rule.RuleModule = plugin.rules!['prefer-u-button'] as Rule.RuleModule
-export const preferUFormControls: Rule.RuleModule = plugin.rules!['prefer-u-form-controls'] as Rule.RuleModule
-export const preferULink: Rule.RuleModule = plugin.rules!['prefer-u-link'] as Rule.RuleModule
-export const preferUTable: Rule.RuleModule = plugin.rules!['prefer-u-table'] as Rule.RuleModule
-export const noDeprecatedComponents: Rule.RuleModule = plugin.rules!['no-deprecated-components'] as Rule.RuleModule
-export const noDeprecatedModelModifiers: Rule.RuleModule = plugin.rules!['no-deprecated-model-modifiers'] as Rule.RuleModule
-export default plugin

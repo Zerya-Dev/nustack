@@ -1,22 +1,17 @@
-import { RuleTester } from 'eslint'
 import { describe, it } from 'vitest'
-import vueParser from 'vue-eslint-parser'
-import plugin from '../../../index.js'
+import { ruleTester as tester } from '../../../../tests/rule-tester.js'
+import { nuxtUiPlugin } from '../../../index.js'
 
-const rule = plugin.rules?.['prefer-u-button']
+const rule = nuxtUiPlugin.rules['prefer-u-button']
 
 describe('prefer-u-button', () => {
   it('reports raw buttons in Vue templates', () => {
-    const tester = new RuleTester({ languageOptions: { ecmaVersion: 'latest', sourceType: 'module', parser: vueParser } })
-
-    tester.run('prefer-u-button', rule as never, {
+    tester.run('prefer-u-button', rule, {
       valid: [
-        { filename: 'component.vue', code: '<template><UButton>Save</UButton></template>' },
-        { filename: 'component.vue', code: '<template><button data-raw>Save</button></template>' },
+        { code: '<template><UButton>Save</UButton></template>' },
       ],
       invalid: [
         {
-          filename: 'component.vue',
           code: '<template><button>Save</button></template>',
           errors: [{ messageId: 'preferUButton' }],
         },

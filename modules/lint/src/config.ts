@@ -71,8 +71,8 @@ export interface NustackLintOptions {
   /** Vite build/runtime conventions. */
   vite?: ConcernToggle<ViteConcernOptions>
   /**
-   * Nuxt-ecosystem rules (Nuxt UI today; Pinia/Content later). `false` disables the whole
-   * ecosystem; an object tunes each module, e.g. `{ nuxtUi: false }`. Each module
+   * Nuxt-ecosystem rules (Nuxt UI and Nuxt Image today; Pinia/Content later). `false` disables
+   * the whole ecosystem; an object tunes each module, e.g. `{ nuxtUi: false }`. Each module
    * auto-gates on its own detection.
    */
   nuxtEcosystem?: NuxtEcosystemToggle
@@ -82,8 +82,6 @@ export interface NustackLintOptions {
   markdown?: ConcernToggle<MarkdownConcernOptions>
   /** Global rule changes, merged after every concern. */
   rules?: Rules
-  /** @deprecated Use `rules` instead. */
-  overrides?: Rules
   /**
    * Detected project context. Injected by the generated `.nuxt/nustack-eslint.mjs`
    * for Nuxt apps; the standalone `nustack()` factory fills it via

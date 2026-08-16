@@ -1,32 +1,45 @@
-import { RuleTester } from 'eslint'
 import { describe, it } from 'vitest'
-import vueParser from 'vue-eslint-parser'
-import plugin from '../../../index.js'
+import { ruleTester as tester } from '../../../../tests/rule-tester.js'
+import { nuxtUiPlugin } from '../../../index.js'
 
-const rule = plugin.rules?.['prefer-u-form-controls']
+const rule = nuxtUiPlugin.rules['prefer-u-form-controls']
 
 describe('prefer-u-form-controls', () => {
   it('reports raw form controls and type-specialized inputs in Vue templates', () => {
-    const tester = new RuleTester({ languageOptions: { ecmaVersion: 'latest', sourceType: 'module', parser: vueParser } })
-
-    tester.run('prefer-u-form-controls', rule as never, {
+    tester.run('prefer-u-form-controls', rule, {
       valid: [
-        { filename: 'component.vue', code: '<template><UInput /></template>' },
-        { filename: 'component.vue', code: '<template><UInput type="text" /></template>' },
-        { filename: 'component.vue', code: '<template><UInput :type="kind" /></template>' },
-        { filename: 'component.vue', code: '<template><input data-raw></template>' },
-        { filename: 'component.vue', code: '<template><UInput type="number" data-raw /></template>' },
+        { code: '<template><UInput /></template>' },
+        { code: '<template><UInput type="text" /></template>' },
+        { code: '<template><UInput :type="kind" /></template>' },
+        { code: '<template><Input v-model="x" /></template>' },
+        { code: '<template><Select v-model="x" /></template>' },
+        { code: '<template><input type="hidden" name="csrf"></template>' },
+        { code: '<template><UInput type="hidden" /></template>' },
       ],
       invalid: [
-        { filename: 'component.vue', code: '<template><input></template>', errors: [{ messageId: 'preferUFormControl' }] },
-        { filename: 'component.vue', code: '<template><input type="number"></template>', errors: [{ messageId: 'preferUFormControl' }] },
-        { filename: 'component.vue', code: '<template><select></select></template>', errors: [{ messageId: 'preferUFormControl' }] },
-        { filename: 'component.vue', code: '<template><textarea></textarea></template>', errors: [{ messageId: 'preferUFormControl' }] },
-        { filename: 'component.vue', code: '<template><UInput type="number" /></template>', errors: [{ messageId: 'preferSpecificControl' }] },
-        { filename: 'component.vue', code: '<template><UInput type="file" /></template>', errors: [{ messageId: 'preferSpecificControl' }] },
-        // Extended via options: extra native-element and type mappings.
-        { filename: 'component.vue', code: '<template><progress /></template>', options: [{ controls: { progress: 'UProgress' } }], errors: [{ messageId: 'preferUFormControl' }] },
-        { filename: 'component.vue', code: '<template><UInput type="email" /></template>', options: [{ types: { email: 'UEmailInput' } }], errors: [{ messageId: 'preferSpecificControl' }] },
+        { code: '<template><input></template>', errors: [{ messageId: 'preferUFormControl', data: { tag: 'input', replacement: 'UInput' } }] },
+        { code: '<template><input type="number"></template>', errors: [{ messageId: 'preferUFormControl', data: { tag: 'input', replacement: 'UInputNumber' } }] },
+        { code: '<template><select></select></template>', errors: [{ messageId: 'preferUFormControl' }] },
+        { code: '<template><textarea></textarea></template>', errors: [{ messageId: 'preferUFormControl' }] },
+        { code: '<template><input type="submit" value="Save"></template>', errors: [{ messageId: 'preferUFormControl', data: { tag: 'input', replacement: 'UButton' } }] },
+        { code: '<template><input type="reset"></template>', errors: [{ messageId: 'preferUFormControl', data: { tag: 'input', replacement: 'UButton' } }] },
+        { code: '<template><UInput type="number" /></template>', errors: [{ messageId: 'preferSpecificControl', data: { type: 'number', component: 'UInput', replacement: 'UInputNumber' } }] },
+        { code: '<template><UInput type="file" /></template>', errors: [{ messageId: 'preferSpecificControl' }] },
+        { code: '<template><UInput :type="\'number\'" /></template>', errors: [{ messageId: 'preferSpecificControl' }] },
+        { code: '<template><UInput type="NUMBER" /></template>', errors: [{ messageId: 'preferSpecificControl' }] },
+        { code: '<template><UInput v-bind="{ type: \'number\' }" /></template>', errors: [{ messageId: 'preferSpecificControl' }] },
+        { code: '<template><progress /></template>', options: [{ controls: { progress: 'Progress' } }], errors: [{ messageId: 'preferUFormControl', data: { tag: 'progress', replacement: 'UProgress' } }] },
+        { code: '<template><UInput type="email" /></template>', options: [{ types: { email: 'EmailInput' } }], errors: [{ messageId: 'preferSpecificControl', data: { type: 'email', component: 'UInput', replacement: 'UEmailInput' } }] },
+      ],
+    })
+  })
+
+  it('spells replacements with the configured prefix', () => {
+    tester.run('prefer-u-form-controls', rule, {
+      valid: [],
+      invalid: [
+        { code: '<template><input type="text"></template>', settings: { '@nustack/nuxt-ui': { enabled: true, prefix: 'Nu' } }, errors: [{ messageId: 'preferUFormControl', data: { tag: 'input', replacement: 'NuInput' } }] },
+        { code: '<template><NuInput type="number" /></template>', settings: { '@nustack/nuxt-ui': { enabled: true, prefix: 'Nu' } }, errors: [{ messageId: 'preferSpecificControl', data: { type: 'number', component: 'NuInput', replacement: 'NuInputNumber' } }] },
       ],
     })
   })

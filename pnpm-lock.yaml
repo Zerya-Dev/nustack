@@ -235,8 +235,8 @@ importers:
   modules/lint/playground:
     dependencies:
       '@nustackjs/lint':
-        specifier: latest
-        version: 0.5.0(71bed611addd699af4f876cdc8040948)
+        specifier: workspace:*
+        version: link:..
       '@nuxt/content':
         specifier: ^3.15.0
         version: 3.15.0(@valibot/to-json-schema@1.7.1(valibot@1.4.2(typescript@6.0.3)))(esbuild@0.28.1)(magicast@0.5.3)(rolldown@1.1.4)(rollup@4.62.2)(sqlite3@5.1.7)(valibot@1.4.2(typescript@6.0.3))(vite@7.3.6(@types/node@26.1.0)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(yaml@2.9.0))
@@ -294,6 +294,9 @@ importers:
         specifier: catalog:eslint
         version: 1.72.0
     devDependencies:
+      '@typescript-eslint/parser':
+        specifier: catalog:eslint
+        version: 8.62.1(eslint@10.6.0(jiti@2.7.0))(typescript@6.0.3)
       eslint:
         specifier: catalog:eslint
         version: 10.6.0(jiti@2.7.0)
@@ -1336,12 +1339,6 @@ packages:
     resolution: {integrity: sha512-1SUf/Cg2GzGDyaf15aR9St9TWlb+XvbZXWpDx8YKs7MLzMH/BCeopv+y9vzrzgkfykCGuWOlSu3mZhj2+FQcrg==}
     engines: {node: '>=10'}
     deprecated: This functionality has been moved to @npmcli/fs
-
-  '@nustackjs/lint@0.5.0':
-    resolution: {integrity: sha512-EJbKOINv8C+xtguc96LE5G/5zBc5QyiVahrixkhnkDJM/MWC/j+enMAqhxyDbedHmsIn9v2QLJJynZJnsECZmQ==}
-    peerDependencies:
-      eslint: '>=9.0.0'
-      nuxt: '>=3.0.0'
 
   '@nuxt/cli@3.36.1':
     resolution: {integrity: sha512-qu0LLFjOr1alMSrcVb3k3fWYXGeETeOIN5UoGoGEjwWVtf+KxQbN5IAzdXb7ip5D3pfKLcrAOTbIGf9XFmeGFQ==}
@@ -9026,77 +9023,6 @@ snapshots:
       mkdirp: 1.0.4
       rimraf: 3.0.2
     optional: true
-
-  '@nustackjs/lint@0.5.0(71bed611addd699af4f876cdc8040948)':
-    dependencies:
-      '@antfu/eslint-config': 9.1.0(@typescript-eslint/rule-tester@8.62.1(eslint@10.6.0(jiti@2.7.0))(typescript@6.0.3))(@typescript-eslint/typescript-estree@8.62.1(typescript@6.0.3))(@typescript-eslint/utils@8.62.1(eslint@10.6.0(jiti@2.7.0))(typescript@6.0.3))(@vue/compiler-sfc@3.5.39)(eslint-plugin-format@2.0.1(eslint@10.6.0(jiti@2.7.0)))(eslint@10.6.0(jiti@2.7.0))(typescript@6.0.3)(vitest@4.1.9(@types/node@26.1.0)(vite@7.3.6(@types/node@26.1.0)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(yaml@2.9.0)))
-      '@nustackjs/lint-plugin-nuxt': link:packages/lint-plugin-nuxt
-      '@nustackjs/lint-plugin-nuxt-ecosystem': link:packages/lint-plugin-nuxt-ecosystem
-      '@nustackjs/lint-plugin-vite': link:packages/lint-plugin-vite
-      '@nustackjs/lint-plugin-vueuse': link:packages/lint-plugin-vueuse
-      '@nuxt/eslint': 1.16.0(@typescript-eslint/utils@8.62.1(eslint@10.6.0(jiti@2.7.0))(typescript@6.0.3))(@vue/compiler-sfc@3.5.39)(crossws@0.4.9(srvx@0.11.21))(esbuild@0.28.1)(eslint-plugin-format@2.0.1(eslint@10.6.0(jiti@2.7.0)))(eslint@10.6.0(jiti@2.7.0))(magicast@0.5.3)(oxc-parser@0.133.0)(rolldown@1.1.4)(rollup@4.62.2)(typescript@6.0.3)(vite@7.3.6(@types/node@26.1.0)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(yaml@2.9.0))
-      '@nuxt/kit': 4.4.8(magicast@0.5.3)
-      '@typescript-eslint/utils': 8.62.1(eslint@10.6.0(jiti@2.7.0))(typescript@6.0.3)
-      defu: 6.1.7
-      eslint: 10.6.0(jiti@2.7.0)
-      eslint-flat-config-utils: 3.2.0
-      eslint-plugin-better-tailwindcss: 4.6.1(eslint@10.6.0(jiti@2.7.0))(tailwindcss@4.3.2)(typescript@6.0.3)
-      eslint-plugin-format: 2.0.1(eslint@10.6.0(jiti@2.7.0))
-      eslint-plugin-vue: 10.9.2(@stylistic/eslint-plugin@5.10.0(eslint@10.6.0(jiti@2.7.0)))(@typescript-eslint/parser@8.62.1(eslint@10.6.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.6.0(jiti@2.7.0))(vue-eslint-parser@10.4.1(eslint@10.6.0(jiti@2.7.0)))
-      exsolve: 1.1.0
-      mdclint: 0.1.2(eslint@10.6.0(jiti@2.7.0))
-      nuxt: 4.4.8(@babel/plugin-syntax-jsx@7.29.7(@babel/core@7.29.7))(@babel/plugin-syntax-typescript@7.29.7(@babel/core@7.29.7))(@parcel/watcher@2.5.6)(@types/node@26.1.0)(@vitejs/devtools@0.3.4(crossws@0.4.9(srvx@0.11.21))(db0@0.3.4(sqlite3@5.1.7))(esbuild@0.28.1)(ioredis@5.11.1)(rolldown@1.1.4)(rollup@4.62.2)(typescript@6.0.3)(vite@7.3.6(@types/node@26.1.0)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(yaml@2.9.0)))(@vue/compiler-sfc@3.5.39)(cac@6.7.14)(db0@0.3.4(sqlite3@5.1.7))(encoding@0.1.13)(esbuild@0.28.1)(eslint@10.6.0(jiti@2.7.0))(ioredis@5.11.1)(lightningcss@1.32.0)(magicast@0.5.3)(optionator@0.9.4)(rolldown@1.1.4)(rollup-plugin-visualizer@7.0.1(rolldown@1.1.4)(rollup@4.62.2))(rollup@4.62.2)(sqlite3@5.1.7)(srvx@0.11.21)(terser@5.48.0)(typescript@6.0.3)(vite@7.3.6(@types/node@26.1.0)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(yaml@2.9.0))(yaml@2.9.0)
-      unimport: 6.3.0(esbuild@0.28.1)(oxc-parser@0.133.0)(rolldown@1.1.4)(rollup@4.62.2)(vite@7.3.6(@types/node@26.1.0)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(yaml@2.9.0))
-      vue-eslint-parser: 10.4.1(eslint@10.6.0(jiti@2.7.0))
-    transitivePeerDependencies:
-      - '@angular-eslint/eslint-plugin'
-      - '@angular-eslint/eslint-plugin-template'
-      - '@angular-eslint/template-parser'
-      - '@eslint-react/eslint-plugin'
-      - '@eslint/css'
-      - '@eslint/json'
-      - '@farmfe/core'
-      - '@modelcontextprotocol/sdk'
-      - '@next/eslint-plugin-next'
-      - '@prettier/plugin-xml'
-      - '@rspack/core'
-      - '@stylistic/eslint-plugin'
-      - '@typescript-eslint/parser'
-      - '@typescript-eslint/rule-tester'
-      - '@typescript-eslint/typescript-estree'
-      - '@unocss/eslint-plugin'
-      - '@vue/compiler-sfc'
-      - astro-eslint-parser
-      - bufferutil
-      - bun-types-no-globals
-      - crossws
-      - esbuild
-      - eslint-import-resolver-node
-      - eslint-plugin-astro
-      - eslint-plugin-jsx-a11y
-      - eslint-plugin-react-refresh
-      - eslint-plugin-solid
-      - eslint-plugin-svelte
-      - eslint-plugin-vuejs-accessibility
-      - eslint-webpack-plugin
-      - magicast
-      - oxc-parser
-      - oxlint
-      - prettier-plugin-astro
-      - prettier-plugin-slidev
-      - rolldown
-      - rollup
-      - supports-color
-      - svelte-eslint-parser
-      - tailwindcss
-      - ts-declaration-location
-      - typescript
-      - unloader
-      - utf-8-validate
-      - vite
-      - vite-plugin-eslint2
-      - vitest
-      - webpack
 
   '@nuxt/cli@3.36.1(@nuxt/schema@4.4.8)(cac@6.7.14)(magicast@0.5.3)':
     dependencies:

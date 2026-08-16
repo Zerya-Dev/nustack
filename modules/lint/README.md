@@ -45,6 +45,11 @@ The preset composes these layers and gates each on what your project actually us
 | **Tailwind**       | Class order and correctness                                    | [`better-tailwindcss`](https://github.com/schoero/eslint-plugin-better-tailwindcss)                                             |
 | **Vue SFC**        | Conventions from `eslint-plugin-vue` (e.g. `lang="ts"` blocks) | `eslint-plugin-vue`                                                                                                             |
 
+Nuxt ecosystem integrations can also be selected manually. For example,
+`nuxtEcosystem: { nuxtUi: { preset: 'minimal' } }` keeps only the Nuxt UI rules that report broken
+or deprecated code; `nuxtUi: false` disables the integration even when `@nuxt/ui` is installed. The
+default `recommended` preset adds design-system preferences on top, as warnings. See [Configuration](docs/configuration.md) for the complete options.
+
 **Want a rule added, or a plugin integrated?** [Open an issue](https://github.com/Zerya-Dev/nustack/issues) as the ruleset is meant to grow with what the community uses.
 
 ## 🚀 Quick Start

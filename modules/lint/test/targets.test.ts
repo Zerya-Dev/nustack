@@ -10,7 +10,8 @@ import { resolveTarget } from '../src/target'
 // A context where every detectable feature is present, so concern gating is driven
 // purely by the target/options under test rather than by missing detection.
 const FULL_CONTEXT: NustackContext = {
-  modules: { nuxtUi: true, mdc: false },
+  modules: { nuxtUi: true, nuxtImage: true, mdc: false },
+  nuxtUi: { prefix: 'U' },
   tailwind: { detected: true, entryPoint: 'app/assets/css/main.css' },
   autoImports: ['ref'],
   components: ['UButton'],
@@ -86,9 +87,24 @@ describe('target: vue-app', () => {
     expect(ns).toContain('nustack/nuxt-ui')
   })
 
+  it('passes per-module ecosystem presets to the plugins', async () => {
+    const configs = await resolve({
+      target: 'vue-app',
+      nuxtEcosystem: {
+        nuxtUi: { preset: 'minimal' },
+        nuxtImage: { preset: 'minimal' },
+      },
+    })
+    expect(lastRuleValue(configs, '@nustack/nuxt-ui/require-avatar-alt')).toBe('error')
+    expect(lastRuleValue(configs, '@nustack/nuxt-ui/prefer-u-button')).toBeUndefined()
+    expect(lastRuleValue(configs, '@nustack/nuxt-image/require-image-alt')).toBe('error')
+    expect(lastRuleValue(configs, '@nustack/nuxt-image/prefer-nuxt-img')).toBeUndefined()
+  })
+
   it('drops tailwind/nuxtEcosystem when standalone detection finds nothing', async () => {
     const EMPTY: NustackContext = {
-      modules: { nuxtUi: false, mdc: false },
+      modules: { nuxtUi: false, nuxtImage: false, mdc: false },
+      nuxtUi: { prefix: 'U' },
       tailwind: { detected: false, entryPoint: null },
       autoImports: [],
       components: [],

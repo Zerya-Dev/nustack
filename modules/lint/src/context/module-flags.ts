@@ -4,6 +4,7 @@ import type { NustackContext } from '.'
 export const MODULE_FLAGS = {
   '@nuxt/ui': 'nuxtUi',
   '@nuxt/ui-pro': 'nuxtUi',
+  '@nuxt/image': 'nuxtImage',
   '@comark/nuxt': 'mdc',
   '@nuxtjs/mdc': 'mdc',
 } as const satisfies Record<string, keyof NustackContext['modules']>
@@ -13,6 +14,7 @@ export function resolveModuleFlags(names: Iterable<string>): NustackContext['mod
 
   const modules: NustackContext['modules'] = {
     nuxtUi: false,
+    nuxtImage: false,
     mdc: false,
   }
   for (const [name, flag] of Object.entries(MODULE_FLAGS)) {

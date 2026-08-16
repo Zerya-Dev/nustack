@@ -84,6 +84,7 @@ export function setupNustackContext(nuxt: Nuxt): void {
   async function buildContext(): Promise<NustackContext> {
     return {
       modules: detectModules(),
+      nuxtUi: { prefix: (nuxt.options as any).ui?.prefix ?? 'U' },
       tailwind: await detectTailwind(),
       autoImports: await collectAutoImports(),
       components,

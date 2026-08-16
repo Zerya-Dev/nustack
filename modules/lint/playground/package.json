@@ -10,7 +10,7 @@
     "lint": "nuxt prepare && eslint ."
   },
   "dependencies": {
-    "@nustackjs/lint": "latest",
+    "@nustackjs/lint": "workspace:*",
     "@nuxt/content": "^3.15.0",
     "@nuxt/eslint": "^1.16.0",
     "@nuxt/ui": "^4.9.0",

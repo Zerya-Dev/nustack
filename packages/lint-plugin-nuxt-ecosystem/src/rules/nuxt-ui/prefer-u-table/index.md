@@ -3,7 +3,7 @@
 Prefer Nuxt UI's `<UTable>` over raw `<table>` elements when `@nuxt/ui` is available.
 
 Unlike the other `prefer-u-*` rules, `UTable` is **data-driven** (`:data` / `:columns`)
-rather than a structural drop-in for hand-written `<tr>`/`<td>` markup. Reach for `data-raw`
+rather than a structural drop-in for hand-written `<tr>`/`<td>` markup. Suppress the report
 whenever a bespoke static table genuinely reads better as markup.
 
 ## Incorrect
@@ -26,4 +26,12 @@ whenever a bespoke static table genuinely reads better as markup.
 </template>
 ```
 
-Use `data-raw` as a local escape hatch when a raw native table is intentional.
+Suppress an intentional raw native table with
+`<!-- eslint-disable-next-line @nustack/nuxt-ui/prefer-u-table -->`.
+
+Only genuine native elements are reported: a component whose name merely lowercases to the
+tag (`<Table>`) is left alone.
+
+## Further reading
+
+- [Nuxt UI Table](https://ui.nuxt.com/docs/components/table)

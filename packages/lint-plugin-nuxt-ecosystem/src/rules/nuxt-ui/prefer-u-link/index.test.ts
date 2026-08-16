@@ -1,21 +1,26 @@
-import { RuleTester } from 'eslint'
 import { describe, it } from 'vitest'
-import vueParser from 'vue-eslint-parser'
-import plugin from '../../../index.js'
+import { ruleTester as tester } from '../../../../tests/rule-tester.js'
+import { nuxtUiPlugin } from '../../../index.js'
 
-const rule = plugin.rules?.['prefer-u-link']
+const rule = nuxtUiPlugin.rules['prefer-u-link']
 
 describe('prefer-u-link', () => {
   it('reports raw anchors in Vue templates', () => {
-    const tester = new RuleTester({ languageOptions: { ecmaVersion: 'latest', sourceType: 'module', parser: vueParser } })
-
-    tester.run('prefer-u-link', rule as never, {
+    tester.run('prefer-u-link', rule, {
       valid: [
-        { filename: 'component.vue', code: '<template><ULink to="/home">Home</ULink></template>' },
-        { filename: 'component.vue', code: '<template><a data-raw href="/home">Home</a></template>' },
+        { code: '<template><ULink to="/home">Home</ULink></template>' },
+        { code: '<template><svg><a href="#x" /></svg></template>' },
       ],
       invalid: [
-        { filename: 'component.vue', code: '<template><a href="/home">Home</a></template>', errors: [{ messageId: 'preferULink' }] },
+        {
+          code: '<template><a href="/home">Home</a></template>',
+          errors: [{ messageId: 'preferULink', data: { component: 'ULink', tag: 'a' } }],
+        },
+        {
+          code: '<template><a href="/home">Home</a></template>',
+          settings: { '@nustack/nuxt-ui': { enabled: true, prefix: 'Nu' } },
+          errors: [{ messageId: 'preferULink', data: { component: 'NuLink', tag: 'a' } }],
+        },
       ],
     })
   })
